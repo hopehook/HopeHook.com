@@ -1,5 +1,5 @@
 ---
-title: Link / 链接
+title: Links / 链接
 layout: page
 comments: yes
 
