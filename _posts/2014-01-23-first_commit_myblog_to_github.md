@@ -16,7 +16,7 @@ From：[Click me](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.ht
 ---
 
 {% highlight cpp %}
-    cd github\MyBlog
+    cd github\Blog
 {% endhighlight %}
 
 ---
@@ -42,7 +42,7 @@ From：[Click me](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.ht
 ---
 
 {% highlight cpp %}
-    git remote add origin https://github.com/hopehook/MyBlog.git
+    git remote add origin https://github.com/hopehook/Blog.git
 {% endhighlight %}
 ---
 
