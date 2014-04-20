@@ -1,0 +1,15 @@
+markdown: rdiscount
+permalink: /:year/:month/:day/:title/
+url: http://hopehook.com
+website-url: hopehook.com
+name: HopeHook's Blog
+website: HopeHook's House
+author: HopeHook
+email: HopeHook@gmail.com
+duoshuo: HopeHook
+github: HopeHook
+weibo: HopeHook
+pygments: true
+safe: true
+paginate: 20
+about: "这里是 HopeHook 的个人博客，欢迎你的到来。"

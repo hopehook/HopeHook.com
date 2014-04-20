@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset>	
+<url>
+<loc>{{ site.website-url }}</loc>
+<priority>1.00</priority>
+<lastmod>2014-01-24</lastmod>
+<changefreq>daily</changefreq>
+</url>
+</urlset>
