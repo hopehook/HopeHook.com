@@ -5,6 +5,7 @@ comments: yes
 
 ---
 
+* [MIT Course](http://ocw.mit.edu/index.htm) - 麻省理工公开课
 * [OS Course](http://se.tju.edu.cn/ocw/os/) - 操作系统课程[天津大学]
 * [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
 * [HiJiangTao's Blog](http://hijiangtao.github.io/) - HiJiangTao的个人博客
