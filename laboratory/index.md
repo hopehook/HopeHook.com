@@ -12,7 +12,7 @@ comments: yes
 
 **图书Code下载**
 
-* [Source Code 1](http://hopehook.com/book/code/C_code.rar) -C语言程序设计（谭浩强）（第三版）_代码
-* [Source Code 2](http://hopehook.com/book/code/C_code_for_data_structure.rar) -数据结构(C语言版)_代码
+* [Source Code 1](http://hopehook.com/assets/books/code/C_code.rar) -C语言程序设计（谭浩强）（第三版）_代码
+* [Source Code 2](http://hopehook.com/assets/books/code/C_code_for_data_structure.rar) -数据结构(C语言版)_代码
 
 
