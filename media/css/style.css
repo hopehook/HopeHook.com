@@ -45,12 +45,22 @@ pre code {
   word-wrap:break-word;
   }
 
+
+ 
 code {
-  font-size: 11px;
-  background-color: #BBBBBB;
-  line-height: 1.0;
-  padding: 0px 1px;
-  border: 1px dashed #e0e0e0; }
+  font-family: Monaco,Menlo,Consolas,Courier New,monospace;
+  background: #eee;
+  color: #d14;
+  border: 1px solid #d6d6d6;
+  padding: 0 5px;
+  margin: 0 2px;
+  font-size: 90%;
+  white-space: nowrap;
+  text-shadow: 0 1px #fff;
+  -webkit-border-radius: .25em;
+  -webkit-border-radius: .25em;
+  border-radius: .25em;
+}
 
 #container{width:600px;margin:2em auto;display:block;padding:0 2em;}
 .content{font-size:16px;line-height:24px;}
