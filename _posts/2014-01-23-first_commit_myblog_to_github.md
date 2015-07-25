@@ -6,11 +6,6 @@ categories: 教程
 tags: github
 ---
 
-From：[Click me](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html)
----
-
-
-
 `f:`
 
 `cd github\Blog`
@@ -26,3 +21,5 @@ From：[Click me](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.ht
 `git remote add origin https://github.com/hopehook/Blog.git`
 
 `git push origin gh-pages`
+
+[Details](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html)
