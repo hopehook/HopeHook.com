@@ -6,20 +6,20 @@ categories: 教程
 tags: github
 ---
 
-###`f:`
+f:
 
-###`cd github\Blog`
+cd github\Blog
 
-###`git init`    
+git init   
 
-###`git checkout --orphan gh-pages`
+git checkout --orphan gh-pages
 
-###`git add .`
+git add .
 
-###`git commit -m "first post"`
+git commit -m "first post"
 
-###`git remote add origin https://github.com/hopehook/Blog.git`
+git remote add origin https://github.com/hopehook/Blog.git
 
-###`git push origin gh-pages`
+git push origin gh-pages
 
 **[Details](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html)**
