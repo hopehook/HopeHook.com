@@ -9,46 +9,20 @@ tags: github
 From：[Click me](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html)
 ---
 
-{% highlight cpp %}
-    f:
-{% endhighlight %}
 
----
 
-{% highlight cpp %}
-    cd github\Blog
-{% endhighlight %}
+`f:`
 
----
+`cd github\Blog`
 
-{% highlight cpp %}
-    git init
-{% endhighlight cpp %}
----
+`git init`    
 
-{% highlight cpp %}
-    git checkout --orphan gh-pages
-{% endhighlight %}
----
+`git checkout --orphan gh-pages`
 
-{% highlight cpp %}
-    git add .
-{% endhighlight %}
----
+`git add .`
 
-{% highlight cpp %}
-    git commit -m "first post"
-{% endhighlight %}
----
+`git commit -m "first post"`
 
-{% highlight cpp %}
-    git remote add origin https://github.com/hopehook/Blog.git
-{% endhighlight %}
----
+`git remote add origin https://github.com/hopehook/Blog.git`
 
-{% highlight cpp %}
-    git push origin gh-pages
-{% endhighlight %}
----
-
- 
+`git push origin gh-pages`
