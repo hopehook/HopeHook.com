@@ -12,7 +12,7 @@ comments: no
 
 邮箱/E-mail：[{{ site.email }}](mailto:{{ site.email }})
 
-GitHub : [{{ site.author }}](http://github.com/{{ site.author }})
+GitHub : [{{ site.github }}](http://github.com/{{ site.github }})
 
 
 
