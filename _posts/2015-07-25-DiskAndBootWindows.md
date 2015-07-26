@@ -36,3 +36,10 @@ tags: 启动
 思考一个问题：为什么在Windows7的基础上装WindowsXP双系统后，只能进入WindowsXP？
 
 答：系统安装过程中会更新PBR，WindowsXP系统将PBR修改成为适合WindowsXP的了，因此无法进入Windows7。
+
+
+![Vista系统的电脑启动过程](/assets/images/Vista系统的电脑启动过程.jpg "Vista系统的电脑启动过程") 
+<center>Vista系统的电脑启动过程</center>
+
+![XP系统的电脑启动过程](/assets/images/XP系统的电脑启动过程.jpg "XP系统的电脑启动过程")
+<center>XP系统的电脑启动过程</center>
