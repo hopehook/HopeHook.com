@@ -199,4 +199,4 @@ Bash的设置之所以如此繁琐，是由于历史原因造成的。早期的�
 
 
 **转载声明**
-[原文链接](http://www.ruanyifeng.com/blog/2013/02/booting.html)
+[原文链接](http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html)
