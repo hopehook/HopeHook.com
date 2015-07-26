@@ -33,7 +33,7 @@ blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:.5em 0;}
 
 pre{
-  background-color: #DFDDDD;
+  background-color: #F0EFEF;
   padding: 0 1em;
   border: 1px dashed #eee !important;
   border-color: #e0e0e0 !important;
@@ -53,7 +53,7 @@ code {
   border: 1px solid #d6d6d6;
   padding: 0 5px;
   margin: 0 2px;
-  font-size: 90%;
+  font-size: 105%;
   white-space: nowrap;
   text-shadow: 0 1px #fff;
   -webkit-border-radius: .25em;
