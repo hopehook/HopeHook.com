@@ -4,53 +4,12 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="{{ site.author }}" />
     <title>{% if page.path == 'index.html' %}{{ site.name }}{% else %}{% unless page.id %}{{ site.name }} - {% endunless %}{{ page.title }}{% endif %}</title>
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link href="/feed/" rel="alternate" title="{{ site.author }}" type="application/atom+xml" />
-    <link rel="stylesheet" href="/media/css/style.css" />
-    <link rel="stylesheet" href="/media/css/highlight.css" />
-    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
-	
 	<!-- some other meta -->
 	{% if page.url == "/404.html" %}
 		<meta http-equiv="refresh" content="5; url=/">
 	{% endif %}
   </head>
-  <script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	  ga('create', 'UA-50164165-1', 'hopehook.com');
-	  ga('send', 'pageview');
-  </script>
-  
-  <!--a script to set the timer-->
-  <script type="text/javascript">
-    function setTimeSpan(){
-            var date = new Date();
-            timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
-    }
-    
-    Date.prototype.format = function(format)
-                {
-    var o =
-            {
-                "M+" : this.getMonth()+1, //month
-                "d+" : this.getDate(),    //day
-                "h+" : this.getHours(),   //hour
-                "m+" : this.getMinutes(), //minute
-                "s+" : this.getSeconds(), //second
-                "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
-                "S" : this.getMilliseconds() //millisecond
-            }
-            if(/(y+)/.test(format))
-            format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
-            for(var k in o)
-            if(new RegExp("("+ k +")").test(format))
-            format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
-            return format;
-                }
-  </script>
+ 
   <body onLoad="setInterval(setTimeSpan,1000);">
     <div id="container">
       <div id="main" role="main">
@@ -65,7 +24,7 @@
         <span><a title="友情链接" class="" href="/links/">LINKS</a></span>
         <span><a title="留言版" class="" href="/guestbook/">GUESTBOOK</a></span>
         <span><a title="关于作者" class="" href="/about/">ABOUT</a></span>
-	<span><a title="私人图书馆" class="" href="/books/" target="_blank">BOOKS</a></span>
+	    <span><a title="私人图书馆" class="" href="/books/" target="_blank">BOOKS</a></span>
         <span><a title="RSS订阅" class="" href="/feed/" target="_blank">RSS</a></span>
         <hr>
 		<span>
@@ -128,5 +87,49 @@
     </footer>
 
     </div>
+    
+	<!--css and js(begin)-->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link href="/feed/" rel="alternate" title="{{ site.author }}" type="application/atom+xml" />
+    <link rel="stylesheet" href="/media/css/style.css" />
+    <link rel="stylesheet" href="/media/css/highlight.css" />
+	<script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="/media/js/snowstorm.js"></script>
+    <!--a script to set the timer-->
+    <script type="text/javascript">
+    function setTimeSpan(){
+            var date = new Date();
+            timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+                {
+    var o =
+            {
+                "M+" : this.getMonth()+1, //month
+                "d+" : this.getDate(),    //day
+                "h+" : this.getHours(),   //hour
+                "m+" : this.getMinutes(), //minute
+                "s+" : this.getSeconds(), //second
+                "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+                "S" : this.getMilliseconds() //millisecond
+            }
+            if(/(y+)/.test(format))
+            format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+            for(var k in o)
+            if(new RegExp("("+ k +")").test(format))
+            format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+            return format;
+                }
+  </script>
+    <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	  ga('create', 'UA-50164165-1', 'hopehook.com');
+	  ga('send', 'pageview');
+    </script>
+	<!--css and js(end)-->
   </body>
 </html>
