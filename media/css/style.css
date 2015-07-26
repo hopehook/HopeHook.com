@@ -32,12 +32,12 @@ blockquote{display:block;text-align:justify;border-left:4px solid #eeeeee;}
 blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:.5em 0;}
 
-pre code {
+pre{
   background-color: #DFDDDD;
   padding: 0 1em;
   border: 1px dashed #eee !important;
   border-color: #e0e0e0 !important;
-  font-family: "Lekton", monospace;
+  font-family: "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
   line-height: 1.6;
   display: block;
   overflow:hidden;
@@ -47,7 +47,7 @@ pre code {
 
  
 code {
-  font-family: Monaco,Menlo,Consolas,Courier New,monospace;
+  font-family: "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
   background: #eee;
   color: #d14;
   border: 1px solid #d6d6d6;
