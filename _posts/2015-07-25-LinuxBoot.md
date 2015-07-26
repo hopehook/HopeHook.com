@@ -14,7 +14,7 @@ tags: 启动
 
 
 
-![](/assets/images/bg2013081701.jpg)
+![](/assets/images/bg2013081701.png)
 
 这个部分比较有意思。因为在BIOS阶段，计算机的行为基本上被写死了，程序员可以做的事情并不多；但是，一旦进入操作系统，程序员几乎可以定制所有方面。所以，这个部分与程序员的关系更密切。
 
@@ -26,11 +26,11 @@ tags: 启动
 
 
 
-![](/assets/images/bg2013081702.jpg)
+![](/assets/images/bg2013081702.png)
 
 以我的电脑为例，/boot目录下面大概是这样一些文件：
 
-<code>
+<code><pre>
 $ls/boot
 
 config-3.2.0-3-amd64
@@ -41,7 +41,8 @@ initrd.img-3.2.0-4-amd64
 System.map-3.2.0-3-amd64
 System.map-3.2.0-4-amd64
 vmlinuz-3.2.0-3-amd64
-vmlinuz-3.2.0-4-amd64</code>
+vmlinuz-3.2.0-4-amd64
+</code></pre>
 
 **第二步、启动初始化进程**
 
@@ -57,24 +58,24 @@ init进程的一大任务，就是去运行这些开机启动的程序。但是�
 
 
 
-![](/assets/images/bg2013081703.jpg)
+![](/assets/images/bg2013081703.png)
 
 Linux预置七种运行级别（0-6）。一般来说，0是关机，1是单用户模式（也就是维护模式），6是重启。运行级别2-5，各个发行版不太一样，对于Debian来说，都是同样的多用户模式（也就是正常模式）。
 
 init进程首先读取文件/etc/inittab，它是运行级别的设置文件。如果你打开它，可以看到第一行是这样的：
 
-<code>
-id:2:initdefault:</code>
+<code><pre>
+id:2:initdefault:</code></pre>
 
 initdefault的值是2，表明系统启动时的运行级别为2。如果需要指定其他级别，可以手动修改这个值。
 
 那么，运行级别2有些什么程序呢，系统怎么知道每个级别应该加载哪些程序呢？......回答是每个运行级别在/etc目录下面，都有一个对应的子目录，指定要加载的程序。
 
-<code>/etc/rc0.d/etc/rc1.d/etc/rc2.d/etc/rc3.d/etc/rc4.d/etc/rc5.d/etc/rc6.d</code>
+<code><pre>/etc/rc0.d/etc/rc1.d/etc/rc2.d/etc/rc3.d/etc/rc4.d/etc/rc5.d/etc/rc6.d</code></pre>
 
 上面目录名中的"rc"，表示run command（运行程序），最后的d表示directory（目录）。下面让我们看看/etc/rc2.d目录中到底指定了哪些程序。
 
-<code>
+<code><pre>
 $ls/etc/rc2.d
 
 README
@@ -85,7 +86,7 @@ S16binfmt-support
 S16rsyslog
 S16sudo
 S17apache2
-S18acpid...</code>
+S18acpid...</code></pre>
 
 可以看到，除了第一个文件README以外，其他文件名都是"字母S+两位数字+程序名"的形式。字母S表示Start，也就是启动的意思（启动脚本的运行参数为start），如果这个位置是字母K，就代表Kill（关闭），即如果从其他运行级别切换过来，需要关闭的程序（启动脚本的运行参数为stop）。后面的两位数字表示处理顺序，数字越小越早处理，所以第一个启动的程序是motd，然后是rpcbing、nfs......数字相同时，则按照程序名的字母顺序启动，所以rsyslog会先于sudo启动。
 
@@ -99,11 +100,11 @@ Linux的解决办法，就是七个/etc/rcN.d目录里列出的程序，都设�
 
 
 
-![](/assets/images/bg2013081704.jpg)
+![](/assets/images/bg2013081704.png)
 
 下面就是链接文件真正的指向。
 
-<code>
+<code><pre>
 $ls-l/etc/rc2.d
 
 README
@@ -114,12 +115,12 @@ S16binfmt-support->../init.d/binfmt-support
 S16rsyslog->../init.d/rsyslog
 S16sudo->../init.d/sudo
 S17apache2->../init.d/apache2
-S18acpid->../init.d/acpid...</code>
+S18acpid->../init.d/acpid...</code></pre>
 
 这样做的另一个好处，就是如果你要手动关闭或重启某个进程，直接到目录/etc/init.d中寻找启动脚本即可。比如，我要重启Apache服务器，就运行下面的命令：
 
-<code>
-$sudo/etc/init.d/apache2 restart</code>
+<code><pre>
+$sudo/etc/init.d/apache2 restart</code></pre>
 
 /etc/init.d这个目录名最后一个字母d，是directory的意思，表示这是一个目录，用来与程序/etc/init区分。
 
@@ -129,11 +130,11 @@ $sudo/etc/init.d/apache2 restart</code>
 
 
 
-![](/assets/images/bg2013081705.jpg)
+![](/assets/images/bg2013081705.png)
 
 一般来说，用户的登录方式有三种：
 
-<code>
+<code><pre>
 
 （1）命令行登录
 
@@ -141,7 +142,7 @@ $sudo/etc/init.d/apache2 restart</code>
 
 （3）图形界面登录
 
-</code>
+</code></pre>
 
 这三种情况，都有自己的方式对用户进行认证。
 
@@ -157,13 +158,13 @@ $sudo/etc/init.d/apache2 restart</code>
 
 
 
-![](/assets/images/bg2013081706.jpg)
+![](/assets/images/bg2013081706.png)
 
 Debian默认的shell是Bash，它会读入一系列的配置文件。上一步的三种情况，在这一步的处理，也存在差异。
 
 （1）命令行登录：首先读入/etc/profile，这是对所有用户都有效的配置；然后依次寻找下面三个文件，这是针对当前用户的配置。
 
-<code>~/.bash_profile~/.bash_login~/.profile</code>
+<code><pre>~/.bash_profile~/.bash_login~/.profile</code></pre>
 
 需要注意的是，这三个文件只要有一个存在，就不再读入后面的文件了。比如，要是~/.bash_profile存在，就不会再读入后面两个文件了。
 
@@ -179,19 +180,19 @@ Debian默认的shell是Bash，它会读入一系列的配置文件。上一步�
 
 
 
-![](/assets/images/bg2013081707.jpg)
+![](/assets/images/bg2013081707.png)
 
 non-login shell的重要性，不仅在于它是用户最常接触的那个shell，还在于它会读入用户自己的bash配置文件~/.bashrc。大多数时候，我们对于bash的定制，都是写在这个文件里面的。
 
 你也许会问，要是不进入non-login shell，岂不是.bashrc就不会运行了，因此bash也就不能完成定制了？事实上，Debian已经考虑到这个问题了，请打开文件~/.profile，可以看到下面的代码：
 
-<code>if[-n"$BASH_VERSION"];thenif[-f"$HOME/.bashrc"];then."$HOME/.bashrc"fifi</code>
+<code><pre>if[-n"$BASH_VERSION"];thenif[-f"$HOME/.bashrc"];then."$HOME/.bashrc"fifi</code></pre>
 
 上面代码先判断变量$BASH_VERSION是否有值，然后判断主目录下是否存在.bashrc文件，如果存在就运行该文件。第三行开头的那个点，是source命令的简写形式，表示运行某个文件，写成"source~/.bashrc"也是可以的。
 
 因此，只要运行～/.profile文件，～/.bashrc文件就会连带运行。但是上一节的第一种情况提到过，如果存在～/.bash_profile文件，那么有可能不会运行～/.profile文件。解决这个问题很简单，把下面代码写入.bash_profile就行了。
 
-<code>if[-f~/.profile];then.~/.profilefi</code>
+<code><pre>if[-f~/.profile];then.~/.profilefi</code></pre>
 
 这样一来，不管是哪种情况，.bashrc都会执行，用户的设置可以放心地都写入这个文件了。
 
