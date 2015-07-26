@@ -30,19 +30,19 @@ tags: 启动
 
 以我的电脑为例，/boot目录下面大概是这样一些文件：
 
-<code><pre>
-$ls/boot
 
-config-3.2.0-3-amd64
-config-3.2.0-4-amd64
-grub
-initrd.img-3.2.0-3-amd64
-initrd.img-3.2.0-4-amd64
-System.map-3.2.0-3-amd64
-System.map-3.2.0-4-amd64
-vmlinuz-3.2.0-3-amd64
-vmlinuz-3.2.0-4-amd64
-</code></pre>
+>$ls/boot
+
+>config-3.2.0-3-amd64
+>config-3.2.0-4-amd64
+>grub
+>initrd.img-3.2.0-3-amd64
+>initrd.img-3.2.0-4-amd64
+>System.map-3.2.0-3-amd64
+>System.map-3.2.0-4-amd64
+>vmlinuz-3.2.0-3-amd64
+>vmlinuz-3.2.0-4-amd64
+
 
 **第二步、启动初始化进程**
 
@@ -64,29 +64,29 @@ Linux预置七种运行级别（0-6）。一般来说，0是关机，1是单用�
 
 init进程首先读取文件/etc/inittab，它是运行级别的设置文件。如果你打开它，可以看到第一行是这样的：
 
-<code><pre>
-id:2:initdefault:</code></pre>
+
+>id:2:initdefault:</code></pre>
 
 initdefault的值是2，表明系统启动时的运行级别为2。如果需要指定其他级别，可以手动修改这个值。
 
 那么，运行级别2有些什么程序呢，系统怎么知道每个级别应该加载哪些程序呢？......回答是每个运行级别在/etc目录下面，都有一个对应的子目录，指定要加载的程序。
 
-<code><pre>/etc/rc0.d/etc/rc1.d/etc/rc2.d/etc/rc3.d/etc/rc4.d/etc/rc5.d/etc/rc6.d</code></pre>
+>/etc/rc0.d/etc/rc1.d/etc/rc2.d/etc/rc3.d/etc/rc4.d/etc/rc5.d/etc/rc6.d
 
 上面目录名中的"rc"，表示run command（运行程序），最后的d表示directory（目录）。下面让我们看看/etc/rc2.d目录中到底指定了哪些程序。
 
-<code><pre>
-$ls/etc/rc2.d
 
-README
-S01motd
-S13rpcbind
-S14nfs-common
-S16binfmt-support
-S16rsyslog
-S16sudo
-S17apache2
-S18acpid...</code></pre>
+>$ls/etc/rc2.d
+
+>README
+>S01motd
+>S13rpcbind
+>S14nfs-common
+>S16binfmt-support
+>S16rsyslog
+>S16sudo
+>S17apache2
+>S18acpid...
 
 可以看到，除了第一个文件README以外，其他文件名都是"字母S+两位数字+程序名"的形式。字母S表示Start，也就是启动的意思（启动脚本的运行参数为start），如果这个位置是字母K，就代表Kill（关闭），即如果从其他运行级别切换过来，需要关闭的程序（启动脚本的运行参数为stop）。后面的两位数字表示处理顺序，数字越小越早处理，所以第一个启动的程序是motd，然后是rpcbing、nfs......数字相同时，则按照程序名的字母顺序启动，所以rsyslog会先于sudo启动。
 
@@ -104,23 +104,21 @@ Linux的解决办法，就是七个/etc/rcN.d目录里列出的程序，都设�
 
 下面就是链接文件真正的指向。
 
-<code><pre>
-$ls-l/etc/rc2.d
+>$ls-l/etc/rc2.d
 
-README
-S01motd->../init.d/motd
-S13rpcbind->../init.d/rpcbind
-S14nfs-common->../init.d/nfs-common
-S16binfmt-support->../init.d/binfmt-support
-S16rsyslog->../init.d/rsyslog
-S16sudo->../init.d/sudo
-S17apache2->../init.d/apache2
-S18acpid->../init.d/acpid...</code></pre>
+>README
+>S01motd->../init.d/motd
+>S13rpcbind->../init.d/rpcbind
+>S14nfs-common->../init.d/nfs-common
+>S16binfmt-support->../init.d/binfmt-support
+>S16rsyslog->../init.d/rsyslog
+>S16sudo->../init.d/sudo
+>S17apache2->../init.d/apache2
+>S18acpid->../init.d/acpid...</code></pre>
 
 这样做的另一个好处，就是如果你要手动关闭或重启某个进程，直接到目录/etc/init.d中寻找启动脚本即可。比如，我要重启Apache服务器，就运行下面的命令：
 
-<code><pre>
-$sudo/etc/init.d/apache2 restart</code></pre>
+>$sudo/etc/init.d/apache2 restart
 
 /etc/init.d这个目录名最后一个字母d，是directory的意思，表示这是一个目录，用来与程序/etc/init区分。
 
@@ -134,23 +132,21 @@ $sudo/etc/init.d/apache2 restart</code></pre>
 
 一般来说，用户的登录方式有三种：
 
-<code><pre>
+>（1）命令行登录
 
-（1）命令行登录
+>（2）ssh登录
 
-（2）ssh登录
+>（3）图形界面登录
 
-（3）图形界面登录
 
-</code></pre>
 
 这三种情况，都有自己的方式对用户进行认证。
 
-（1）命令行登录：init进程调用getty程序（意为get teletype），让用户输入用户名和密码。输入完成后，再调用login程序，核对密码（Debian还会再多运行一个身份核对程序/etc/pam.d/login）。如果密码正确，就从文件/etc/passwd读取该用户指定的shell，然后启动这个shell。
+>（1）命令行登录：init进程调用getty程序（意为get teletype），让用户输入用户名和密码。输入完成后，再调用login程序，核对密码（Debian还会再多运行一个身份核对程序/etc/pam.d/login）。如果密码正确，就从文件/etc/passwd读取该用户指定的shell，然后启动这个shell。
 
-（2）ssh登录：这时系统调用sshd程序（Debian还会再运行/etc/pam.d/ssh），取代getty和login，然后启动shell。
+>（2）ssh登录：这时系统调用sshd程序（Debian还会再运行/etc/pam.d/ssh），取代getty和login，然后启动shell。
 
-（3）图形界面登录：init进程调用显示管理器，Gnome图形界面对应的显示管理器为gdm（GNOME Display Manager），然后用户输入用户名和密码。如果密码正确，就读取/etc/gdm3/Xsession，启动用户的会话。
+>（3）图形界面登录：init进程调用显示管理器，Gnome图形界面对应的显示管理器为gdm（GNOME Display Manager），然后用户输入用户名和密码。如果密码正确，就读取/etc/gdm3/Xsession，启动用户的会话。
 
 **第六步、进入login shell**
 
@@ -162,15 +158,15 @@ $sudo/etc/init.d/apache2 restart</code></pre>
 
 Debian默认的shell是Bash，它会读入一系列的配置文件。上一步的三种情况，在这一步的处理，也存在差异。
 
-（1）命令行登录：首先读入/etc/profile，这是对所有用户都有效的配置；然后依次寻找下面三个文件，这是针对当前用户的配置。
+>（1）命令行登录：首先读入/etc/profile，这是对所有用户都有效的配置；然后依次寻找下面三个文件，这是针对当前用户的配置。
 
-<code><pre>~/.bash_profile~/.bash_login~/.profile</code></pre>
+>~/.bash_profile~/.bash_login~/.profile
 
 需要注意的是，这三个文件只要有一个存在，就不再读入后面的文件了。比如，要是~/.bash_profile存在，就不会再读入后面两个文件了。
 
-（2）ssh登录：与第一种情况完全相同。
+>（2）ssh登录：与第一种情况完全相同。
 
-（3）图形界面登录：只加载/etc/profile和~/.profile。也就是说，~/.bash_profile不管有没有，都不会运行。
+>（3）图形界面登录：只加载/etc/profile和~/.profile。也就是说，~/.bash_profile不管有没有，都不会运行。
 
 **第七步，打开non-login shell**
 
@@ -186,13 +182,13 @@ non-login shell的重要性，不仅在于它是用户最常接触的那个shell
 
 你也许会问，要是不进入non-login shell，岂不是.bashrc就不会运行了，因此bash也就不能完成定制了？事实上，Debian已经考虑到这个问题了，请打开文件~/.profile，可以看到下面的代码：
 
-<code><pre>if[-n"$BASH_VERSION"];thenif[-f"$HOME/.bashrc"];then."$HOME/.bashrc"fifi</code></pre>
+>if[-n"$BASH_VERSION"];thenif[-f"$HOME/.bashrc"];then."$HOME/.bashrc"fifi
 
 上面代码先判断变量$BASH_VERSION是否有值，然后判断主目录下是否存在.bashrc文件，如果存在就运行该文件。第三行开头的那个点，是source命令的简写形式，表示运行某个文件，写成"source~/.bashrc"也是可以的。
 
 因此，只要运行～/.profile文件，～/.bashrc文件就会连带运行。但是上一节的第一种情况提到过，如果存在～/.bash_profile文件，那么有可能不会运行～/.profile文件。解决这个问题很简单，把下面代码写入.bash_profile就行了。
 
-<code><pre>if[-f~/.profile];then.~/.profilefi</code></pre>
+>if[-f~/.profile];then.~/.profilefi
 
 这样一来，不管是哪种情况，.bashrc都会执行，用户的设置可以放心地都写入这个文件了。
 
