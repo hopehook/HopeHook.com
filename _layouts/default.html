@@ -4,10 +4,15 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="{{ site.author }}" />
     <title>{% if page.path == 'index.html' %}{{ site.name }}{% else %}{% unless page.id %}{{ site.name }} - {% endunless %}{{ page.title }}{% endif %}</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link href="/feed/" rel="alternate" title="{{ site.author }}" type="application/atom+xml" />
+    <link rel="stylesheet" href="/media/css/style.css" />
+    <link rel="stylesheet" href="/media/css/highlight.css" />
 	<!-- some other meta -->
 	{% if page.url == "/404.html" %}
 		<meta http-equiv="refresh" content="5; url=/">
 	{% endif %}
+
   </head>
  
   <body onLoad="setInterval(setTimeSpan,1000);">
@@ -53,8 +58,25 @@
         </article>
       </div>
 	  
-	  <div class="btn_top" title="Back to Top" style="position: fixed; bottom: 100px; right: 100px; cursor: pointer;"><a id="dynamic-to-top" href="javascript:;" target="_self" title="Back to Top"><img src="/assets/album/back_top.png" style="width:31px; height:31px;"></a></div>
-		<script type="text/javascript">
+	  <div class="btn_top" title="Back to Top" style="position: fixed; bottom: 100px; right: 100px; cursor: pointer;"><a id="dynamic-to-top" href="javascript:scrollTopRun();" target="_self" title="Back to Top"><img src="/assets/album/back_top.png" style="width:31px; height:31px;"></a></div>
+		
+	  
+    <footer><!--footer settings-->
+      <p><small>
+            Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>&<a href="http://github.com/" target="_blank" title="项目主页">GitHub</a>
+             | Copyright©{{site.time | date:"%Y"}} <a href="http://{{ site.website-url }}/" target="_blank">{{ site.author }}</a> 
+             | <a href="/about/">About me</a>
+             | <script src="http://s22.cnzz.com/z_stat.php?id=1000378610&web_id=1000378610" language="JavaScript"></script>
+			 | <span class="label label-info" id="timeSpan"></span>
+         </small></p>
+    </footer>
+
+    </div>
+    
+	<!--javascript(begin)-->
+	<script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="/media/js/snowstorm.js"></script>
+    <script type="text/javascript">
 		scrollTopRun = function(){
 		var scrollHeight = $(document).scrollTop();
 		var screenWidth = $(window).width();
@@ -74,28 +96,8 @@
 		setTimeout("scrollTopRun()",500);
 		};
 		scrollTopRun();
-		</script>
-	  
-    <footer><!--footer settings-->
-      <p><small>
-            Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>&<a href="http://github.com/" target="_blank" title="项目主页">GitHub</a>
-             | Copyright©{{site.time | date:"%Y"}} <a href="http://{{ site.website-url }}/" target="_blank">{{ site.author }}</a> 
-             | <a href="/about/">About me</a>
-             | <script src="http://s22.cnzz.com/z_stat.php?id=1000378610&web_id=1000378610" language="JavaScript"></script>
-			 | <span class="label label-info" id="timeSpan"></span>
-         </small></p>
-    </footer>
-
-    </div>
-    
-	<!--css and js(begin)-->
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link href="/feed/" rel="alternate" title="{{ site.author }}" type="application/atom+xml" />
-    <link rel="stylesheet" href="/media/css/style.css" />
-    <link rel="stylesheet" href="/media/css/highlight.css" />
-	<script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="/media/js/snowstorm.js"></script>
-    <!--a script to set the timer-->
+	</script>
+	<!--a script to set the timer-->
     <script type="text/javascript">
     function setTimeSpan(){
             var date = new Date();
@@ -130,6 +132,6 @@
 	  ga('create', 'UA-50164165-1', 'hopehook.com');
 	  ga('send', 'pageview');
     </script>
-	<!--css and js(end)-->
+	<!--javascript(end)-->
   </body>
 </html>
