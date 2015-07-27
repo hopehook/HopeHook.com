@@ -2,10 +2,11 @@
 date: 2014-01-23
 layout: post
 title: 第一次提交我的博客代码到github用到的命令
-thread:6
-categories: 教程
+thread: 6
+categories: 经验
 tags: github
 ---
+
 
 `f:`
 
