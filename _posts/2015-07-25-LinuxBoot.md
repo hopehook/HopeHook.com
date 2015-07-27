@@ -1,8 +1,8 @@
 ---
 date: 2015-05-06
-thread:8
 layout: post
 title: Linux 的启动流程
+thread:8
 categories: 计算机原理
 tags: 启动
 ---
