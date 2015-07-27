@@ -1,5 +1,6 @@
 ---
 date: 2014-01-23
+thread:6
 layout: post
 title: 第一次提交我的博客代码到github用到的命令
 categories: 教程

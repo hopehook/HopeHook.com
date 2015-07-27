@@ -1,5 +1,6 @@
 ---
 date: 2014-05-28
+thread:3
 layout: post
 title: 网上公开课
 categories: 公开课

@@ -1,5 +1,6 @@
 ---
-date: 2014-05-06
+date: 2015-05-06
+thread:11
 layout: post
 title: 硬盘分区基本认识+Windows系统启动原理
 categories: 计算机原理
