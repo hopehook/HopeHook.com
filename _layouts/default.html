@@ -59,7 +59,8 @@
         </article>
       </div>
 	  
-	  <div class="btn_top" title="Back to Top" style="position: fixed; bottom: 100px; right: 100px; cursor: pointer;"><a id="dynamic-to-top" href="javascript:;" target="_self" title="Back to Top"><img src="/assets/album/back_top.png" style="width:31px; height:31px;"></a></div>
+	  <div class="btn_top" title="Back to Top" style="position: fixed; bottom: 100px; right: 100px; cursor: pointer;"><a id="dynamic-to-top" href="javascript:scrollTopRun();" target="_self" title="Back to Top"><img src="/assets/album/back_top.png" style="width:31px; height:31px;"></a></div>
+
 	  
     <footer><!--footer settings-->
       <p><small>
@@ -73,6 +74,33 @@
 
     </div>
   </body>
+  <script type="text/javascript">
+		scrollTopRun = function()
+		{
+			var scrollHeight = $(document).scrollTop();
+			var screenWidth = $(window).width();
+			if(screenWidth <= 1024 && scrollHeight == 0 )
+			{
+				$(".btn_top").hide();
+			}
+			else
+			{
+				if(scrollHeight > 0)
+				{
+					$(".btn_top").show();
+					$(".btn_top").unbind();
+					$(".btn_top").bind("click",function(){
+						$('body,html').animate({ scrollTop: 0 }, 500);
+			   		});
+				}
+				else
+				{
+					$(".btn_top").hide();
+				}
+			}
+			setTimeout("scrollTopRun()",500);
+		};
+  </script>
   <script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
