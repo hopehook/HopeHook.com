@@ -2,7 +2,7 @@
 date: 2015-05-06
 layout: post
 title: Linux 的启动流程
-thread: 8
+thread: 2015-07-25-LinuxBoot.md
 categories: 计算机原理
 tags: 启动
 ---
