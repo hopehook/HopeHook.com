@@ -2,7 +2,7 @@
 date: 2014-05-28
 layout: post
 title: 网上公开课
-thread: 3
+thread: 2014-05-28-CourseWare.md
 categories: 公开课
 tags: 公开课
 ---
