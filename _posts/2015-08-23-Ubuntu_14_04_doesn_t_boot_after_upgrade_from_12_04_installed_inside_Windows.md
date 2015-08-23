@@ -2,7 +2,7 @@
 date: 2015-08-23
 layout: post
 title: Ubuntu 14.04 doesn' t boot after upgrade from 12.04 installed inside Windows 7/8.1
-thread: 2015-08-23-Ubuntu_14_04_doesn_t_boot_after_upgrade_from_12_04_installed_inside_Windows
+thread: 2015-08-23-Ubuntu_14_04_doesn_t_boot_after_upgrade_from_12_04_installed_inside_Windows.md
 categories: Linux
 tags: Ubuntu
 ---
