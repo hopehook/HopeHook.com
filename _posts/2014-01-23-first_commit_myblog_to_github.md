@@ -26,8 +26,14 @@ tags: github
 `git push origin gh-pages`
 
 <br />
-- 注意
- - 事先要到自己的GitHub上New一个项目仓库
+<ul>
+ <li>注意
+     <ul>
+     <li>事先要到自己的GitHub上New一个项目仓库</li>
+    </ul>
+ </li>
+</ul>
+
 
 <br />
 <br />
