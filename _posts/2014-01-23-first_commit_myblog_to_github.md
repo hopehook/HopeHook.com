@@ -7,6 +7,7 @@ categories: 经验
 tags: github
 ---
 
+####第一次提交
 
 `f:`
 
@@ -24,4 +25,14 @@ tags: github
 
 `git push origin gh-pages`
 
-**[Details](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html)**
+- 注意
+ - 事先要到自己的GitHub上New一个项目仓库
+
+
+
+
+####后续提交
+
+`git commit -m "提交备注" -a`
+
+`git push -u origin gh-pages`
