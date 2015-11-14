@@ -25,10 +25,12 @@ tags: github
 
 `git push origin gh-pages`
 
+<br />
 - 注意
  - 事先要到自己的GitHub上New一个项目仓库
 
-
+<br />
+<br />
 
 
 ####后续提交
