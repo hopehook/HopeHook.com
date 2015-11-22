@@ -25,22 +25,10 @@ tags: github
 
 `git push origin gh-pages`
 
-<br />
-<ul>
- <li>注意
-     <ul>
-     <li>事先要到自己的GitHub上New一个项目仓库</li>
-    </ul>
- </li>
-</ul>
-
-
-<br />
-<br />
 
 
 ####后续提交
 
-`git commit -m "提交备注" -a`
+`git commit -m "提交备注"`
 
 `git push -u origin gh-pages`
