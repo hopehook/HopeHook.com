@@ -7,14 +7,18 @@ categories: Git
 tags: Git
 ---
 
-[原文](http://wuchong.me/blog/2015/03/30/git-useful-skills/#)
+[原文链接](http://wuchong.me/blog/2015/03/30/git-useful-skills/#)
 
 <br/>
 **工作流**
 ---
 
 
-Git 最核心的一个概念就是工作流。工作区(Workspace)是电脑中实际的目录；暂存区(Index)像个缓存区域，临时保存你的改动；最后是版本库(Repository)，分为本地仓库和远程仓库。下图真是一图胜千言啊，就无耻盗图了。
+Git 最核心的一个概念就是工作流。
+工作区(Workspace)是电脑中实际的目录；
+暂存区(Index)像个缓存区域，临时保存你的改动；
+最后是版本库(Repository)，分为本地仓库和远程仓库。
+下图真是一图胜千言啊，就无耻盗图了。
 
 ![工作流](/assets/images/git.jpg)
 
@@ -175,7 +179,7 @@ git branch -d develop       #删除 develop 分支
 #####显示标签
 
 <pre>
-git tag         #列出现有标签 
+git tag             #列出现有标签 
 git show <tagname>  #显示标签信息
 </pre>
 
