@@ -5,7 +5,7 @@ comments: yes
 
 ---
 
-* [Beego Docs](http://beego.me/docs/intro/) - Beego Docs
+* [Beego](http://beego.me/docs/intro/) - Beego Docs
 * [Xorm](http://xorm.io/docs/) - Xorm Docs
 * [MIT Course](http://ocw.mit.edu/index.htm) - 麻省理工公开课
 * [OS Course](http://se.tju.edu.cn/ocw/os/) - 操作系统课程[天津大学]
