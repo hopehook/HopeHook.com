@@ -45,20 +45,18 @@ Enter same passphrase again: `[Press enter]`
 </br>
 (2)新增或配置`~/.ssh/config`，内容示例：
 <pre>
-#first
 Host github-first
 HostName github.com
  User git
  IdentityFile ~/.ssh/id_rsa_first
 
-#second
+
 Host github-second
  HostName github.com
  User git
  IdentityFile ~/.ssh/id_rsa_second
 
 
-#third
 Host github-third
  HostName github.com
  User git
@@ -77,7 +75,7 @@ Host github-third
 	url = git@github-first:hopehook1/test.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
-
+</br>
 <pre>
 [core]
 	repositoryformatversion = 0
@@ -88,7 +86,7 @@ Host github-third
 	url = git@github-second:hopehook2/test.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
-
+</br>
 <pre>
 [core]
 	repositoryformatversion = 0
