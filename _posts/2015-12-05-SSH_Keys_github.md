@@ -98,10 +98,18 @@ Host github-third
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
 
-(4)特别注意：
+(4)特别说明：
 <ul>
 <li>
 github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
+</li>
+<li>
+测试`~/.ssh/config`配置情况：
+<pre> 
+`ssh -T git@github-first`
+`ssh -T git@github-second`
+`ssh -T git@github-third`
+</pre>
 </li>
 </ul>
 
