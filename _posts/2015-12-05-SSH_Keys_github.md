@@ -9,14 +9,15 @@ tags: github
 </br>
 
 ### 1 生成一对SSH key
-<pre>
+
 $ `ssh-keygen -t rsa -C "your_email@example.com"`
 
 Enter file in which to save the key (/Users/you/.ssh/id_rsa): `/Users/you/.ssh/"your_ssh_name"`
+
 Enter passphrase (empty for no passphrase): `[Press enter]`
+
 Enter same passphrase again: `[Press enter]`
 
-</pre>
 
 </br>
 
@@ -29,7 +30,7 @@ Enter same passphrase again: `[Press enter]`
 ### 3 注意
 - 不同github账号不能共用一对SSH key　　//请按照１中操作重新生成一对
 - 相同github账号可以添加多对SSH key
-- 不同终端下可以使用相同的SSH key   　//在生成同名SSH key后用原来的SSH key内容覆盖即可
+- 不同终端下可以使用相同的SSH key //在生成同名SSH key后用原来的SSH key内容覆盖即可
 - 相同终端下可以添加多对SSH key
 
 </br>
