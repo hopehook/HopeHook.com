@@ -100,22 +100,24 @@ Host github-third
 
 (4)特别说明：
 <ul>
-<li>
-github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
-</li>
-<li>
-测试`~/.ssh/config`配置情况：
-`ssh -T git@github-first`
-`ssh -T git@github-second`
-`ssh -T git@github-third`
-</li>
-<li>执行git clone [URL]的时候，[URL]原样写入`.git/config`的url (HTTPS和SSH方式)
-<ul>
-<li>
-例如：git clone git@github-second:hopehook2/test.git的时候`.git/config`的url = git@github-second:hopehook2/test.git
-Host
-</li>
-</ul>
-</li>
+	<li>
+	github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
+	</li>
+	<li>
+	测试`~/.ssh/config`配置情况：
+		<ul>
+			<li>`ssh -T git@github-first`</li>
+			<li>`ssh -T git@github-second`</li>
+			<li>`ssh -T git@github-third`</li>
+		</ul>
+	</li>
+	<li>执行git clone [URL]的时候，[URL]原样写入`.git/config`的url (HTTPS和SSH方式)
+		<ul>
+			<li>
+			例如：
+			git clone git@github-second:hopehook2/test.git的时候`.git/config`的url = git@github-second:hopehook2/test.git
+			</li>
+		</ul>
+	</li>
 </ul>
 
