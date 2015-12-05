@@ -40,8 +40,10 @@ Enter same passphrase again: `[Press enter]`
 </br>
 
 #### 【拓展】一个PC终端用户配置多个github账户的SSH key
+
 </br>
 (1)按照１和２的步骤生成对应github账户的多对SSH key
+
 </br>
 (2)新增或配置`~/.ssh/config`，内容示例：
 <pre>
@@ -98,6 +100,7 @@ Host github-third
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
 
+</br>
 (4)特别说明：
 <ul>
 	<li>
