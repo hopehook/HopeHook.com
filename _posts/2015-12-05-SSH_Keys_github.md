@@ -37,8 +37,6 @@ Enter same passphrase again: `[Press enter]`
     <li>不同终端(OS User Account)下可以使用相同的SSH key </li>
     <ul><li>在生成同名SSH key后用原来的SSH key内容覆盖即可</li></ul>
     <li>相同终端下可以添加多对SSH key</li>
-</ul>
-
 </br>
 
 #### 【拓展】一个PC终端用户配置多个github账户的SSH key
@@ -104,3 +102,6 @@ Host github-third
 	url = git@github-third:hopehook3/test.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
+
+(4)特别注意：
+- github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
