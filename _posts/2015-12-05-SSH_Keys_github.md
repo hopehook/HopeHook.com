@@ -105,11 +105,17 @@ github根据配置文件的user.email来获取github帐号显示author信息，�
 </li>
 <li>
 测试`~/.ssh/config`配置情况：
-<pre> 
 `ssh -T git@github-first`
 `ssh -T git@github-second`
 `ssh -T git@github-third`
-</pre>
+</li>
+<li>执行git clone [URL]的时候，[URL]原样写入`.git/config`的url (HTTPS和SSH方式)
+<ul>
+<li>
+例如：git clone git@github-second:hopehook2/test.git的时候`.git/config`的url = git@github-second:hopehook2/test.git
+Host
+</li>
+</ul>
 </li>
 </ul>
 
