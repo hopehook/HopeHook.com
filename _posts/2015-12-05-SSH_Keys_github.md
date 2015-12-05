@@ -45,23 +45,20 @@ Enter same passphrase again: `[Press enter]`
 </br>
 (2)新增或配置`~/.ssh/config`，内容示例：
 <pre>
-# first
-
+#first
 Host github-first
 HostName github.com
  User git
  IdentityFile ~/.ssh/id_rsa_first
 
-# second
-
+#second
 Host github-second
  HostName github.com
  User git
  IdentityFile ~/.ssh/id_rsa_second
 
 
-# third
-
+#third
 Host github-third
  HostName github.com
  User git
@@ -104,4 +101,9 @@ Host github-third
 </pre>
 
 (4)特别注意：
-- github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
+<ul>
+<li>
+github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
+</li>
+</ul>
+
