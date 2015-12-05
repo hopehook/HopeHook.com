@@ -29,7 +29,7 @@ Enter same passphrase again: `[Press enter]`
 
 #### 3 注意
 <ul>
-    <li>不同github账号不能共用一对SSH key<li>
+    <li>不同github账号不能共用一对SSH key</li>
     <ul><li>请按照１中操作重新生成一对</li></ul>
     <li>相同github账号可以添加多对SSH key</li>
     <li>不同终端下可以使用相同的SSH key </li>
