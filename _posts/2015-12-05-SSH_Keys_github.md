@@ -8,6 +8,8 @@ tags: github
 ---
 </br>
 
+操作环境：Ubuntu
+
 #### 1 生成一对SSH key
 
 $ `ssh-keygen -t rsa -C "your_email@example.com"`
@@ -30,13 +32,75 @@ Enter same passphrase again: `[Press enter]`
 #### 3 注意
 <ul>
     <li>不同github账号不能共用一对SSH key</li>
-    <ul><li>请按照１中操作重新生成一对</li></ul>
+    <ul><li>需重新生成一对，详见【拓展】</li></ul>
     <li>相同github账号可以添加多对SSH key</li>
-    <li>不同终端下可以使用相同的SSH key </li>
+    <li>不同终端(OS User Account)下可以使用相同的SSH key </li>
     <ul><li>在生成同名SSH key后用原来的SSH key内容覆盖即可</li></ul>
     <li>相同终端下可以添加多对SSH key</li>
 </ul>
 
 </br>
 
+#### 【拓展】一个PC终端用户配置多个github账户的SSH key
+</br>
+(1)按照１和２的步骤生成对应github账户的多对SSH key
+</br>
+(2)新增或配置`~/.ssh/config`，内容示例：
+<pre>
+# first
 
+Host github-first
+HostName github.com
+ User git
+ IdentityFile ~/.ssh/id_rsa_first
+
+# second
+
+Host github-second
+ HostName github.com
+ User git
+ IdentityFile ~/.ssh/id_rsa_second
+
+
+# third
+
+Host github-third
+ HostName github.com
+ User git
+ IdentityFile ~/.ssh/id_rsa_third
+</pre>
+
+</br>
+(3)配置克隆仓库目录下的`.git/config`,内容示例：
+<pre>
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github-first:hopehook1/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+</pre>
+
+<pre>
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github-second:hopehook2/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+</pre>
+
+<pre>
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github-third:hopehook3/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+</pre>
