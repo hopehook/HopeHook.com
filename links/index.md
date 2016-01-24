@@ -19,6 +19,7 @@ comments: yes
 * [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
 * [BookShadow.com](http://bookshadow.com) - 在线疯狂的个人博客
 * [achst's wuyou home](http://bbs.wuyou.net/home.php?mod=space&uid=444022) - 我的无忧空间
+* [achst's cnblogs home](http://www.cnblogs.com/achst) - 我的博客园空间
 <br/>
 
 
