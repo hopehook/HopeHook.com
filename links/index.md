@@ -20,6 +20,7 @@ comments: yes
 
 ---
 #### ORM/DB
+* [MySql](http://www.cbi.pku.edu.cn/chinese/documents/csdoc/mysql/manual_toc.html) - MySql中文参考手册
 * [Redis](http://www.redis.cn/documentation.html) - Redis文档
 * [Xorm](http://xorm.io/docs/) - Xorm文档
 <br/>
