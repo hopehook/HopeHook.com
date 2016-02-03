@@ -3,6 +3,12 @@ title: Links / 链接
 layout: page
 comments: yes
 
+
+---
+* [The Go Programming Language](http://golang-china.github.io/gopl-zh/) - Golang基础知识大全
+* [Golang Web By Astaxie](https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/SUMMARY.md) - Golang Web编程基础
+* [w3school](http://www.w3school.com.cn/) - 前端参考手册
+
 ---
 * [Beego](http://beego.me/docs/intro/) - Beego Docs
 * [Xorm](http://xorm.io/docs/) - Xorm Docs
