@@ -1,8 +1,8 @@
 ---
-date: 2014-01-23
+date: 2016-09-14
 layout: post
-title: 第一次提交我的博客代码到github用到的命令
-thread: 2014-01-23-first_commit_myblog_to_github.md
+title: 简单的单点登陆实现方案
+thread: 2016-09-14-single_sign_on.md
 categories: 经验
 tags: github
 ---
