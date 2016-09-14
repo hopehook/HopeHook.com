@@ -32,7 +32,7 @@ tags: github
 * AUTH登录验证成功
  * 将session存储到session/redis/mysql中
  * 将cookie跨二级域写到ajax请求方的浏览器中
-</br>
+
 * 各个web系统向AUTH发出跨域ajax调用请求退出
 * AUTH退出操作
  * 判断cookie是否存在
@@ -54,10 +54,10 @@ tags: github
 后台进行一系列处理，如果确定接受请求则在返回结果中加入一个响应头：Access-Control-Allow-Origin;
 浏览器判断该相应头中是否包含Origin的值，如果有则浏览器会处理响应，我们就可以拿到响应数据，
 如果不包含浏览器直接驳回，这时我们无法拿到响应数据。
-</br>
+
 * 前端不用调整
 * 后端给返回http报文添加Access-Control-Allow-Origin头部和请求的Origin头部保持一致即可
-</br>
+
   `self.set_header('Access-Control-Allow-Origin', self.request.headers['Origin'])`
 
 </br>
