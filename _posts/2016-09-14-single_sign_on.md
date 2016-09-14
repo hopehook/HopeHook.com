@@ -9,25 +9,25 @@ tags: github
 
 
 #### 针对场景
-</br>
+
 * 各个web系统一级域名相同,如域名都是 *.example.com
 * 只考虑支持CORS的浏览器
 
 </br>
 #### AUTH工程是什么
-</br>
+
 * 是各个web系统的集中式登录验证后台
 * 是各个web系统目前单点登录的解决方案主体
 
 </br>
 #### AUTH上线后的变化
-</br>
+
 * 各个web系统的登录和退出调用全部交由AUTH处理
 * 各个web系统打破了边界限制，可以像一个web系统一样运作和跳转
 
 </br>
 #### AUTH的登录和退出流程
-</br>
+
 * 各个web系统向AUTH发出跨域ajax调用请求登录
 * AUTH登录验证成功
  * 将session存储到session/redis/mysql中
@@ -41,13 +41,13 @@ tags: github
 
 </br>
 #### AUTH的技术要点
-</br>
+
 * 跨域请求
 * 跨二级域写cookie
 
 </br>
 #### 如何实现跨域请求
-</br>
+
 采用了CORS方案:
 </br>
 当你使用XMLHttpRequest发送请求时，浏览器发现该请求不符合同源策略，会给该请求加一个请求头：Origin，
@@ -62,7 +62,7 @@ tags: github
 
 </br>
 #### 如何实现跨二级域写cookie
-</br>
+
 * 前端ajax请求
 添加 xhrFields:{
         withCredentials:true
