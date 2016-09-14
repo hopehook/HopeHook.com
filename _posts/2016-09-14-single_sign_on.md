@@ -8,28 +8,25 @@ tags: github
 ---
 
 
-# 简单的单点登陆实现方案
-
-
-## 针对场景
+#### 针对场景
 
 * 各个web系统一级域名相同,如域名都是 *.example.com
 * 只考虑支持CORS的浏览器
 
 
-## AUTH工程是什么
+#### AUTH工程是什么
 
 * 是各个web系统的集中式登录验证后台
 * 是各个web系统目前单点登录的解决方案主体
 
 
-## AUTH上线后的变化
+#### AUTH上线后的变化
 
 * 各个web系统的登录和退出调用全部交由AUTH处理
 * 各个web系统打破了边界限制，可以像一个web系统一样运作和跳转
 
 
-## AUTH的登录和退出流程
+#### AUTH的登录和退出流程
 
 * 各个web系统向AUTH发出跨域ajax调用请求登录
 * AUTH登录验证成功
@@ -43,13 +40,13 @@ tags: github
  * 如果不存在，无需清理session
 
 
-## AUTH的技术要点
+#### AUTH的技术要点
 
 * 跨域请求
 * 跨二级域写cookie
 
 
-## 如何实现跨域请求
+#### 如何实现跨域请求
 
 采用了CORS方案:
 
@@ -64,13 +61,13 @@ tags: github
   `self.set_header('Access-Control-Allow-Origin', self.request.headers['Origin'])`
 
 
-## 如何实现跨二级域写cookie
+#### 如何实现跨二级域写cookie
 
 * 前端ajax请求
 添加 xhrFields:{
         withCredentials:true
     },
-```
+<pre>
 $.ajax({
     url: url ,
     type: 'POST',
@@ -87,7 +84,7 @@ $.ajax({
     },
     crossDomain: true
  });
-```
+</pre>
 * 后端设置的头部
 
    `self.set_header('Access-Control-Allow-Credentials', 'true')`
