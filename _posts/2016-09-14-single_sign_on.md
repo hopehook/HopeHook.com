@@ -27,17 +27,24 @@ tags: github
 
 </br>
 #### AUTH的登录和退出流程
+<ul>
+  <li>各个web系统向AUTH发出跨域ajax调用请求登录</li>
+  <li>AUTH登录验证成功
+    <ul>
+      <li>将session存储到session/redis/mysql中<li/>
+      <li>将cookie跨二级域写到ajax请求方的浏览器中<li/>
+    </ul>
+  <li/>
 
-* 各个web系统向AUTH发出跨域ajax调用请求登录
-* AUTH登录验证成功
- * 将session存储到session/redis/mysql中
- * 将cookie跨二级域写到ajax请求方的浏览器中
-
-* 各个web系统向AUTH发出跨域ajax调用请求退出
-* AUTH退出操作
- * 判断cookie是否存在
- * 如果存在cookie清理对应的session和cookie
- * 如果不存在，无需清理session
+  <li>各个web系统向AUTH发出跨域ajax调用请求退出</li>
+  <li>AUTH退出操作
+    <ul>
+      <li>判断cookie是否存在<li/>
+      <li>如果存在cookie清理对应的session和cookie<li/>
+      <li>如果不存在，无需清理session<li/>
+    </ul>
+  <li/>
+</ul>
 
 </br>
 #### AUTH的技术要点
