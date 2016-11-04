@@ -9,7 +9,7 @@ tags: 经验
 
 
 #### 一 实验材料
-<br></br>
+
 1 外部环境
 
 amd64主机
@@ -25,9 +25,9 @@ VirtualBox的4个虚拟机debian x64
 mysql-proxy(Atlas)
 
 mha
-<br></br>
+
 #### 二 实验步骤
-<br></br>
+
 1 确保hosts和hostname配置正确
 
 1.1 每台主机都相同(主机：debtest1, debtest2, debtest3, debtest4)
@@ -48,7 +48,9 @@ ff02::2 ip6-allrouters
 1.2 按照实际情况设定主机名，重启
 
 root@debtest1:~/.ssh# cat /etc/hostname
+<pre>
 debtest1
+</pre>
 <br></br>
 2 使用ssh-keygen工具生成统一公私钥对，并同步到所有机器。测试公私钥验证访问
 
@@ -81,16 +83,13 @@ ssh debtest4
 3.规划节点用户和ip配置
 
 3.1 规划
-
+<pre>
 192.168.56.13   debtest1 --> mha manager node & mha node
-
 192.168.56.14   debtest2 --> mysql1(master)  &  mha node & mysql-proxy(Atlas)
-
 192.168.56.15   debtest3 --> mysql2(slave)  &  mha node
-
 192.168.56.16   debtest4 --> mysql3(slave)  &  mha node
-
 192.168.56.19   vip
+</pre>
 <br></br>
 3.2 定好虚拟ip后别忘了在当前的主库上添加虚拟ip    # 每次重启都需要操作
 
@@ -114,15 +113,14 @@ expire_logs_days=10
 4.2 进入mysql客户端，执行以下命令     # 每次重启都需要操作
 
 主数据库(主机：debtest2)
-<pre>
+
 RESET MASTER;
 STOP SLAVE;
 RESET MASTER;
-</pre>
 <br></br>
 
 从数据库(主机：debtest3, debtest4)
-<pre>
+
 RESET MASTER;
 STOP SLAVE;
 
@@ -135,7 +133,6 @@ master_log_pos=107;
 
 START SLAVE;
 SHOW SLAVE STATUS;
-</pre>
 <br></br>
 5 安装mha
 
@@ -148,13 +145,17 @@ dpkg -i mha4mysql-node_0.53_all.deb
 <br></br>
 
 5.2 仅需要在mha manager节点上安装mha manager包及其依赖包(主机：debtest1)
-<pre>
+
 apt-get install libdbd-mysql-perl
+
 apt-get install libconfig-tiny-perl
+
 apt-get install liblog-dispatch-perl
+
 apt-get install libparallel-forkmanager-perl
+
 dpkg -i mha4mysql-manager_0.53_all.deb
-</pre>
+
 <br></br>
 
 6 建立配置文件目录，编辑mha必要的三个文件，一个配置文件，2个虚拟ip管理脚本(主机：debtest1)
@@ -214,13 +215,8 @@ admin-address = 0.0.0.0:4041
 
 mysql -u192.168.56.14 -P4040 -umha -hmha
 
-<br></br>
-
-
 
 #### 三 实验辅助手段及遇到的坑
-
-<br></br>
 
 1 破解debian root密码
 
@@ -251,13 +247,8 @@ http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 
 $msg = "" unless($msg);
 
-<br></br>
-
-
 
 #### 四 资源下载及附件
-
-<br></br>
 
 1 实验环境
 
