@@ -11,11 +11,13 @@ tags: 经验
 一 实验材料
 <br></br>
 1 外部环境
+
 amd64主机
 Windows x64
 Oracle VM VirtualBox
 <br></br>
 2 实验环境   # 文章最后有下载链接
+
 VirtualBox的4个虚拟机debian x64
 mysql-proxy(Atlas)
 mha
