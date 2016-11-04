@@ -12,19 +12,19 @@ tags: 经验
 <br></br>
 1 外部环境
 
-amd64主机
+* amd64主机
 
-Windows x64
+* Windows x64
 
-Oracle VM VirtualBox
+* Oracle VM VirtualBox
 <br></br>
 2 实验环境   # 文章最后有下载链接
 
-VirtualBox的4个虚拟机debian x64
+* VirtualBox的4个虚拟机debian x64
 
-mysql-proxy(Atlas)
+* mysql-proxy(Atlas)
 
-mha
+* mha
 <br></br>
 #### 二 实验步骤
 <br></br>
@@ -91,7 +91,7 @@ ssh debtest4
 192.168.56.19   vip
 </pre>
 <br></br>
-3.2 定好虚拟ip后别忘了在当前的主库上添加虚拟ip    # 每次重启都需要操作
+3.2 定好虚拟ip后别忘了在当前的主库上添加虚拟ip    <font color="red"># 每次重启都需要操作</font>
 
 ip addr add 192.168.56.19/24 dev eth0
 
@@ -110,7 +110,7 @@ binlog-ignore-db=mysql #这里设置在主服务器上不记度日志的数据�
 expire_logs_days=10
 </pre>
 <br></br>
-4.2 进入mysql客户端，执行以下命令     # 每次重启都需要操作
+4.2 进入mysql客户端，执行以下命令     <font color="red"># 每次重启都需要操作</font>
 
 主数据库(主机：debtest2)
 
@@ -173,7 +173,7 @@ masterha_check_repl --conf=/root/mha_base/mha_manager.cnf
 </pre>
 <br></br>
 
-7.2 在manager节点启动mha服务,然后观察日志,并尝试关闭当前主库,注意观察日志,主要看失效发现,日志检测,ip漂移和角色切换过程     # 每次重启都需要操作
+7.2 在manager节点启动mha服务,然后观察日志,并尝试关闭当前主库,注意观察日志,主要看失效发现,日志检测,ip漂移和角色切换过程     <font color="red"># 每次重启都需要操作</font>
 
 nohup /usr/bin/masterha_manager --conf=/root/mha_base/mha_manager.cnf --ignore_last_failover  < /dev/null > /root/mha_base/manager.log 
 2>&1 &
@@ -201,7 +201,7 @@ admin-address = 0.0.0.0:4041
 </pre>
 
 <br></br>
-8.2 启动Atlas      # 每次重启都需要操作
+8.2 启动Atlas      <font color="red"># 每次重启都需要操作</font>
 
 ./mysql-proxyd test start
 
@@ -242,22 +242,23 @@ $msg = "" unless($msg);
 <br></br>
 #### 四 资源下载及附件
 <br></br>
-1 实验环境
+1 [实验环境下载链接](http://pan.baidu.com/s/1i5DehMX)
 
+说明：
 内含所有虚拟机，所有配置都已经执行过，debtest1中/root/tmp/目录下有Atlas和mha的安装包
 
 <br></br>
-1.1 所有主机的root密码
+(1) 所有主机的root密码
 
 123
 
 <br></br>
-1.2 所有数据库的root密码
+(2) 所有数据库的root密码
 
 123
 
 <br></br>
-1.3 所有数据库的其他账户
+(3) 所有数据库的其他账户
 
 mha mha
 
