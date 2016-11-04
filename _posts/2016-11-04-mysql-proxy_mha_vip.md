@@ -7,9 +7,9 @@ categories: 经验
 tags: 经验
 ---
 
-
+<br></br>
 #### 一 实验材料
-
+<br></br>
 1 外部环境
 
 amd64主机
@@ -25,9 +25,9 @@ VirtualBox的4个虚拟机debian x64
 mysql-proxy(Atlas)
 
 mha
-
+<br></br>
 #### 二 实验步骤
-
+<br></br>
 1 确保hosts和hostname配置正确
 
 1.1 每台主机都相同(主机：debtest1, debtest2, debtest3, debtest4)
@@ -143,7 +143,6 @@ apt-get install libdbd-mysql-perl
 dpkg -i mha4mysql-node_0.53_all.deb
 
 <br></br>
-
 5.2 仅需要在mha manager节点上安装mha manager包及其依赖包(主机：debtest1)
 
 apt-get install libdbd-mysql-perl
@@ -165,7 +164,6 @@ master_ip_online_change 和 master_ip_failover 一模一样
 mha_manager.cnf
 
 <br></br>
-
 7 测试和启动mha(主机：debtest1)
 
 7.1 可以尝试验证一下配置是否成功
@@ -181,7 +179,6 @@ nohup /usr/bin/masterha_manager --conf=/root/mha_base/mha_manager.cnf --ignore_l
 2>&1 &
 
 <br></br>
-
 8 mysql-proxy(Atlas)
 
 8.1 修改Atlas的配置文件test.cnf
@@ -204,38 +201,33 @@ admin-address = 0.0.0.0:4041
 </pre>
 
 <br></br>
-
 8.2 启动Atlas      # 每次重启都需要操作
 
 ./mysql-proxyd test start
 
 <br></br>
-
 8.3 进入Atlas工作界面，通过Atlas来执行sql语句，自动分离读写操作
 
 mysql -u192.168.56.14 -P4040 -umha -hmha
 
-
+<br></br>
 #### 三 实验辅助手段及遇到的坑
-
+<br></br>
 1 破解debian root密码
 
 http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 
 <br></br>
-
 2 克隆虚拟机
 
 目的：利用debtest3克隆一个debtest4，增加实验需要的节点
 
 <br></br>
-
 3 设置虚拟机为静态IP
 
 目的：确保每次重启虚拟机，IP地址都是固定的，便于以后的实验。
 
 <br></br>
-
 4 停止master上mysql 没有自动转移 ，manager.log 出现错误
 
 [error][/usr/local/share/perl5/MHA/ManagerUtil.pm, ln178] Got ERROR: Use of uninitialized value $msg in scalar chomp at 
@@ -247,27 +239,24 @@ http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 
 $msg = "" unless($msg);
 
-
+<br></br>
 #### 四 资源下载及附件
-
+<br></br>
 1 实验环境
 
 内含所有虚拟机，所有配置都已经执行过，debtest1中/root/tmp/目录下有Atlas和mha的安装包
 
 <br></br>
-
 1.1 所有主机的root密码
 
 123
 
 <br></br>
-
 1.2 所有数据库的root密码
 
 123
 
 <br></br>
-
 1.3 所有数据库的其他账户
 
 mha mha
@@ -275,7 +264,6 @@ mha mha
 repl repl
 
 <br></br>
-
 2 mha_manager.cnf
 
 <pre>
