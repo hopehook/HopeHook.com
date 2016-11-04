@@ -25,6 +25,7 @@ mha
 1 确保hosts和hostname配置正确
 1.1 每台主机都相同(主机：debtest1, debtest2, debtest3, debtest4)
 root@debtest1:~/.ssh# cat /etc/hosts
+<pre>
 127.0.0.1    localhost
 192.168.56.13    debtest1.sam.test    debtest1
 192.168.56.14    debtest2.sam.test    debtest2
@@ -34,6 +35,7 @@ root@debtest1:~/.ssh# cat /etc/hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
+</pre>
 <br></br>
 1.2 按照实际情况设定主机名，重启
 root@debtest1:~/.ssh# cat /etc/hostname
@@ -65,8 +67,7 @@ ssh debtest4
 <br></br>
 3.2 定好虚拟ip后别忘了在当前的主库上添加虚拟ip    # 每次重启都需要操作
 ip addr add 192.168.56.19/24 dev eth0
-# 删除虚拟ip的命令
-## ip addr del 192.168.56.19/24 dev eth0
+\# 删除虚拟ip的命令 ip addr del 192.168.56.19/24 dev eth0
 <br></br>
 4 数据库主从关系配置
 4.1 配置my.cnf
@@ -121,6 +122,7 @@ nohup /usr/bin/masterha_manager --conf=/root/mha_base/mha_manager.cnf --ignore_l
 <br></br>
 8 mysql-proxy(Atlas)
 8.1 修改Atlas的配置文件test.cnf
+<pre>
 # 配置主数据库
 proxy-backend-addresses = 192.168.56.19:3306
 #配置从数据库
@@ -131,6 +133,7 @@ pwds = mha:O2jBXONX098=
 proxy-address = 0.0.0.0:4040
 #Atlas管理端口
 admin-address = 0.0.0.0:4041
+</pre>
 <br></br>
 8.2 启动Atlas      # 每次重启都需要操作
 ./mysql-proxyd test start
