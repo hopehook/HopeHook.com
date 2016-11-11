@@ -230,14 +230,17 @@ http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 
 <br></br>
 4 Virtual Box网卡配置
+
 网卡一: host only
+
 网卡二: NAT
+
 宿主机里配置Virtual Box虚拟网卡的ip,网段和虚拟机的静态ip保持一致:192.168.56.1
 
 效果:
-宿主机可以ping通虚拟机
-虚拟机可以ping通宿主机
-虚拟机内部可以互相ping通
+宿主机可以ping通虚拟机;
+虚拟机可以ping通宿主机;
+虚拟机内部可以互相ping通;
 虚拟机可以上互联网
 
 <br></br>
