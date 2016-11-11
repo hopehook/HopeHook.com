@@ -227,8 +227,21 @@ http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 
 目的：确保每次重启虚拟机，IP地址都是固定的，便于以后的实验。
 
+
 <br></br>
-4 停止master上mysql 没有自动转移 ，manager.log 出现错误
+4 Virtual Box网卡配置
+网卡一: host only
+网卡二: NAT
+宿主机里配置Virtual Box虚拟网卡的ip,网段和虚拟机的静态ip保持一致:192.168.56.1
+
+效果:
+宿主机可以ping通虚拟机
+虚拟机可以ping通宿主机
+虚拟机内部可以互相ping通
+虚拟机可以上互联网
+
+<br></br>
+5 停止master上mysql 没有自动转移 ，manager.log 出现错误
 
 [error][/usr/local/share/perl5/MHA/ManagerUtil.pm, ln178] Got ERROR: Use of uninitialized value $msg in scalar chomp at 
 /usr/local/share/perl5/MHA/ManagerConst.pm line 90.
@@ -238,6 +251,8 @@ http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 在文件/usr/share/perl5/vendor_perl/MHA/ManagerConst.pm第90行(chomp $msg)前加入一行：
 
 $msg = "" unless($msg);
+
+
 
 <br></br>
 #### 四 资源下载及附件
