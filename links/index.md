@@ -7,6 +7,11 @@ comments: yes
 * [叶剑峰golang随笔](http://www.cnblogs.com/yjf512/category/385369.html)
 
 ---
+#### 在线工具
+* [Golang在线运行](https://wide.b3log.org/playground) - Golang在线运行
+<br/>
+
+---
 #### 后端
 * [The Go Programming Language](http://golang-china.github.io/gopl-zh/) - Golang基础知识大全
 * [Golang Web By Astaxie](https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/SUMMARY.md) - Golang Web编程基础
