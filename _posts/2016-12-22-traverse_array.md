@@ -14,7 +14,6 @@ tags: python
 <pre>
 arr = [1, 2, 3, [[[4]], 5], 6, [7, 8, [9, 10]], [11, [12,[13,[14, 15]]], 16, 17]]
 
-
 def depth_visit(arr):
         if isinstance(arr, list):
 		for child in arr:
@@ -52,6 +51,9 @@ breadth_vist(arr)
 * depth2.py
 <br></br>
 <pre>
+
+# prepare stack
+
 class Stack:
   def __init__(self):
     self.items = []
@@ -76,6 +78,7 @@ class Stack:
 stack = Stack()
 
 
+# to do
 
 arr = [1, 2, 3, [[[4]], 5], 6, [7, 8, [9, 10]], [11, [12,[13,[14, 15]]], 16, 17]]
 
@@ -95,6 +98,9 @@ for child in arr:
 * breadth2.py
 <br></br>
 <pre>
+
+# prepare queue
+
 class Queue():  
     def __init__(self):  
         self.items = []  
@@ -120,13 +126,12 @@ class Queue():
     def length(self):  
         return len(self.items)
 
-
-
 q = Queue()
 
 
-arr = [1, 2, 3, [[[4]], 5], 6, [7, 8, [9, 10]], [11, [12,[13,[14, 15]]], 16, 17]]
+# to do
 
+arr = [1, 2, 3, [[[4]], 5], 6, [7, 8, [9, 10]], [11, [12,[13,[14, 15]]], 16, 17]]
 
 for child in arr:
 	print child
