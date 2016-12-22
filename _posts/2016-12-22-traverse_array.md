@@ -7,9 +7,10 @@ categories: 算法
 tags: python
 ---
 
-
-## 1 递归深度优先
+<br></br>
+1 递归深度优先
 * depth.py
+<br></br>
 <pre>
 arr = [1, 2, 3, [[[4]], 5], 6, [7, 8, [9, 10]], [11, [12,[13,[14, 15]]], 16, 17]]
 
@@ -24,10 +25,10 @@ def depth_visit(arr):
 depth_visit(arr)
 </pre>
 
-
-## 2 递归广度优先
+<br></br>
+2 递归广度优先
 * breadth.py
-
+<br></br>
 <pre>
 arr = [1, 2, 3, [[[4]], 5], 6, [7, 8, [9, 10]], [11, [12,[13,[14, 15]]], 16, 17]]
 
@@ -46,9 +47,10 @@ def breadth_vist(arr):
 breadth_vist(arr)
 </pre>
 
-## 3 非递归深度优先
+<br></br>
+3 非递归深度优先
 * depth2.py
-
+<br></br>
 <pre>
 class Stack:
   def __init__(self):
@@ -88,9 +90,10 @@ for child in arr:
 				stack.push(tmp_child)
 </pre>
 
-## 4 非递归广度优先
+<br></br>
+4 非递归广度优先
 * breadth2.py
-
+<br></br>
 <pre>
 class Queue():  
     def __init__(self):  
