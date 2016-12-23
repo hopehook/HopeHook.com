@@ -1,4 +1,3 @@
-markdown: kramdown
 permalink: /:year/:month/:day/:title/
 url: http://hopehook.com
 website-url: hopehook.com
