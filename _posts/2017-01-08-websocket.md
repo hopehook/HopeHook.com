@@ -12,8 +12,8 @@ tags: 协议
 <br></br>
 1. client.html
 <br></br>
-```html
-<html>
+
+><html>
     <head>
         <script type="text/javascript" src="./jquery.min.js">
         </script>
@@ -49,11 +49,11 @@ tags: 协议
     </script>
 
 </html>
-```
+
 <br></br>
 2. server.go
 <br></br>
-```go
+<pre>
 package main
 
 import (
@@ -332,7 +332,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 	return buf
 }
 
-```
+</pre>
 <br></br>
 #### 二 websocket协议阅读要点记录 
 * [RFC协议中文版](https://github.com/zhangkaitao/websocket-protocol)
@@ -362,21 +362,18 @@ func formatCloseMessage(closeCode int, text string) []byte {
 <br></br>
 12.一个端点可以在连接建立之后并在连接关闭之前的任何时候发送一个 Ping 帧。注意:一个 Ping 即可以充当一个 keepalive,也可以作为验证远程端点仍可响应
 <br></br>
-#### 三 小经验
-<br></br>
+#### 三 小经验<br></br>
 1.浏览器目前没有提供js接口发送ping帧,浏览器可能单向的发送pong帧(可以利用文本帧当作ping帧来使用)
 <br></br>
 2.服务端给浏览器发送ping帧,浏览器会尽快响应同样负载数据的pong帧
 <br></br>
 3.浏览器发送的websocket负载数据太大的时候会分片
 <br></br>
-4,不管是浏览器,还是服务器,收到close帧都回复同样内容的close帧,然后做后续的操作
+4.不管是浏览器,还是服务器,收到close帧都回复同样内容的close帧,然后做后续的操作
 <br></br>
-#### 四 连接断开情况分析
-<br></br>
+#### 四 连接断开情况分析<br></br>
 * server:s
 * browser:b
-<br></br>
 <br></br>
 **0**
 <br></br>
