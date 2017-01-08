@@ -12,7 +12,7 @@ tags: 协议
 <br></br>
 1. client.html
 <br></br>
-```html
+```
 <html>
     <head>
         <script type="text/javascript" src="./jquery.min.js">
@@ -50,10 +50,11 @@ tags: 协议
 </html>
 ```
 
+
 <br></br>
 2. server.go
 <br></br>
-```go
+```
 package main
 
 import (
@@ -331,7 +332,6 @@ func formatCloseMessage(closeCode int, text string) []byte {
 	copy(buf[2:], text)
 	return buf
 }
-
 ```
 <br></br>
 <br></br>
