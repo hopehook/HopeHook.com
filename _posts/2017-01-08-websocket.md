@@ -12,8 +12,8 @@ tags: 协议
 <br></br>
 1. client.html
 <br></br>
-
-><html>
+<script type='text/html' style='display:block'>
+<html>
     <head>
         <script type="text/javascript" src="./jquery.min.js">
         </script>
@@ -47,8 +47,9 @@ tags: 协议
             socket.send("Websocket server, I am browser.")
         });
     </script>
-
 </html>
+
+</scipt>
 
 <br></br>
 2. server.go
