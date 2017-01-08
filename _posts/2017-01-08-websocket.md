@@ -12,7 +12,7 @@ tags: 协议
 <br></br>
 1. client.html
 <br></br>
-<script type='text/html' style='display:block'>
+```html
 <html>
     <head>
         <script type="text/javascript" src="./jquery.min.js">
@@ -48,13 +48,12 @@ tags: 协议
         });
     </script>
 </html>
-
-</scipt>
+```
 
 <br></br>
 2. server.go
 <br></br>
-<pre>
+```go
 package main
 
 import (
@@ -333,7 +332,8 @@ func formatCloseMessage(closeCode int, text string) []byte {
 	return buf
 }
 
-</pre>
+```
+<br></br>
 <br></br>
 #### 二 websocket协议阅读要点记录 
 * [RFC协议中文版](https://github.com/zhangkaitao/websocket-protocol)
