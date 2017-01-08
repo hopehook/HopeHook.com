@@ -45,7 +45,7 @@ pre{
   }
 
 
- 
+/*
 code {
   font-family: "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
   background: #eee;
@@ -60,6 +60,7 @@ code {
   -webkit-border-radius: .25em;
   border-radius: .25em;
 }
+*/
 
 #container{width:600px;margin:2em auto;display:block;padding:0 2em;}
 .content{font-size:16px;line-height:24px;}
