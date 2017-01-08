@@ -12,7 +12,7 @@ tags: 协议
 <br/>
 1. client.html
 <br/>
-<ifame>
+<pre>
 <html>
     <head>
         <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js">
@@ -48,7 +48,7 @@ tags: 协议
         });
     </script>
 </html>
-</ifame>
+</pre>
 
 <br/>
 2. server.go
@@ -246,20 +246,20 @@ func (this *WsSocket) ReadIframe() (frameData []byte) {
 	case payloadLen == 127:
 		// 如果payloadLen=127,启用8个字节作为拓展,表示更长的报文
 		// 负载数据的长度范围(bytes):65536~0x7fff ffff ffff ffff
-		log.Println(`payloadLen=127,启用8个字节作为拓展（最高有效位必须是0,舍弃最高位）,表示更长的报文`)
+		log.Println("payloadLen=127,启用8个字节作为拓展（最高有效位必须是0,舍弃最高位）,表示更长的报文")
 		exPayloadLenByte := make([]byte, 8)
 		this.Conn.Read(exPayloadLenByte)
 		dataLen = int64(exPayloadLenByte[0])<<56 + int64(exPayloadLenByte[1])<<48 + int64(exPayloadLenByte[2])<<40 + int64(exPayloadLenByte[3])<<32 + int64(exPayloadLenByte[4])<<24 + int64(exPayloadLenByte[5])<<16 + int64(exPayloadLenByte[6])<<8 + int64(exPayloadLenByte[7])
 	}
-	log.Printf(`real payloadLen=%d:该数据帧的真实负载数据长度(bytes).\n`, dataLen)
+	log.Printf("real payloadLen=%d:该数据帧的真实负载数据长度(bytes).\n", dataLen)
 
 	//掩码
 	maskingByte := make([]byte, 4)
 	if MASK == 1 {
 		this.Conn.Read(maskingByte)
-		log.Println(`MASK=1:负载数据采用了掩码.`)
+		log.Println("MASK=1:负载数据采用了掩码.")
 	} else if MASK == 0 {
-		log.Println(`MASK=0:没有掩码.`)
+		log.Println("MASK=0:没有掩码.")
 	}
 
 	//数据
