@@ -12,10 +12,10 @@ tags: 协议
 <br/>
 1. client.html
 <br/>
-```
+<ifame>
 <html>
     <head>
-        <script type="text/javascript" src="./jquery.min.js">
+        <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js">
         </script>
     </head>
     
@@ -48,12 +48,12 @@ tags: 协议
         });
     </script>
 </html>
-```
+</ifame>
 
 <br/>
 2. server.go
 <br/>
-```
+<pre>
 package main
 
 import (
@@ -102,7 +102,6 @@ func main() {
 	}
 
 }
-
 
 func handleConnection(conn net.Conn) {
 	// http request open websocket
@@ -332,7 +331,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 	copy(buf[2:], text)
 	return buf
 }
-```
+</pre>
 <br></br>
 <br></br>
 #### 二 websocket协议阅读要点记录 
