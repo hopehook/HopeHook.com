@@ -1,0 +1,119 @@
+---
+date: 2017-02-19
+layout: post
+title: apscheduler定时任务器的使用（tornado场景）
+thread: 2017-02-19-apscheduler.md
+categories: python
+tags: apscheduler
+---
+
+* demo
+</br>
+<pre>
+#!/usr/bin/env python
+
+import tornado.httpserver
+import tornado.ioloop
+import tornado.options
+import tornado.web
+from tornado.options import define, options
+define("port", default=8888, help="run on the given port", type=int)
+from apscheduler.schedulers.tornado import TornadoScheduler
+sched = TornadoScheduler()
+
+def my_job():
+    print 1
+
+def my_job2():
+    print 2
+    print sched.get_jobs()
+
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write("Hello, guys")
+
+
+class PauseJobHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.pause_job('1')
+        self.write("pause")
+
+class ResumeJobHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.resume_job('1')
+        self.write("resume")
+
+class AddJobHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.add_job(my_job, 'interval', seconds=1, id='1')
+        sched.add_job(my_job2, 'interval', seconds=1, id='2')
+        self.write("add job")
+
+class RemoveJobHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.remove_job('2')
+        self.write("remove job: %s" % 2)
+
+class RemoveAllJobsHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.remove_all_jobs()
+        self.write("remove all jobs")
+
+
+class StartHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.start()
+        result = sched.running
+        self.write("start scheduler: %s" % result)
+
+class ShutdownSchedHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.shutdown()
+        self.write("shutdown scheduler")
+
+class PauseSchedHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.pause()
+        self.write("pause scheduler")
+
+class ResumeSchedHandler(tornado.web.RequestHandler):
+    def get(self):
+        sched.resume()
+        self.write("resume scheduler")
+
+
+def main():
+    tornado.options.parse_command_line()
+    application = tornado.web.Application([
+        # home
+        (r"/", MainHandler),
+        # scheduler
+        (r"/start_sched", StartHandler),
+        (r"/shutdown_sched", ShutdownSchedHandler),
+        (r"/pause_sched", PauseSchedHandler),
+        (r"/resume_sched", ResumeSchedHandler),
+        # job
+        (r"/add_job", AddJobHandler),
+        (r"/pause_job", PauseJobHandler),
+        (r"/resume_job", ResumeJobHandler),
+        (r"/remove_job", RemoveJobHandler),
+        (r"/remove_all_jobs", RemoveAllJobsHandler),
+    ])
+    http_server = tornado.httpserver.HTTPServer(application)
+    http_server.listen(options.port)
+    tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == "__main__":
+    main()
+
+</pre>
+</br>
+* 七种scheduler
+</br>
+> BlockingScheduler: 当应用程序中只有调度器时使用
+> BackgroundScheduler: 不使用任何以下框架：asyncio, gevent, Tornado, Twisted, Qt, 并且需要在你的应用程序后台运行调度程序
+> AsyncIOScheduler: 应用程序使用asyncio模块时使用
+> GeventScheduler: 应用程序使用gevent模块时使用程序
+> TornadoScheduler: Tornado应用程序使用
+> TwistedScheduler: Twisted应用程序使用
+> QtScheduler: Qt应用程序使用
