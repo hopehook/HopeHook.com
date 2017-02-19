@@ -69,6 +69,8 @@ tags: apscheduler
 > sched.add_job(job_function, 'cron', day_of_week='mon-fri', hour=5, minute=30, end_date='2014-05-30')
 > </pre>
 </br>
+
+apscheduler_demo.py
 <pre>
 # -*- coding:utf8 -*-
 
@@ -168,3 +170,7 @@ if __name__ == "__main__":
 
 </pre>
 
+3. 小坑
+> 浏览器地址栏输入高频使用的url，没有等用户输入全部链接，也没等用户enter键确认，浏览器就会自动请求一次
+> 任务id必须是字符串类型
+> 其他种类的scheduler和tornado并不完全一样
