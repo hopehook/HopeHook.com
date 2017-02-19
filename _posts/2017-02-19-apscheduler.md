@@ -25,6 +25,7 @@ tags: apscheduler
 > QtScheduler: Qt应用程序使用
 </br>
 </br>
+
 2.Tornado中使用的demo
 </br>
 > sched = TornadoScheduler() 可以作为全局变量，在项目任何引用的地方操作调度器
