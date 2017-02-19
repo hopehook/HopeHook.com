@@ -32,7 +32,7 @@ tags: apscheduler
 
 > sched.start() 是调度器真正开始执行的入口
 
-> sched.start() 之前 sched.add_job的缓存的任务会开始调度，之后 sched.add_job立即调度（达到执行时间的时候执行）
+> sched.start() 之前 sched.add_job缓存的任务会开始调度，之后 sched.add_job的任务立即调度（达到执行时间的时候执行任务）
 <pre>
 #!/usr/bin/env python
 
