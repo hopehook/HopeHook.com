@@ -11,5 +11,5 @@ github: hopehook
 weibo: hopehook
 pygments: true
 safe: true
-paginate: 20
+paginate: 10
 about: "这里是 HopeHook 的个人博客，欢迎你的到来。"
