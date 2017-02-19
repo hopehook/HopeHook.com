@@ -24,12 +24,14 @@ tags: apscheduler
 
 > QtScheduler: Qt应用程序使用
 </br>
-
-2.Tornado中的使用demo
+</br>
+2.Tornado中使用的demo
 </br>
 > sched = TornadoScheduler() 可以作为全局变量，在项目任何引用的地方操作调度器
 
 > sched.start() 是调度器真正开始执行的入口
+
+> sched.start() 之前 sched.add_job的缓存的任务会开始调度，之后 sched.add_job立即调度（达到执行时间的时候执行）
 <pre>
 #!/usr/bin/env python
 
