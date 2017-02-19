@@ -7,8 +7,24 @@ categories: python
 tags: apscheduler
 ---
 
-* demo
 </br>
+七种scheduler
+</br>
+> BlockingScheduler: 当应用程序中只有调度器时使用
+
+> BackgroundScheduler: 不使用任何以下框架：asyncio, gevent, Tornado, Twisted, Qt, 并且需要在你的应用程序后台运行调度程序
+
+> AsyncIOScheduler: 应用程序使用asyncio模块时使用
+
+> GeventScheduler: 应用程序使用gevent模块时使用程序
+
+> TornadoScheduler: Tornado应用程序使用
+
+> TwistedScheduler: Twisted应用程序使用
+
+> QtScheduler: Qt应用程序使用
+</br>
+
 <pre>
 #!/usr/bin/env python
 
@@ -107,13 +123,4 @@ if __name__ == "__main__":
     main()
 
 </pre>
-</br>
-* 七种scheduler
-</br>
-> BlockingScheduler: 当应用程序中只有调度器时使用
-> BackgroundScheduler: 不使用任何以下框架：asyncio, gevent, Tornado, Twisted, Qt, 并且需要在你的应用程序后台运行调度程序
-> AsyncIOScheduler: 应用程序使用asyncio模块时使用
-> GeventScheduler: 应用程序使用gevent模块时使用程序
-> TornadoScheduler: Tornado应用程序使用
-> TwistedScheduler: Twisted应用程序使用
-> QtScheduler: Qt应用程序使用
+
