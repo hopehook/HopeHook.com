@@ -36,7 +36,7 @@ tags: apscheduler
 
 > scheduler.shutdown(wait=True) 默认情况下调度器会等待所有正在运行的作业完成后，关闭所有的调度器和作业存储。如果你不想等待，可以将wait选项设置为False。
 
-> scheduler.add_job() 第二个参数是trigger，它管理着作业的调度方式。它可以为date, interval或者cron。对于不同的trigger，对应的参数也相同。\
+> scheduler.add_job() 第二个参数是trigger，它管理着作业的调度方式。它可以为date, interval或者cron。对于不同的trigger，对应的参数也相同。
 
 > trigger:
 > </br>
@@ -54,7 +54,6 @@ tags: apscheduler
 > <pre>
 > \# The job will be executed on November 6th, 2009
 > sched.add_job(my_job, 'date', run_date=date(2009, 11, 6), args=['text'])
-> 
 > \# The job will be executed on November 6th, 2009 at 16:30:05
 > sched.add_job(my_job, 'date', run_date=datetime(2009, 11, 6, 16, 30, 5), args=['text'])
 > </pre>
@@ -66,12 +65,10 @@ tags: apscheduler
 > \# Schedules job_function to be run on the third Friday
 > \# of June, July, August, November and December at 00:00, 01:00, 02:00 and 03:00
 > sched.add_job(job_function, 'cron', month='6-8,11-12', day='3rd fri', hour='0-3')
-> 
 > \# Runs from Monday to Friday at 5:30 (am) until 2014-05-30 00:00:00
 > sched.add_job(job_function, 'cron', day_of_week='mon-fri', hour=5, minute=30, end_date='2014-05-30')
 > </pre>
-> </br>
-
+</br>
 <pre>
 # -*- coding:utf8 -*-
 
