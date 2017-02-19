@@ -8,7 +8,7 @@ tags: apscheduler
 ---
 
 </br>
-七种scheduler
+1.七种scheduler
 </br>
 > BlockingScheduler: 当应用程序中只有调度器时使用
 
@@ -25,6 +25,11 @@ tags: apscheduler
 > QtScheduler: Qt应用程序使用
 </br>
 
+2.Tornado中的使用demo
+</br>
+> sched = TornadoScheduler() 可以作为全局变量，在项目任何引用的地方操作调度器
+
+> sched.start() 是调度器真正开始执行的入口
 <pre>
 #!/usr/bin/env python
 
