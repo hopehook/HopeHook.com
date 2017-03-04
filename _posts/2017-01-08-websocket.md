@@ -342,8 +342,8 @@ func formatCloseMessage(closeCode int, text string) []byte {
 > conn, _, err := w.(http.Hijacker).Hijack()
 > </pre>
 
+<br/>
 #### 二 websocket协议阅读要点记录
-<br></br>
 * [RFC协议中文版](https://github.com/zhangkaitao/websocket-protocol)
 * [RFC协议英文版](https://tools.ietf.org/html/rfc6455)
 <br></br>
@@ -370,10 +370,9 @@ func formatCloseMessage(closeCode int, text string) []byte {
 11.发送并接收一个关闭消息后,一个端点认为 WebSocket 连接关闭了且必须关闭底层的 TCP 连接。服务器必须立即关闭底层 TCP 连接,客户端应该等待服务器关闭连接但可能在发送和接收一个关闭消息之后的任何时候关闭连接,例如,如果它没有在一个合理的时间周期内接收到服务器的 TCP 关闭。
 <br></br>
 12.一个端点可以在连接建立之后并在连接关闭之前的任何时候发送一个 Ping 帧。注意:一个 Ping 即可以充当一个 keepalive,也可以作为验证远程端点仍可响应
-<br></br>
-<br></br>
+
+<br/>
 #### 三 小经验
-<br></br>
 1.浏览器目前没有提供js接口发送ping帧,浏览器可能单向的发送pong帧(可以利用文本帧当作ping帧来使用)
 <br></br>
 2.服务端给浏览器发送ping帧,浏览器会尽快响应同样负载数据的pong帧
@@ -381,14 +380,13 @@ func formatCloseMessage(closeCode int, text string) []byte {
 3.浏览器发送的websocket负载数据太大的时候会分片
 <br></br>
 4.不管是浏览器,还是服务器,收到close帧都回复同样内容的close帧,然后做后续的操作
-<br></br>
-<br></br>
+
+<br/>
 #### 四 连接断开情况分析
-<br></br>
 * server:s
 * browser:b
 <br></br>
-**0**
+**情况0**
 <br></br>
 动作:b发s连接关闭帧,s无操作
 <br></br>
@@ -401,7 +399,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 2) s读取: *errors.errorString: EOF
 <br></br>
 <br></br>
-**1**
+**情况1**
 <br></br>
 动作:b发s连接关闭帧,s回应连接关闭帧
 <br></br>
@@ -414,7 +412,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 2) s读取: *errors.errorString: EOF
 <br></br>
 <br></br>
-**2**
+**情况2**
 <br></br>
 动作:b发s连接关闭帧,s回应连接关闭帧,s关闭tcp socket
 <br></br>
@@ -427,7 +425,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 2) s读取: *net.OpError: read tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
 <br></br>
 <br></br>
-**3**
+**情况3**
 <br></br>
 动作:s发b连接关闭帧,b无操作
 <br></br>
@@ -440,7 +438,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 2) s读取: *errors.errorString: EOF
 <br></br>
 <br></br>
-**4**
+**情况4**
 <br></br>
 动作:s发b连接关闭帧,s关闭tcp socket
 <br></br>
