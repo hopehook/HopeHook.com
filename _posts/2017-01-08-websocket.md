@@ -336,8 +336,11 @@ func formatCloseMessage(closeCode int, text string) []byte {
 <br></br>
 
 > [代码链接，仅供学习](https://github.com/hopehook/go-lab/blob/master/4.websocket)
+<br></br>
 > websocket_server.go 是 websocket 基于 tcp socket 的粗糙实现，只提供 websocket 服务
+<br></br>
 > websocket_http_server.go 把该实现移植到了 http socket 环境(也可以是某个 golang web 框架)，实现了 websocket http 利用同一个端口，同时对外服务
+<br></br>
 <pre>
 # 通过Hijacker拿到http连接下的tcp连接，Hijack()之后该连接完全由自己接管
 conn, _, err := w.(http.Hijacker).Hijack()
