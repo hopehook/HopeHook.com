@@ -2,9 +2,15 @@
 title: Links / 链接
 layout: page
 comments: yes 
+---
 
---- TODO
-* [叶剑峰golang随笔](http://www.cnblogs.com/yjf512/category/385369.html)
+----
+#### 博客/小站
+* [fengde.online](http://www.fengde.online) - fedel's site
+* [ruanyifeng.com](http://www.ruanyifeng.com/) - 阮一峰的网络日志
+* [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
+* [BookShadow.com](http://bookshadow.com) - 在线疯狂的个人博客
+<br/>
 
 ---
 #### 在线工具
@@ -45,14 +51,7 @@ comments: yes
 * [OS Course](http://se.tju.edu.cn/ocw/os/) - 操作系统课程[天津大学]
 <br/>
 
-----
-#### 博客/空间
-* [ruanyifeng.com](http://www.ruanyifeng.com/) - 阮一峰的网络日志
-* [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
-* [BookShadow.com](http://bookshadow.com) - 在线疯狂的个人博客
-* [achst's wuyou home](http://bbs.wuyou.net/home.php?mod=space&uid=444022) - 我的无忧空间
-* [achst's cnblogs home](http://www.cnblogs.com/achst) - 我的博客园空间
-<br/>
+
 
 
 
