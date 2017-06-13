@@ -3,20 +3,23 @@ title: About / 关于
 layout: page
 comments: no
 ---
-<br/>
+
 ## Name
 
 CN: 谭 帅 (TanShuai) | EN: Stach Tan
+
 <br/>
 ## I am
 
 python & golang programmer
 
 2010 - 2014 就读于 长沙理工大学
+
 <br/>
 ## Contribution
 
 LiteIDE 官网 : [liteide.org](http://liteide.org)
+
 <br/>
 ## Contact
 
