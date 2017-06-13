@@ -386,6 +386,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 * server:s
 * browser:b
 <br/>
+<br/>
 **情况0**
 <br/>
 动作:b发s连接关闭帧,s无操作
