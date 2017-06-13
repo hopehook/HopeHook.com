@@ -7,9 +7,9 @@ categories: python
 tags: apscheduler
 ---
 
-</br>
+<br/>
 1.七种scheduler
-</br>
+<br/>
 > BlockingScheduler: 当应用程序中只有调度器时使用
 
 > BackgroundScheduler: 不使用任何以下框架：asyncio, gevent, Tornado, Twisted, Qt, 并且需要在你的应用程序后台运行调度程序
@@ -23,11 +23,11 @@ tags: apscheduler
 > TwistedScheduler: Twisted应用程序使用
 
 > QtScheduler: Qt应用程序使用
-</br>
-</br>
+<br/>
+<br/>
 
 2.Tornado中使用的demo
-</br>
+<br/>
 > sched = TornadoScheduler() 可以作为全局变量，在项目任何引用的地方操作调度器
 
 > sched.start() 是调度器真正开始执行的入口
@@ -39,17 +39,17 @@ tags: apscheduler
 > scheduler.add_job() 第二个参数是trigger，它管理着作业的调度方式。它可以为date, interval或者cron。对于不同的trigger，对应的参数也相同。
 
 > trigger:
-> </br>
+> <br/>
 > 1) interval 间隔调度
-> </br>
+> <br/>
 > 循环执行，间隔固定的时间
 > <pre>
 > \# Schedule job_function to be called every two hours
 > sched.add_job(job_function, 'interval', hours=2)
 > </pre>
-> </br>
+> <br/>
 > 2) date 定时调度
-> </br>
+> <br/>
 > 只会执行一次，指定时间执行后就结束
 > <pre>
 > \# The job will be executed on November 6th, 2009
@@ -57,9 +57,9 @@ tags: apscheduler
 > \# The job will be executed on November 6th, 2009 at 16:30:05
 > sched.add_job(my_job, 'date', run_date=datetime(2009, 11, 6, 16, 30, 5), args=['text'])
 > </pre>
-> </br>
+> <br/>
 > 3) cron 定时调度
-> </br>
+> <br/>
 > 闹钟似执行，设定计划时间表执行
 > <pre>
 > \# Schedules job_function to be run on the third Friday
@@ -68,7 +68,7 @@ tags: apscheduler
 > \# Runs from Monday to Friday at 5:30 (am) until 2014-05-30 00:00:00
 > sched.add_job(job_function, 'cron', day_of_week='mon-fri', hour=5, minute=30, end_date='2014-05-30')
 > </pre>
-</br>
+<br/>
 
 apscheduler_demo.py
 <pre>
@@ -169,9 +169,9 @@ if __name__ == "__main__":
     main()
 
 </pre>
-</br>
+<br/>
 3. 小坑
-</br>
+<br/>
 > 浏览器地址栏输入高频使用的url，没有等用户输入全部链接，也没等用户enter键确认，浏览器就会自动请求一次
 
 > 任务id必须是字符串类型
