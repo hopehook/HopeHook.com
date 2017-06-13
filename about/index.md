@@ -4,11 +4,26 @@ layout: page
 comments: no
 ---
 
-#### Contact / 联系方式：
+## Name:
+
+CN: 谭 帅 (TanShuai) | EN: Stach Tan
+
+
+## I am
+
+python & golang programmer
+
+2010 - 2014 就读于 长沙理工大学
+
+
+## Contribution
+
+LiteIDE 官网/liteide.org : (https://github.com/visualfc/liteide.org)
+
+
+## Contact：
 
 技术博客/{{ site.name }} : [{{ site.name }}]({{ site.url }})
-
-新浪微博/Weibo : [@{{ site.weibo }}](http://weibo.com/{{ site.weibo }})
 
 邮箱/E-mail：[{{ site.email }}](mailto:{{ site.email }})
 
