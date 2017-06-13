@@ -10,7 +10,7 @@ tags: Python
 
 1. setting.py
 
-<pre>
+<code>
 # mysql 基本配置
 MYSQL_CONFIG = {
     "slave_db": {
@@ -49,7 +49,7 @@ MYSQL_POOL_CONFIG = {
         "pool_reset_session": True,
     }
 }
-</pre>
+</code>
 
 
 
