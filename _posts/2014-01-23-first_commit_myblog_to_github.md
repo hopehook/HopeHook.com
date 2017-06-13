@@ -7,7 +7,7 @@ categories: 经验
 tags: github
 ---
 
-####第一次提交
+#### 第一次提交
 
 `f:`
 
@@ -27,7 +27,7 @@ tags: github
 
 
 
-####后续提交
+#### 后续提交
 
 `git commit -m "提交备注"`
 
