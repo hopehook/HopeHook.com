@@ -176,4 +176,4 @@ if __name__ == "__main__":
 
 > 任务id必须是字符串类型
 
-> 其他种类的scheduler和tornado并不完全一样
+> 其他种类的 scheduler 和 tornado版 使用方法不相同，需要区别对待
