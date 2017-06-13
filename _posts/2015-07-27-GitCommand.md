@@ -178,7 +178,7 @@ git branch -d develop       #删除 develop 分支
 
 <pre>
 git tag             #列出现有标签 
-git show <tagname>  #显示标签信息
+git show {tagname}  #显示标签信息
 </pre>
 
 
@@ -195,13 +195,13 @@ git tag -a v0.1 -m 'version 0.1 released'   #新建带注释标签
 
 
 <pre>
-git checkout <tagname>        #切换到标签
+git checkout {tagname}        #切换到标签
 
-git push origin <tagname>     #推送分支到源上
+git push origin {tagname}     #推送分支到源上
 git push origin --tags        #一次性推送全部尚未推送到远程的本地标签
 
-git tag -d <tagname>          #删除标签
-git push origin :refs/tags/<tagname>      #删除远程标签
+git tag -d {tagname}          #删除标签
+git push origin :refs/tags/{tagname}     #删除远程标签
 </pre>
 
 
