@@ -115,8 +115,8 @@ git reflog                #查看命令历史,常用于帮助找回丢失掉的c
 
 <pre>
 git status              #查看工作区、暂存区的状态
-git checkout -- <file>  #丢弃工作区上某个文件的修改
-git reset HEAD <file>   #丢弃暂存区上某个文件的修改，重新放回工作区
+git checkout -- {file}  #丢弃工作区上某个文件的修改
+git reset HEAD {file}   #丢弃暂存区上某个文件的修改，重新放回工作区
 </pre>
 
 
