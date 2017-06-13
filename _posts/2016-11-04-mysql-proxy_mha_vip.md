@@ -11,19 +11,19 @@ tags: 经验
 #### 一 实验材料
 <br/>
 1 外部环境
-
+<br/>
 * amd64主机
-
+<br/>
 * Windows x64
-
+<br/>
 * Oracle VM VirtualBox
 <br/>
 2 实验环境   # 文章最后有下载链接
-
+<br/>
 * VirtualBox的4个虚拟机debian x64
-
+<br/>
 * mysql-proxy(Atlas)
-
+<br/>
 * mha
 <br/>
 #### 二 实验步骤
