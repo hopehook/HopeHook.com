@@ -3,7 +3,7 @@ title: About / 关于
 layout: page
 comments: no
 ---
-
+<p></p>
 ## Name
 
 CN: 谭 帅 (TanShuai)  |  EN: Stach Tan
@@ -20,7 +20,7 @@ LiteIDE 官网 : [liteide.org](http://liteide.org)
 <p></p>
 ## Contact
 
-<p>技术博客/{{ site.name }} : [{{ site.name }}]({{ site.url }})</p>
+技术博客/{{ site.name }} : [{{ site.name }}]({{ site.url }})
 
 邮箱/E-mail：[{{ site.email }}](mailto:{{ site.email }})
 
