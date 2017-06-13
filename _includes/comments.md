@@ -1,4 +1,4 @@
-<!--define the duoshuo plugin-->
+<!--define the duoshuo plugin
 {% if site.duoshuo %}
 	{% if page.thread %}
 	<div class="ds-thread" data-thread-key="{{ page.thread }}" data-url="{{ site.url }}{{ page.url }}" data-title="{{ page.title }}" />
@@ -17,6 +17,7 @@
 	})();
 	</script>
 {% endif %}
+-->
 
 <!-- JiaThis Button BEGIN -->
 <script type="text/javascript" >
