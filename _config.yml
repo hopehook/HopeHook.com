@@ -9,7 +9,7 @@ email: achst@qq.com
 duoshuo: hopehook
 github: hopehook
 weibo: hopehook
-pygments: true
+rouge: true
 safe: true
 paginate: 10
 about: "这里是 HopeHook 的个人博客，欢迎你的到来。"
