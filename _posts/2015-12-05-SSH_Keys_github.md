@@ -6,7 +6,7 @@ thread: 2015-12-05-SSH_Keys_github.md
 categories: 经验
 tags: github
 ---
-</br>
+<br/>
 
 操作环境：Ubuntu
 
@@ -21,13 +21,13 @@ Enter passphrase (empty for no passphrase): `[Press enter]`
 Enter same passphrase again: `[Press enter]`
 
 
-</br>
+<br/>
 
 #### 2 将生成的SSH key公钥添加到github账户设置里
 - 打开并复制　/Users/you/.ssh/"your_ssh_name.pub"　里面的内容，
 - github账户　——> settings ——> SSH keys  ——>  Add SSH key  ——>  粘贴复制的内容
 
-</br>
+<br/>
 
 #### 3 注意
 <ul>
@@ -37,14 +37,14 @@ Enter same passphrase again: `[Press enter]`
     <li>不同终端(OS User Account)下可以使用相同的SSH key </li>
     <ul><li>在生成同名SSH key后用原来的SSH key内容覆盖即可</li></ul>
     <li>相同终端下可以添加多对SSH key</li>
-</br>
+<br/>
 
 #### 【拓展】一个PC终端用户配置多个github账户的SSH key
 
-</br>
+<br/>
 (1)按照１和２的步骤生成对应github账户的多对SSH key
 
-</br>
+<br/>
 (2)新增或配置`~/.ssh/config`，内容示例：
 <pre>
 Host github-first
@@ -65,7 +65,7 @@ Host github-third
  IdentityFile ~/.ssh/id_rsa_third
 </pre>
 
-</br>
+<br/>
 (3)配置克隆仓库目录下的`.git/config`,内容示例：
 <pre>
 [core]
@@ -77,7 +77,7 @@ Host github-third
 	url = git@github-first:hopehook1/test.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
-</br>
+<br/>
 <pre>
 [core]
 	repositoryformatversion = 0
@@ -88,7 +88,7 @@ Host github-third
 	url = git@github-second:hopehook2/test.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
-</br>
+<br/>
 <pre>
 [core]
 	repositoryformatversion = 0
@@ -100,7 +100,7 @@ Host github-third
 	fetch = +refs/heads/*:refs/remotes/origin/*
 </pre>
 
-</br>
+<br/>
 (4)特别说明：
 <ul>
 	<li>
