@@ -13,19 +13,19 @@ tags: github
 * 各个web系统一级域名相同,如域名都是 *.example.com
 * 只考虑支持CORS的浏览器
 
-</br>
+<br/>
 #### AUTH工程是什么
 
 * 是各个web系统的集中式登录验证后台
 * 是各个web系统目前单点登录的解决方案主体
 
-</br>
+<br/>
 #### AUTH上线后的变化
 
 * 各个web系统的登录和退出调用全部交由AUTH处理
 * 各个web系统打破了边界限制，可以像一个web系统一样运作和跳转
 
-</br>
+<br/>
 #### AUTH的登录和退出流程
 <ul>
   <li>
@@ -50,17 +50,17 @@ tags: github
   </li>
 </ul>
 
-</br>
+<br/>
 #### AUTH的技术要点
 
 * 跨域请求
 * 跨二级域写cookie
 
-</br>
+<br/>
 #### 如何实现跨域请求
 
 采用了CORS方案:
-</br>
+<br/>
 当你使用XMLHttpRequest发送请求时，浏览器发现该请求不符合同源策略，会给该请求加一个请求头：Origin，
 后台进行一系列处理，如果确定接受请求则在返回结果中加入一个响应头：Access-Control-Allow-Origin;
 浏览器判断该相应头中是否包含Origin的值，如果有则浏览器会处理响应，我们就可以拿到响应数据，
@@ -71,7 +71,7 @@ tags: github
 
   `self.set_header('Access-Control-Allow-Origin', self.request.headers['Origin'])`
 
-</br>
+<br/>
 #### 如何实现跨二级域写cookie
 
 * 前端ajax请求
@@ -97,7 +97,7 @@ $.ajax({
  });
 </pre>
 * 后端设置的头部
-</br>
+<br/>
    `self.set_header('Access-Control-Allow-Credentials', 'true')`
 
 
