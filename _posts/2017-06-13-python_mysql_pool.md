@@ -8,9 +8,9 @@ tags: Python
 ---
 
 
-1. setting.py
+1 setting.py
 
-<code>
+<pre>
 # mysql 基本配置
 MYSQL_CONFIG = {
     "slave_db": {
@@ -49,11 +49,11 @@ MYSQL_POOL_CONFIG = {
         "pool_reset_session": True,
     }
 }
-</code>
+</pre>
 
 
 
-2. mysqllib.py
+2 mysqllib.py
 
 <pre>
 # -*- coding:utf-8 -*-
