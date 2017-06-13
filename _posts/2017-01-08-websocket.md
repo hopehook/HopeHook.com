@@ -10,7 +10,7 @@ tags: 协议
 <br/>
 #### 一 实验代码
 <br/>
-1. client.html
+client.html
 <br/>
 <pre>
 <html>
@@ -51,7 +51,7 @@ tags: 协议
 </pre>
 
 <br/>
-2. websocket_server.go
+websocket_server.go
 <br/>
 <pre>
 package main
