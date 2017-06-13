@@ -17,6 +17,7 @@ tags: 经验
 * Windows x64
 <br/>
 * Oracle VM VirtualBox
+
 <br/>
 2 实验环境   # 文章最后有下载链接
 <br/>
@@ -25,6 +26,8 @@ tags: 经验
 * mysql-proxy(Atlas)
 <br/>
 * mha
+
+
 <br/>
 #### 二 实验步骤
 <br/>
