@@ -346,6 +346,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 #### 二 websocket协议阅读要点记录
 * [RFC协议中文版](https://github.com/zhangkaitao/websocket-protocol)
 * [RFC协议英文版](https://tools.ietf.org/html/rfc6455)
+
 <br/>
 1.客户端必须掩码(mask)它发送到服务器的所有帧(更多详细信息请参见 5.3 节)。
 <br/>
