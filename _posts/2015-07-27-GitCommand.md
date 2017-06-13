@@ -136,8 +136,8 @@ git diff {source_branch} {target_branch}  #在合并改动之前，预览两个�
 #### 删除文件
 
 <pre>
-git rm <file>           #直接删除文件
-git rm --cached <file>  #删除文件暂存状态
+git rm {file}           #直接删除文件
+git rm --cached {file}  #删除文件暂存状态
 </pre>
 
 
