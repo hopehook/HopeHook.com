@@ -37,6 +37,7 @@ Enter same passphrase again: `[Press enter]`
     <li>不同终端(OS User Account)下可以使用相同的SSH key </li>
     <ul><li>在生成同名SSH key后用原来的SSH key内容覆盖即可</li></ul>
     <li>相同终端下可以添加多对SSH key</li>
+</ul>
 <br/>
 
 #### 【拓展】一个PC终端用户配置多个github账户的SSH key
