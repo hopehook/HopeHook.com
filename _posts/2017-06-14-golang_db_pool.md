@@ -1,8 +1,8 @@
 ---
-date: 2016-06-14
+date: 2017-06-14
 layout: post
 title: redis mysql 连接池 之 golang 实现
-thread: 2016-06-14-golang_db_pool.md
+thread: 2017-06-14-golang_db_pool.md
 categories: 数据库
 tags: golang
 ---
