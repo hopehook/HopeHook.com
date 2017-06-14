@@ -4,7 +4,7 @@ layout: post
 title: python 的 mysql 连接池（基于 mysql 官方的 mysql-connector-python）
 thread: 2017-06-13-python_mysql_pool.md
 categories: 数据库
-tags: Python
+tags: python
 ---
 <p></p>
 #### 背景
