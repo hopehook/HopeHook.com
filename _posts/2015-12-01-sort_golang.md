@@ -4,7 +4,7 @@ layout: post
 title: 内部排序算法(Golang实现)
 thread: 2015-12-01-sort_golang.md
 categories: 算法
-tags: Golang
+tags: golang
 ---
 
 <pre>
