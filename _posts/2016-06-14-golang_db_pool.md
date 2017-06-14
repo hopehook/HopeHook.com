@@ -9,7 +9,7 @@ tags: golang
 
 分享一下 golang 实现的 redis 和 mysql 连接池，可以在项目中直接引用连接池句柄，调用对应的方法。 
 <br/>
-
+<br/>
 #### 举个栗子：
 <p></p>
 1 mysql 连接池的使用
@@ -29,12 +29,12 @@ tags: golang
 <p></p>
 （3）调用 Cache.SetString (“test_key”, “test_value”)
 <br/>
-
+<br/>
 #### 最新代码地址：
 <p></p>
-https://github.com/hopehook/golang-db
+[https://github.com/hopehook/golang-db](https://github.com/hopehook/golang-db)
 <br/>
-
+<br/>
 #### 附件:
 <p></p>
 1 mysql 连接池代码
