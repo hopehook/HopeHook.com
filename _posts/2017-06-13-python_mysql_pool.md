@@ -8,21 +8,21 @@ tags: Python
 ---
 <p></p>
 #### 背景
----
+
 <p></p>
 网上看了一圈，没有发现顺手的 mysql python 连接池，甚至很多都是错误的实现。于是自己写了一个，经过了生产环境的考验，特地分享出来。
 <p></p>
 近期，多说关闭了（伤心），所以欢迎盆友们到本人的 [github](https://github.com/hopehook/hopehook.com) 提 issue 进行交流，也许你有更好的实现方式，而我却不知道，大家一起进步吧 :)
 <br/>
+<br/>
 #### 使用方法
----
 <p></p>
 1 安装 mysql-connector-python 库
 <p></p>
 2 通过“数据库连接池句柄”调用对应的方法
 <br/>
-#### 源码片段
----
+<br/>
+#### 源码
 <p></p>
 1 setting.py
 
