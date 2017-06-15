@@ -25,7 +25,7 @@
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  owner: 'hopehook@qq.com',
+  owner: 'hopehook',
   repo: 'hopehook.com',
   oauth: {
     client_id: '5ef08bd996c41e7da820',
