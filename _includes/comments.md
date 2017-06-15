@@ -20,7 +20,7 @@
 -->
 
 <!-- gitment BEGIN -->
-<div id="container"></div>
+<div id="gitment-container"></div>
 <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
@@ -33,7 +33,7 @@ var gitment = new Gitment({
     client_secret: '6dd72a8a5a862fccd08e3cfafce245584156a99b',
   },
 })
-gitment.render('container')
+gitment.render('gitment-container')
 </script>
 <!-- gitment END -->
 
