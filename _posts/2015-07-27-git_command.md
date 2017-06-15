@@ -2,7 +2,7 @@
 date: 2015-07-27
 layout: post
 title: Git 常用技能
-thread: 2015-07-27-GitCommand.md
+thread: 2015-07-27-git_command.md
 categories: Git
 tags: Git
 ---
