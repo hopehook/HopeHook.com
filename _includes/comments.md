@@ -19,6 +19,24 @@
 {% endif %}
 -->
 
+<!-- gitment BEGIN -->
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: location.href,
+  owner: 'hopehook@qq.com',
+  repo: 'hopehook.com',
+  oauth: {
+    client_id: '5ef08bd996c41e7da820',
+    client_secret: '6dd72a8a5a862fccd08e3cfafce245584156a99b',
+  },
+})
+gitment.render('container')
+</script>
+<!-- gitment END -->
+
 <!-- JiaThis Button BEGIN -->
 <script type="text/javascript" >
 var jiathis_config={
