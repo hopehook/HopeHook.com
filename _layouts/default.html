@@ -24,68 +24,32 @@
         
         </header>
         <nav id="navigation"><!--Define the Navigation links-->
-        <span><a title="网站首页" class="" href="/">HOME</a></span>
-        <span><a title="文章分类" class="" href="/categories/">CATEGORIES</a></span>
-        <span><a title="标签索引" class="" href="/tags/">TAGS</a></span>
-        <span><a title="友情链接" class="" href="/links/">LINKS</a></span>
-        <span><a title="留言版" class="" href="/guestbook/">GUESTBOOK</a></span>
-        <span><a title="关于作者" class="" href="/about/">ABOUT</a></span>
-	<span><a title="私人图书馆" class="" href="/books/" target="_blank">BOOKS</a></span>
-        <span><a title="RSS订阅" class="" href="/feed/" target="_blank">RSS</a></span>
-        <hr>
-<!-- 	<span>
-          <form>
-          <input type="text" placeholder="Blog Search!" id="st-search-input" class="st-search-input" style="width: 100px"/>
-          </form>
-          <script type="text/javascript">
-           var Swiftype = window.Swiftype || {};
-             (function() {
-               Swiftype.key = 'XqPTGpyppw7pDAszmxhY';
-           
-               /** DO NOT EDIT BELOW THIS LINE **/
-               var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-               script.src = "//s.swiftypecdn.com/embed.js";
-               var entry = document.getElementsByTagName('script')[0];
-               entry.parentNode.insertBefore(script, entry);
-             }());
-           </script>
-        </span> 
--->
+          <span><a title="网站首页" class="" href="/">HOME</a></span>
+          <span><a title="文章分类" class="" href="/categories/">CATEGORIES</a></span>
+          <span><a title="标签索引" class="" href="/tags/">TAGS</a></span>
+          <span><a title="友情链接" class="" href="/links/">LINKS</a></span>
+          <span><a title="留言版" class="" href="/guestbook/">GUESTBOOK</a></span>
+          <span><a title="关于作者" class="" href="/about/">ABOUT</a></span>
+  	      <span><a title="私人图书馆" class="" href="/books/" target="_blank">BOOKS</a></span>
+          <span><a title="RSS订阅" class="" href="/feed/" target="_blank">RSS</a></span>
+          <hr>
 
-	<!-- Html Elements for Search -->
-	<div id="search-container">
-	<input type="text" id="search-input" placeholder="search...">
-	<ul id="results-container"></ul>
-	</div>
+        	<!-- Html Elements for Search -->
+        	<div id="search-container">
+          	<input type="text" id="search-input" placeholder="search...">
+          	<ul id="results-container"></ul>
+        	</div>
 
-	<!-- Script pointing to jekyll-search.js -->
-	<script src="{{ site.baseurl }}/media/js/jekyll-search.js" type="text/javascript"></script>	
-	<script type="text/javascript">
-	      SimpleJekyllSearch({
-		searchInput: document.getElementById('search-input'),
-		resultsContainer: document.getElementById('results-container'),
-		json: '{{ site.baseurl }}/search.json',
-		searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
-		noResultsText: 'No results found',
-		limit: 10,
-		fuzzy: false,
-		exclude: ['Welcome']
-	      })
-	</script>
-
-		
         </nav>
         <article class="content">
-        <!-- Place this div where you would like the results to be displayed. -->
-        <!--<div id="st-results-container"></div>-->
         {{ content }}
         </article>
       </div>
 	  
 	  <div class="btn_top" title="Back to Top" style="position: fixed; bottom: 100px; right: 100px; cursor: pointer;"><a id="dynamic-to-top" href="javascript:scrollTopRun();" target="_self" title="Back to Top"><img src="/assets/album/back_top.png" ></a></div>
 
-	  
-    <footer><!--footer settings-->
+    <!--footer settings-->	  
+    <footer>
       <p><small>
             Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>&<a href="http://github.com/" target="_blank" title="项目主页">GitHub</a>
              | Copyright©{{site.time | date:"%Y"}} <a href="http://{{ site.website-url }}/" target="_blank">{{ site.author }}</a> 
@@ -160,5 +124,20 @@
             format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
             return format;
                 }
+  </script>
+
+  <!-- Script pointing to jekyll-search.js -->
+  <script src="{{ site.baseurl }}/media/js/jekyll-search.js" type="text/javascript"></script> 
+  <script type="text/javascript">
+        SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('results-container'),
+    json: '{{ site.baseurl }}/search.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+        })
   </script>
 </html>
