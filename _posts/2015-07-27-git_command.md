@@ -216,7 +216,8 @@ git push origin :refs/tags/{tagname}     #删除远程标签
 
 <pre>
 git config user.name "xx"               #设置 commit 的用户
-git config user.email.com "xx@xx.com"   #设置 commit 的邮箱
+git config user.email "xx@xx.com"       #设置 commit 的邮箱
+git commit --amend --author "Stach Tan <achst@qq.com>"    #修改上次提交的用户信息
 git config format.pretty oneline        #显示历史记录时，每个提交的信息只显示一行
 </pre>
 
