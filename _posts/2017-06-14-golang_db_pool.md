@@ -101,10 +101,10 @@ func (p *SqlConnPool) Close() error {
 
 func (p *SqlConnPool) Query(queryStr string, args ...interface{}) ([]map[string]interface{}, error) {
 	rows, err := p.SqlDB.Query(queryStr, args...)
-	defer rows.Close()
 	if err != nil {
 		return []map[string]interface{}{}, err
 	}
+	defer rows.Close()
 	// 返回属性字典
 	columns, err := mysqlinternals.Columns(rows)
 	// 获取字段类型
@@ -185,10 +185,10 @@ func (t *SqlConnTransaction) Commit() error {
 
 func (t *SqlConnTransaction) Query(queryStr string, args ...interface{}) ([]map[string]interface{}, error) {
 	rows, err := t.SqlTx.Query(queryStr, args...)
-	defer rows.Close()
 	if err != nil {
 		return []map[string]interface{}{}, err
 	}
+	defer rows.Close()
 	// 返回属性字典
 	columns, err := mysqlinternals.Columns(rows)
 	// 获取字段类型
