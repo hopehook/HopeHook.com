@@ -19,7 +19,7 @@
 {% endif %}
 -->
 
-<!-- gitment BEGIN -->
+<!-- gitment BEGIN 
 <div id="gitment-container"></div>
 <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
@@ -34,7 +34,7 @@ var gitment = new Gitment({
 })
 gitment.render('gitment-container')
 </script>
-<!-- gitment END -->
+gitment END -->
 
 <!-- JiaThis Button BEGIN -->
 <script type="text/javascript" >
