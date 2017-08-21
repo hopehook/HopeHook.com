@@ -8,7 +8,7 @@ tags: golang
 ---
 
 <br/>
-### 写法1
+#### 写法一
 <br/>
 点评: 最常规，稳妥的写法，但是事务的处理痕迹太多
 <br/>
@@ -46,7 +46,7 @@ func DoSomething() (err error) {
 
 
 <br/>
-### 写法2
+#### 写法二
 <br/>
 点评: 精简了很多，但事务的作用域是到函数结束，不方便限制作用范围
 <br/>
@@ -82,7 +82,7 @@ func DoSomething() (err error) {
 </pre>
 
 <br/>
-### 写法3
+####  写法三
 <br/>
 点评: 很高端的写法，可读性稍微差一点
 <br/>
@@ -124,7 +124,7 @@ func DoSomething() error {
 </pre>
 
 <br/>
-### 我的写法
+#### 我的写法
 <br/>
 点评: 咋看起来没什么特点，但是简洁，安全，作用范围可控
 <br/>
@@ -148,7 +148,7 @@ func DoSomething() (err error) {
 </pre>
 
 <br/>
-### 循环场景的写法
+#### 循环场景
 <br/>
 1 小事务  // 每次循环提交一次
 <br/>
@@ -202,7 +202,7 @@ func DoSomething() (err error) {
 </pre>
 <br/>
 
-参考: 
+参考链接: 
 <br/>
 [https://stackoverflow.com/questions/16184238/database-sql-tx-detecting-commit-or-rollback](https://stackoverflow.com/questions/16184238/database-sql-tx-detecting-commit-or-rollback)
 
