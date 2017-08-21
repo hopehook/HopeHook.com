@@ -4,7 +4,6 @@ layout: page
 comments: no
 ---
 <p></p>
-## Contact
 
 技术博客/{{ site.name }} : [{{ site.name }}]({{ site.url }})
 
