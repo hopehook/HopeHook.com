@@ -7,11 +7,11 @@ categories: 数据库
 tags: golang
 ---
 
-
+</br>
 ### 写法1
-
+</br>
 点评: 最常规，稳妥的写法，但是事务的处理痕迹太多
-
+</br>
 <pre>
 func DoSomething() (err error) {
     tx, err := db.Begin()
@@ -45,11 +45,11 @@ func DoSomething() (err error) {
 </pre>
 
 
-
+</br>
 ### 写法2
-
+</br>
 点评: 精简了很多，但事务的作用域是到函数结束，不方便限制作用范围
-
+</br>
 <pre>
 func DoSomething() (err error) {
     tx, err := db.Begin()
@@ -81,11 +81,11 @@ func DoSomething() (err error) {
 }
 </pre>
 
-
+</br>
 ### 写法3
-
+</br>
 点评: 很高端的写法，可读性稍微差一点
-
+</br>
 <pre>
 func Transact(db *sql.DB, txFunc func(*sql.Tx) error) (err error) {
     tx, err := db.Begin()
@@ -123,11 +123,11 @@ func DoSomething() error {
 }
 </pre>
 
-
+</br>
 ### 我的写法
-
+</br>
 点评: 咋看起来没什么特点，但是简洁，安全，作用范围可控
-
+</br>
 <pre>
 func DoSomething() (err error) {
     tx, _ := db.Begin()
@@ -147,11 +147,11 @@ func DoSomething() (err error) {
 }
 </pre>
 
-
+</br>
 ### 循环场景的写法
-
+</br>
 1 小事务  // 每次循环提交一次
-
+</br>
 <pre>
 func DoSomething() (err error) {
     tx, _ := db.Begin()
@@ -178,9 +178,9 @@ for {
 }
 </pre>
 
-
+</br>
 2 大事务 // 批量提交
-
+</br>
 <pre>
 func DoSomething() (err error) {
     tx, _ := db.Begin()
@@ -203,7 +203,7 @@ func DoSomething() (err error) {
 
 
 参考: 
-https://stackoverflow.com/questions/16184238/database-sql-tx-detecting-commit-or-rollback
+[https://stackoverflow.com/questions/16184238/database-sql-tx-detecting-commit-or-rollback](https://stackoverflow.com/questions/16184238/database-sql-tx-detecting-commit-or-rollback)
 
 
 
