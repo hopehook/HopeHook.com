@@ -8,10 +8,11 @@ tags: golang
 ---
 
 <br/>
+<p/>
 #### 写法一
-<br/>
+<p/>
 点评: 最常规，稳妥的写法，但是事务的处理痕迹太多
-<br/>
+<p/>
 <pre>
 func DoSomething() (err error) {
     tx, err := db.Begin()
@@ -44,12 +45,12 @@ func DoSomething() (err error) {
 }
 </pre>
 
-
+<br/>
 <br/>
 #### 写法二
-<br/>
+<p/>
 点评: 精简了很多，但事务的作用域是到函数结束，不方便限制作用范围
-<br/>
+<p/>
 <pre>
 func DoSomething() (err error) {
     tx, err := db.Begin()
@@ -82,10 +83,11 @@ func DoSomething() (err error) {
 </pre>
 
 <br/>
+<p/>
 ####  写法三
-<br/>
+<p/>
 点评: 很高端的写法，可读性稍微差一点
-<br/>
+<p/>
 <pre>
 func Transact(db *sql.DB, txFunc func(*sql.Tx) error) (err error) {
     tx, err := db.Begin()
@@ -124,10 +126,11 @@ func DoSomething() error {
 </pre>
 
 <br/>
+<p/>
 #### 我的写法
-<br/>
+<p/>
 点评: 咋看起来没什么特点，但是简洁，安全，作用范围可控
-<br/>
+<p/>
 <pre>
 func DoSomething() (err error) {
     tx, _ := db.Begin()
@@ -148,10 +151,11 @@ func DoSomething() (err error) {
 </pre>
 
 <br/>
+<p/>
 #### 循环场景
-<br/>
+<p/>
 1 小事务  // 每次循环提交一次
-<br/>
+<p/>
 <pre>
 func DoSomething() (err error) {
     tx, _ := db.Begin()
@@ -178,9 +182,10 @@ for {
 }
 </pre>
 
-<br/>
+<p/>
+<p/>
 2 大事务 // 批量提交
-<br/>
+<p/>
 <pre>
 func DoSomething() (err error) {
     tx, _ := db.Begin()
@@ -201,6 +206,7 @@ func DoSomething() (err error) {
 }
 </pre>
 <br/>
+<p/>
 
 参考链接: 
 <br/>
