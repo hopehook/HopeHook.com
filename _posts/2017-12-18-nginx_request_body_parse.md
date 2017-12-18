@@ -165,16 +165,16 @@ void unescape(unsigned char* dst, unsigned char* src, unsigned int src_size)
 {
     while (src_size)
     {
-        if (*src == '\\' && *(src+1) == 'x')
+        if (\*src == '\\' && \*(src+1) == 'x')
         {
-            unsigned char high_4_bit = (hexToDec(*(src+2))) << 4;  // xxxx 0000
-            unsigned char low_4_bit = (hexToDec(*(src+3))) & 0xf;  // 0000 xxxx
-            *dst++ = high_4_bit + low_4_bit;
+            unsigned char high_4_bit = (hexToDec(\*(src+2))) << 4;
+            unsigned char low_4_bit = (hexToDec(\*(src+3))) & 0xf;
+            \*dst++ = high_4_bit + low_4_bit;
             src += 4;
             src_size -= 4;
         } else
         {
-            *dst++ = *src++;
+            \*dst++ = \*src++;
             src_size--;
         }
     }
@@ -189,7 +189,6 @@ void main()
     printf("%s\n", dst);
 }
 </pre>
-<br></br>
 
 * 题外话
 
