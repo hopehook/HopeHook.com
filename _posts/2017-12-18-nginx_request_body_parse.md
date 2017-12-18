@@ -143,52 +143,6 @@ puts new_request_body
 }
 </pre>
 
-* 解析处理的 c 代码版本
-
-<pre>
-#include <stdio.h>
-#include <string.h>
-
-unsigned int hexToDec(unsigned char ch)
-{
-    // "0123456789ABCDEF"
-    if (ch >= 'A' && ch <= 'F')
-    {
-        return ch - 'A' + 10;
-    } else
-    {
-        return ch - '0';
-    }
-}
-
-void unescape(unsigned char* dst, unsigned char* src, unsigned int src_size)
-{
-    while (src_size)
-    {
-        if (\*src == '\\' && \*(src+1) == 'x')
-        {
-            unsigned char high_4_bit = (hexToDec(\*(src+2))) << 4;
-            unsigned char low_4_bit = (hexToDec(\*(src+3))) & 0xf;
-            \*dst++ = high_4_bit + low_4_bit;
-            src += 4;
-            src_size -= 4;
-        } else
-        {
-            \*dst++ = \*src++;
-            src_size--;
-        }
-    }
-}
-
-void main()
-{
-    unsigned char src[] = "{\\x22id\\x22:319,\\x22title\\x22:\\x22\\xE4\\xBD\\xB3\\xE6\\xB2\\x9B\\xE9\\x98\\xB3\\xE5\\x85\\x89\\xE9\\x87\\x91\\xE5\\xA5\\x87\\xE5\\xBC\\x82\\xE6\\x9E\\x9C\\xE7\\x8E\\x8B\\xEF\\xBC\\x8822\\xE6\\x9E\\x9A\\xEF\\xBC\\x89\\x22,\\x22intro\\x22:\\x22\\xE8\\xB6\\x85\\xE9\\xAB\\x98\\xE8\\x90\\xA5\\xE5\\x85\\xBB\\xE8\\x83\\xBD\\xE9\\x87\\x8F\\xE6\\x9E\\x9C\\xEF\\xBC\\x8C\\xE4\\xB8\\x80\\xE5\\x8F\\xA3\\xE4\\xB8\\x8B\\xE5\\x8E\\xBB\\xE6\\xBB\\xA1\\xE6\\x98\\xAF\\xE7\\xBB\\xB4C\\x22,\\x22supplier_id\\x22:23,\\x22skus\\x22:[{\\x22create_time\\x22:\\x222017-08-09 22:09:32\\x22,\\x22id\\x22:506,\\x22item_id\\x22:319,\\x22item_type\\x22:\\x22common\\x22,\\x22price\\x22:21800,\\x22project_type\\x22:\\x22find\\x22,\\x22sku_title\\x22:\\x22\\x22,\\x22update_time\\x22:\\x222017-08-09 22:09:32\\x22}],\\x22images\\x22:[\\x22GoodsCommodity/5b3b8558-7d0c-11e7-95d6-00163e0a37a7\\x22],\\x22project_type\\x22:\\x22find\\x22}";
-    unsigned char dst[512];
-    memset(dst, 0, sizeof(dst));
-    unescape(dst, src, sizeof(src));
-    printf("%s\n", dst);
-}
-</pre>
 
 * 题外话
 
