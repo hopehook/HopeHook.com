@@ -7,30 +7,30 @@ categories: 经验
 tags: 经验
 ---
 
-<br/>
+
 #### 一 实验材料
-<br/>
+
 1 外部环境
-<br/>
+
 * amd64主机
-<br/>
+
 * Windows x64
-<br/>
+
 * Oracle VM VirtualBox
 
-<br/>
+
 2 实验环境   # 文章最后有下载链接
-<br/>
+
 * VirtualBox的4个虚拟机debian x64
-<br/>
+
 * mysql-proxy(Atlas)
-<br/>
+
 * mha
 
 
-<br/>
+
 #### 二 实验步骤
-<br/>
+
 1 确保hosts和hostname配置正确
 
 1.1 每台主机都相同(主机：debtest1, debtest2, debtest3, debtest4)
@@ -47,14 +47,14 @@ root@debtest1:~/.ssh# cat /etc/hosts
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 </pre>
-<br/>
+
 1.2 按照实际情况设定主机名，重启
 
 root@debtest1:~/.ssh# cat /etc/hostname
 <pre>
 debtest1
 </pre>
-<br/>
+
 2 使用ssh-keygen工具生成统一公私钥对，并同步到所有机器。测试公私钥验证访问
 
 2.1 使用ssh-keygen工具生成统一公私钥对(主机：debtest1)
@@ -64,15 +64,15 @@ ssh-keygen -t rsa
 cd ~/.ssh
 
 cat id_rsa.pub authorized_keys
-<br/>
+
 2.2 同步到所有机器
 
 scp ./* root@debtest2:/root/.ssh/
 
 scp ./* root@debtest3:/root/.ssh/
 
-scp ./* root@debtest4:/root/.ssh/ 
-<br/>
+scp ./* root@debtest4:/root/.ssh/
+
 2.3 每台主机上测试公私钥验证访问（必须要手动访问一次，在相应主机上产生无密码ssh访问记录）
 
 ssh debtest1
@@ -82,7 +82,7 @@ ssh debtest2
 ssh debtest3
 
 ssh debtest4
-<br/>
+
 3.规划节点用户和ip配置
 
 3.1 规划
@@ -93,13 +93,13 @@ ssh debtest4
 192.168.56.16   debtest4 --> mysql3(slave)  &  mha node
 192.168.56.19   vip
 </pre>
-<br/>
+
 3.2 定好虚拟ip后别忘了在当前的主库上添加虚拟ip    <font color="red"># 每次重启都需要操作</font>
 
 ip addr add 192.168.56.19/24 dev eth0
 
 \# 删除虚拟ip的命令 ip addr del 192.168.56.19/24 dev eth0
-<br/>
+
 4 数据库主从关系配置
 
 4.1 配置my.cnf
@@ -112,7 +112,7 @@ binlog-do-db=test  #这里设置需要在主服务器记录日志的数据库，
 binlog-ignore-db=mysql #这里设置在主服务器上不记度日志的数据库
 expire_logs_days=10
 </pre>
-<br/>
+
 4.2 进入mysql客户端，执行以下命令     <font color="red"># 每次重启都需要操作</font>
 
 主数据库(主机：debtest2)
@@ -120,7 +120,7 @@ expire_logs_days=10
 RESET MASTER;
 STOP SLAVE;
 RESET MASTER;
-<br/>
+
 
 从数据库(主机：debtest3, debtest4)
 
@@ -136,7 +136,7 @@ master_log_pos=107;
 
 START SLAVE;
 SHOW SLAVE STATUS;
-<br/>
+
 5 安装mha
 
 5.1 在全部节点上安装mha node包和其依赖包(主机：debtest1, debtest2, debtest3, debtest4)
@@ -145,7 +145,7 @@ apt-get install libdbd-mysql-perl
 
 dpkg -i mha4mysql-node_0.53_all.deb
 
-<br/>
+
 5.2 仅需要在mha manager节点上安装mha manager包及其依赖包(主机：debtest1)
 
 apt-get install libdbd-mysql-perl
@@ -158,7 +158,7 @@ apt-get install libparallel-forkmanager-perl
 
 dpkg -i mha4mysql-manager_0.53_all.deb
 
-<br/>
+
 
 6 建立配置文件目录，编辑mha必要的三个文件，一个配置文件，2个虚拟ip管理脚本(主机：debtest1)
 
@@ -166,7 +166,7 @@ master_ip_online_change 和 master_ip_failover 一模一样
 
 mha_manager.cnf
 
-<br/>
+
 7 测试和启动mha(主机：debtest1)
 
 7.1 可以尝试验证一下配置是否成功
@@ -174,14 +174,14 @@ mha_manager.cnf
 masterha_check_ssh --conf=/root/mha_base/mha_manager.cnf
 masterha_check_repl --conf=/root/mha_base/mha_manager.cnf
 </pre>
-<br/>
+
 
 7.2 在manager节点启动mha服务,然后观察日志,并尝试关闭当前主库,注意观察日志,主要看失效发现,日志检测,ip漂移和角色切换过程     <font color="red"># 每次重启都需要操作</font>
 
-nohup /usr/bin/masterha_manager --conf=/root/mha_base/mha_manager.cnf --ignore_last_failover  < /dev/null > /root/mha_base/manager.log 
+nohup /usr/bin/masterha_manager --conf=/root/mha_base/mha_manager.cnf --ignore_last_failover  < /dev/null > /root/mha_base/manager.log
 2>&1 &
 
-<br/>
+
 8 mysql-proxy(Atlas)
 
 8.1 修改Atlas的配置文件test.cnf
@@ -203,35 +203,35 @@ proxy-address = 0.0.0.0:4040
 admin-address = 0.0.0.0:4041
 </pre>
 
-<br/>
+
 8.2 启动Atlas      <font color="red"># 每次重启都需要操作</font>
 
 ./mysql-proxyd test start
 
-<br/>
+
 8.3 进入Atlas工作界面，通过Atlas来执行sql语句，自动分离读写操作
 
 mysql -u192.168.56.14 -P4040 -umha -hmha
 
-<br/>
+
 #### 三 实验辅助手段及遇到的坑
-<br/>
+
 1 破解debian root密码
 
 http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 
-<br/>
+
 2 克隆虚拟机
 
 目的：利用debtest3克隆一个debtest4，增加实验需要的节点
 
-<br/>
+
 3 设置虚拟机为静态IP
 
 目的：确保每次重启虚拟机，IP地址都是固定的，便于以后的实验。
 
 
-<br/>
+
 4 Virtual Box网卡配置
 
 网卡一: host only
@@ -246,10 +246,10 @@ http://jingyan.baidu.com/article/fec7a1e5f0ea281190b4e7bb.html
 虚拟机内部可以互相ping通;
 虚拟机可以上互联网
 
-<br/>
+
 5 停止master上mysql 没有自动转移 ，manager.log 出现错误
 
-[error][/usr/local/share/perl5/MHA/ManagerUtil.pm, ln178] Got ERROR: Use of uninitialized value $msg in scalar chomp at 
+[error][/usr/local/share/perl5/MHA/ManagerUtil.pm, ln178] Got ERROR: Use of uninitialized value $msg in scalar chomp at
 /usr/local/share/perl5/MHA/ManagerConst.pm line 90.
 
 这是一个bug，解决方法：
@@ -260,32 +260,32 @@ $msg = "" unless($msg);
 
 
 
-<br/>
+
 #### 四 资源下载及附件
-<br/>
+
 1 [实验环境下载链接](http://pan.baidu.com/s/1i5DehMX)
 
 说明：
 内含所有虚拟机，所有配置都已经执行过，debtest1中/root/tmp/目录下有Atlas和mha的安装包
 
-<br/>
+
 (1) 所有主机的root密码
 
 123
 
-<br/>
+
 (2) 所有数据库的root密码
 
 123
 
-<br/>
+
 (3) 所有数据库的其他账户
 
 mha mha
 
 repl repl
 
-<br/>
+
 2 mha_manager.cnf
 
 <pre>
