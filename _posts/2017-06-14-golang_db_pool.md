@@ -8,37 +8,37 @@ tags: golang
 ---
 
 分享一下 golang 实现的 redis 和 mysql 连接池，可以在项目中直接引用连接池句柄，调用对应的方法。 
-<br/>
-<br/>
+
+
 #### 举个栗子：
-<p></p>
+
 1 mysql 连接池的使用
-<p></p>
+
 （1） 在项目子目录放置 mysql.go
-<p></p>
+
 （2）在需要调用的地方导入连接池句柄 DB
-<p></p>
+
 （3）调用 DB.Query()
-<p></p>
+
  
 2 redis 连接池的使用
-<p></p>
+
 （1）在项目子目录放置 redis.go
-<p></p>
+
 （2）在需要调用的地方导入连接池句柄 Cache
-<p></p>
+
 （3）调用 Cache.SetString (“test_key”, “test_value”)
-<br/>
-<br/>
+
+
 #### 最新代码地址：
-<p></p>
+
 [https://github.com/hopehook/golang-db](https://github.com/hopehook/golang-db)
-<br/>
-<br/>
+
+
 #### 附件:
-<p></p>
+
 1 mysql 连接池代码
-<p></p>
+
 <pre>
 package lib
 
@@ -279,9 +279,9 @@ func bytes2RealType(src []byte, columnType string) interface{} {
 	return result
 }
 </pre>
-<br/>
+
 2 redis 连接池代码
-<p></p>
+
 <pre>
 package lib
 

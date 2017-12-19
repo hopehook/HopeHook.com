@@ -19,11 +19,11 @@ tags: 经验
 * Oracle VM VirtualBox
 
 
-2 实验环境   # 文章最后有下载链接
+2 实验环境   (文章最后有下载链接)
 
 * VirtualBox的4个虚拟机debian x64
 
-* mysql-proxy(Atlas)
+* mysql-proxy (Atlas)
 
 * mha
 

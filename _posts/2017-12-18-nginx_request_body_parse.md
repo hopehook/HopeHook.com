@@ -25,12 +25,11 @@ nginx 在获取 post 数据时候，request_body 如果是中文，日志内容�
 
 #### 具体方法
 
-思路一可以参考 http://www.jianshu.com/p/8f8c2b5ca2d1 ，可以知道 nginx 到底做了些什么，
+思路一可以参考 <http://www.jianshu.com/p/8f8c2b5ca2d1> ，可以知道 nginx 到底做了些什么，
 这个不是本文重点，直接跳过，我们看看思路二。
 
 从思路一得到启发，既然 nginx 遇到中文字符，会处理成 \x22 这样的16进制内容。
 那么我们只要遇到 \x22 这种形式的内容，翻译回来即可。
-
 
 * nginx 转义处理的代码片段
 

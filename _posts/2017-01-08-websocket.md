@@ -7,11 +7,11 @@ categories: 计算机原理
 tags: 协议
 ---
 
-<br/>
+
 #### 一 实验代码
-<br/>
+
 client.html
-<br/>
+
 <pre>
 <html>
     <head>
@@ -50,9 +50,9 @@ client.html
 </html>
 </pre>
 
-<br/>
+
 websocket_server.go
-<br/>
+
 <pre>
 package main
 
@@ -342,113 +342,113 @@ func formatCloseMessage(closeCode int, text string) []byte {
 > conn, _, err := w.(http.Hijacker).Hijack()
 > </pre>
 
-<br/>
+
 #### 二 websocket协议阅读要点记录
 * [RFC协议中文版](https://github.com/zhangkaitao/websocket-protocol)
 * [RFC协议英文版](https://tools.ietf.org/html/rfc6455)
 
-<br/>
+
 1.客户端必须掩码(mask)它发送到服务器的所有帧(更多详细信息请参见 5.3 节)。
-<br/>
+
 2.当收到一个没有掩码的帧时,服务器必须关闭连接。在这种情况下,服务器可能发送一个定义在 7.4.1 节的状态码 1002(协议错误)的 Close 帧。
-<br/>
+
 3.服务器必须不掩码发送到客户端的所有帧。如果客户端检测到掩码的帧,它必须关闭连接。在这种情况下,它可能使用定义在 7.4.1节的状态码 1002(协议错误)。
-<br/>
+
 4.一个没有分片的消息由单个带有 FIN 位设置(5.2 节)和一个非 0 操作码的帧组成。
-<br/>
+
 5.一个分片的消息由单个带有 FIN 位清零(5.2 节)和一个非 0 操作码的帧组成,跟随零个或多个带有 FIN 位清零和操作码设置为 0 的帧,且终止于一个带有 FIN 位设置且 0 操作码的帧。一个分片的消息概念上是等价于单个大的消息,其负载是等价于按顺序串联片段的负载
-<br/>
+
 6.控制帧(参见 5.5 节)可能被注入到一个分片消息的中间。控制帧本身必须不被分割。
-<br/>
+
 7.消息分片必须按发送者发送顺序交付给收件人。
-<br/>
+
 8.一个消息的所有分片是相同类型,以第一个片段的操作码设置。
-<br/>
+
 9.关闭帧可以包含内容体(“帧的“应用数据”部分)指示一个关闭的原因,例如端点关闭了、端点收到的帧太大、或端点收到的帧不符合端点期望的格式。如果有内容体,内容体的头两个字节必须是 2 字节的无符号整数(按网络字节顺序)代表一个在 7.4 节的/code/值定义的状态码。跟着 2 字节的整数,内容体可以包含 UTF-8 编码的/reason/值,本规范没有定义它的解释。数据不必是人类可读的但可能对调试或传递打开连接的脚本相关的信息是有用的。由于数据不保证人类可读,客户端必须不把它显示给最终用户。
-<br/>
+
 10.在应用发送关闭帧之后,必须不发送任何更多的数据帧。
-<br/>
+
 11.发送并接收一个关闭消息后,一个端点认为 WebSocket 连接关闭了且必须关闭底层的 TCP 连接。服务器必须立即关闭底层 TCP 连接,客户端应该等待服务器关闭连接但可能在发送和接收一个关闭消息之后的任何时候关闭连接,例如,如果它没有在一个合理的时间周期内接收到服务器的 TCP 关闭。
-<br/>
+
 12.一个端点可以在连接建立之后并在连接关闭之前的任何时候发送一个 Ping 帧。注意:一个 Ping 即可以充当一个 keepalive,也可以作为验证远程端点仍可响应
 
-<br/>
+
 #### 三 小经验
 1.浏览器目前没有提供js接口发送ping帧,浏览器可能单向的发送pong帧(可以利用文本帧当作ping帧来使用)
-<br/>
+
 2.服务端给浏览器发送ping帧,浏览器会尽快响应同样负载数据的pong帧
-<br/>
+
 3.浏览器发送的websocket负载数据太大的时候会分片
-<br/>
+
 4.不管是浏览器,还是服务器,收到close帧都回复同样内容的close帧,然后做后续的操作
 
-<br/>
+
 #### 四 连接断开情况分析
 * server:s
 * browser:b
-<br/>
-<br/>
+
+
 **情况0**
-<br/>
+
 动作:b发s连接关闭帧,s无操作
-<br/>
+
 现象:
-<br/>
+
 0) b过很久之后触发了onclose
-<br/>
+
 1) s写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34508: write: broken pipe
-<br/>
+
 2) s读取: *errors.errorString: EOF
-<br/>
-<br/>
+
+
 **情况1**
-<br/>
+
 动作:b发s连接关闭帧,s回应连接关闭帧
-<br/>
+
 现象:
-<br/>
+
 0) b马上触发了onclose
-<br/>
+
 1) s写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34482: write: broken pipe
-<br/>
+
 2) s读取: *errors.errorString: EOF
-<br/>
-<br/>
+
+
 **情况2**
-<br/>
+
 动作:b发s连接关闭帧,s回应连接关闭帧,s关闭tcp socket
-<br/>
+
 现象:
-<br/>
+
 0) b马上触发了onclose
-<br/>
+
 1) s写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
-<br/>
+
 2) s读取: *net.OpError: read tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
-<br/>
-<br/>
+
+
 **情况3**
-<br/>
+
 动作:s发b连接关闭帧,b无操作
-<br/>
+
 现象:
-<br/>
+
 0) b马上回应相同数据的关闭帧, 接着触发onclose
-<br/>
+
 1) s写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34482: write: broken pipe
-<br/>
+
 2) s读取: *errors.errorString: EOF
-<br/>
-<br/>
+
+
 **情况4**
-<br/>
+
 动作:s发b连接关闭帧,s关闭tcp socket
-<br/>
+
 现象:
-<br/>
+
 0) b马上触发了onclose
-<br/>
+
 1) s写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34542: use of closed network connection
-<br/>
+
 2) s读取: *net.OpError: tcp 127.0.0.1:8000->127.0.0.1:34542: use of closed network connection
 

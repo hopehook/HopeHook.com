@@ -6,24 +6,25 @@ thread: 2017-06-13-python_mysql_pool.md
 categories: 数据库
 tags: python
 ---
-<p></p>
+
+
 #### 背景
 
-<p></p>
+
 网上看了一圈，没有发现顺手的 python mysql 连接池，甚至很多都是错误的实现。于是自己写了一个，经过了生产环境的考验，特地分享出来。
-<p></p>
+
 也许你有更好的实现方式，而我却不知道，欢迎在评论区留言交流 :)
-<br/>
-<br/>
+
+
 #### 使用方法
-<p></p>
+
 1 安装 mysql-connector-python 库
-<p></p>
+
 2 通过“数据库连接池句柄”调用对应的方法
-<br/>
-<br/>
+
+
 #### 源码
-<p></p>
+
 1 setting.py
 
 <pre>
@@ -68,7 +69,7 @@ MYSQL_POOL_CONFIG = {
 </pre>
 
 
-<br/>
+
 2 mysqllib.py
 
 <pre>
