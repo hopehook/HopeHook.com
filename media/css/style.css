@@ -27,8 +27,7 @@ blockquote p{margin:0;padding:.5em 0;}
 pre{
   background-color: #F0EFEF;
   padding: 0 1em;
-  font-family: Monaco,Menlo,Consolas,"Lucida Console","Courier New",monospace,
-  "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
+  font-family: "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
   font-size:.92857em;
   line-height: 1.6;
   display: block;
