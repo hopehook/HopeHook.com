@@ -13,18 +13,14 @@ tags: 经验
 1 外部环境
 
 * amd64主机
-
 * Windows x64
-
 * Oracle VM VirtualBox
 
 
 2 实验环境   (文章最后有下载链接)
 
 * VirtualBox的4个虚拟机debian x64
-
 * mysql-proxy (Atlas)
-
 * mha
 
 
