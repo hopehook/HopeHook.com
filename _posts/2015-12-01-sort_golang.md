@@ -207,7 +207,7 @@ func InsertSort(list []int) {
     var temp, i, j int
     for i = 1; i < len(list); i++ {
         temp = list[i]
-        for j = i - 1; j >= 0 && temp < list[j]; j-- {
+        for j = i - 1; j >= 0 && list[j] > temp; j-- {
             list[j+1] = list[j]
         }
         list[j+1] = temp
