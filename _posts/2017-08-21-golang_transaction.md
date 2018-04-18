@@ -10,7 +10,7 @@ tags: golang
 
 #### 写法一
 
-点评: 最常规，稳妥的写法，但是事务的处理痕迹太多
+最常规、稳妥的写法，但是事务的处理痕迹比较多
 
 <pre>
 func DoSomething() (err error) {
@@ -48,7 +48,7 @@ func DoSomething() (err error) {
 
 #### 写法二
 
-点评: 精简了很多，但事务的作用域是到函数结束，不方便限制作用范围
+精简了很多，但事务的作用域是到函数结束，不方便限制作用范围
 
 <pre>
 func DoSomething() (err error) {
@@ -85,7 +85,7 @@ func DoSomething() (err error) {
 
 #### 写法三
 
-点评: 很高端的写法，可读性稍微差一点
+很高级的写法，可读性稍微差一点
 
 <pre>
 func Transact(db *sql.DB, txFunc func(*sql.Tx) error) (err error) {
@@ -127,7 +127,7 @@ func DoSomething() error {
 
 #### 我的写法
 
-点评: 咋看起来没什么特点，但是简洁，安全，作用范围可控
+咋看起来没什么特点，但是简洁，安全，作用范围可控
 
 <pre>
 func DoSomething() (err error) {
