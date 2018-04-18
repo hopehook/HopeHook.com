@@ -349,7 +349,6 @@ func formatCloseMessage(closeCode int, text string) []byte {
 * 最新代码见: [点我查看代码，仅供学习](https://github.com/hopehook/go-lab/blob/master/4.websocket)
 
   * websocket_server.go: websocket 基于 tcp socket 的粗糙实现, 只提供 websocket 服务
-
   * websocket_http_server.go: 把该实现移植到了 http socket 环境(也可以是某个 golang web 框架), 实现了 websocket http 利用同一个端口，同时对> 外服务。原理：
 
 
@@ -408,11 +407,9 @@ func formatCloseMessage(closeCode int, text string) []byte {
 
 现象:
 
-1) b 过很久之后触发了 onclose
-
-2) s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34508: write: broken pipe
-
-3) s 读取: *errors.errorString: EOF
+* b 过很久之后触发了 onclose
+* s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34508: write: broken pipe
+* s 读取: *errors.errorString: EOF
 
 
 **情况 2**
@@ -421,11 +418,9 @@ func formatCloseMessage(closeCode int, text string) []byte {
 
 现象:
 
-1) b 马上触发了 onclose
-
-2) s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34482: write: broken pipe
-
-3) s 读取: *errors.errorString: EOF
+* b 马上触发了 onclose
+* s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34482: write: broken pipe
+* s 读取: *errors.errorString: EOF
 
 
 **情况 3**
@@ -434,11 +429,9 @@ func formatCloseMessage(closeCode int, text string) []byte {
 
 现象:
 
-1) b 马上触发了 onclose
-
-2) s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
-
-3) s 读取: *net.OpError: read tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
+* b 马上触发了 onclose
+* s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
+* s 读取: *net.OpError: read tcp 127.0.0.1:8000->127.0.0.1:34502: use of closed network connection
 
 
 **情况 4**
@@ -447,11 +440,9 @@ func formatCloseMessage(closeCode int, text string) []byte {
 
 现象:
 
-1) b 马上回应相同数据的关闭帧, 接着触发 onclose
-
-2) s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34482: write: broken pipe
-
-3) s 读取: *errors.errorString: EOF
+* b 马上回应相同数据的关闭帧, 接着触发 onclose
+* s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34482: write: broken pipe
+* s 读取: *errors.errorString: EOF
 
 
 **情况 5**
@@ -460,9 +451,7 @@ func formatCloseMessage(closeCode int, text string) []byte {
 
 现象:
 
-1) b 马上触发了onclose
-
-2) s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34542: use of closed network connection
-
-3) s 读取: *net.OpError: tcp 127.0.0.1:8000->127.0.0.1:34542: use of closed network connection
+* b 马上触发了onclose
+* s 写入: *net.OpError: write tcp 127.0.0.1:8000->127.0.0.1:34542: use of closed network connection
+* s 读取: *net.OpError: tcp 127.0.0.1:8000->127.0.0.1:34542: use of closed network connection
 
