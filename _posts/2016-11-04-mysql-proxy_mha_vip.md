@@ -1,7 +1,7 @@
 ---
 date: 2016-11-04
 layout: post
-title: Mysql读写分离实践 mysql-proxy(Atlas) + mha + vip
+title: Mysql 读写分离实践 mysql-proxy(Atlas) + mha + vip
 thread: 2016-11-04-mysql-proxy_mha_vip.md
 categories: 经验
 tags: 经验

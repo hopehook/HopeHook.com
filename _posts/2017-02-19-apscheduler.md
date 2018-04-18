@@ -1,7 +1,7 @@
 ---
 date: 2017-02-19
 layout: post
-title: apscheduler定时任务器的使用（tornado场景）
+title: apscheduler 定时任务器的使用（tornado 场景）
 thread: 2017-02-19-apscheduler.md
 categories: python
 tags: apscheduler

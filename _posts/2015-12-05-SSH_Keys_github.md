@@ -1,7 +1,7 @@
 ---
 date: 2015-12-05
 layout: post
-title: SSH keys无密码访问github
+title: SSH keys 无密码访问 github
 thread: 2015-12-05-SSH_Keys_github.md
 categories: 经验
 tags: github

@@ -1,7 +1,7 @@
 ---
 date: 2014-05-06
 layout: post
-title: Windows系统启动原理
+title: Windows 系统启动原理
 thread: 2015-07-25-disk_and_boot_windows.md
 categories: 计算机原理
 tags: 启动
