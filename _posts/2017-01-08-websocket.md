@@ -15,9 +15,7 @@ tags: 协议
 
 #### 二 实验代码
 
-1. 客户端
-
-* client.html
+* 客户端 client.html
 
 <pre>
 <html>
@@ -58,9 +56,7 @@ tags: 协议
 </pre>
 
 
-2. 服务端
-
-* websocket_server.go
+* 服务端 websocket_server.go
 
 <pre>
 package main
@@ -342,18 +338,19 @@ func formatCloseMessage(closeCode int, text string) []byte {
 }
 </pre>
 
-说明:
-<pre>
-// 可以通过Hijacker拿到http连接下的tcp连接
-// Hijack()之后该连接完全由自己接管
-conn, _, err := w.(http.Hijacker).Hijack()</pre>
+* 说明:
+
+    <pre>
+    // 可以通过Hijacker拿到http连接下的tcp连接
+    // Hijack()之后该连接完全由自己接管
+    conn, _, err := w.(http.Hijacker).Hijack()</pre>
 
 
-最新代码见: [点我查看代码，仅供学习](https://github.com/hopehook/go-lab/blob/master/4.websocket)
+* 最新代码见: [点我查看代码，仅供学习](https://github.com/hopehook/go-lab/blob/master/4.websocket)
 
-websocket_server.go: websocket 基于 tcp socket 的粗糙实现, 只提供 websocket 服务
+  * websocket_server.go: websocket 基于 tcp socket 的粗糙实现, 只提供 websocket 服务
 
-websocket_http_server.go: 把该实现移植到了 http socket 环境(也可以是某个 golang web 框架), 实现了 websocket http 利用同一个端口，同时对> 外服务。原理：
+  * websocket_http_server.go: 把该实现移植到了 http socket 环境(也可以是某个 golang web 框架), 实现了 websocket http 利用同一个端口，同时对> 外服务。原理：
 
 
 
