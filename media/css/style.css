@@ -26,10 +26,10 @@ blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:.5em 0;}
 
 pre, code{
-  background-color: #F0EFEF;
-  color: #4D4D4C;
+  background-color: #f0efef;
+  color: #2b2b2a;
   padding: 0 1em;
-  font-family: "Input Mono","PT Mono",Consolas,Monaco,Menlo,monospace;
+  font-family: Consolas,Monaco,Menlo,"Input Mono","PT Mono",monospace;
   font-size: 12px;
   line-height: 1.6;
   display: block;
