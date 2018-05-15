@@ -14,7 +14,7 @@ tags: golang
 
 1 mysql 连接池的使用
 
-（1） 在项目子目录放置 mysql.go
+（1）在项目子目录放置 mysql.go
 
 （2）在需要调用的地方导入连接池句柄 DB
 

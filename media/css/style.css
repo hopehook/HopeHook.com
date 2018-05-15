@@ -7,9 +7,10 @@ body {
 	word-spacing:1px;
 	margin-left:auto;
 	margin-right:auto;
-	font-family: "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
+	font-family: Lato,"PingFang SC","Microsoft YaHei",sans-serif;
 	color:#000000;
-	background-color:#F7F7F7;}
+	background-color:#F7F7F7;
+}
 
 *{padding:0;border:none;outline:none;}
 a{color:#dd0000;text-decoration:none;}
@@ -24,40 +25,23 @@ blockquote{display:block;text-align:justify;border-left:4px solid #eeeeee;}
 blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:.5em 0;}
 
-pre{
+pre, code{
   background-color: #F0EFEF;
+  color: #4D4D4C;
   padding: 0 1em;
-  font-family: Menlo,Monaco,Consolas,"Lucida Console","Courier New",monospace,
-  "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
+  font-family: "Input Mono","PT Mono",Consolas,Monaco,Menlo,monospace;
   font-size: 12px;
   line-height: 1.6;
   display: block;
   overflow: auto;
   word-wrap: break-word;
-  }
-
-
-
-code {
-  font-family: "Galdeano","Hiragino Sans GB","Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
-  background: #eee;
-  color: #d14;
-  border: 1px solid #d6d6d6;
-  padding: 0 5px;
-  margin: 0 2px;
-  font-size: 105%;
-  white-space: nowrap;
-  text-shadow: 0 1px #fff;
-  -webkit-border-radius: .25em;
-  -webkit-border-radius: .25em;
-  border-radius: .25em;
+  border-radius: 5px;
 }
 
-
-#container{width:600px;margin:2em auto;display:block;padding:0 2em;}
+#container{width:700px;margin:2em auto;display:block;padding:0 2em;}
 .content{font-size:16px;line-height:24px;}
 .content h1{padding:.5em 0;}
-.content img{max-width:600px;display:block;margin:4px auto;-webkit-box-shadow:#999 1px 1px 4px;-moz-box-shadow:#999 1px 1px 4px;box-shadow:#999 1px 1px 4px;}
+.content img{max-width:700px;display:block;margin:4px auto;-webkit-box-shadow:#999 1px 1px 4px;-moz-box-shadow:#999 1px 1px 4px;box-shadow:#999 1px 1px 4px;}
 #tag_cloud{margin-bottom: 1em;}
 #tag_cloud a:hover{color:#333333 !important;text-decoration:none;}
 .listing-item,.listing-seperator{list-style-type:none;}

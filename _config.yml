@@ -6,10 +6,10 @@ name: HopeHook's Blog
 website: HopeHook's House
 author: stach.tan
 email: achst@qq.com
-duoshuo: hopehook
 github: hopehook
 weibo: hopehook
 rouge: true
-safe: true
 paginate: 20
+paginate_path: "page:num"
+plugins: [jekyll-paginate]
 about: "这里是 HopeHook 的个人博客，欢迎你的到来。"

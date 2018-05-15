@@ -7,9 +7,10 @@ categories: 计算机原理
 tags: linux
 ---
 
-<pre>
+
 1 客户端
 
+```
 #include <stdio.h> 
 #include <string.h> 
 #include <sys/socket.h>
@@ -57,11 +58,11 @@ int main( int argc, char * argv[] )
 	close(sockfd);
 	return 0;
 }
-
+```
 
 2 服务端
 
-
+```
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -266,4 +267,4 @@ int main (int argc, char *argv[])
     }
 
 }
-
+```
