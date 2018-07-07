@@ -205,6 +205,7 @@ git push origin --tags        #一次性推送全部尚未推送到远程的本�
 
 git tag -d {tagname}          #删除标签
 git push origin :refs/tags/{tagname}     #删除远程标签
+git push origin --delete tag <tagname>   #删除远程标签
 </pre>
 
 
