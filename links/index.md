@@ -6,8 +6,7 @@ comments: yes
 
 ----
 #### 博客/小站
-* [fengde.online](http://www.fengde.online) - fedel's site
-* [ruanyifeng.com](http://www.ruanyifeng.com/) - 阮一峰的网络日志
+* [jiajunhuang.com](https://jiajunhuang.com/) - fedel's site
 * [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
 * [BookShadow.com](http://bookshadow.com) - 在线疯狂的个人博客
 <br/>
