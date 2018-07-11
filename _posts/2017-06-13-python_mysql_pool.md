@@ -68,7 +68,7 @@ with db.begin() as transaction:
 
 
 
-#### 附件 mysql.py: 连接池实现源码
+#### 附件 mysqllib.py: 连接池实现源码
 
 <pre>
 # coding: utf-8
