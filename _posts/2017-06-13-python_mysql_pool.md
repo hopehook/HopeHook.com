@@ -71,11 +71,11 @@ with db.begin() as transaction:
 #### 附件 mysqllib.py: 连接池实现源码
 
 <pre>
-# coding: utf-8
+# -*- coding:utf-8 -*-
+import logging
 from mysql.connector.pooling import CNX_POOL_MAXSIZE
 from mysql.connector.pooling import MySQLConnectionPool, PooledMySQLConnection
 from mysql.connector import errors
-from mysql.connector.cursor import MySQLCursorBufferedDict
 import threading
 CONNECTION_POOL_LOCK = threading.RLock()
 
@@ -88,11 +88,14 @@ class Pool(MySQLConnectionPool):
         except errors.PoolError:
             # Pool size should be lower or equal to CNX_POOL_MAXSIZE
             if self.pool_size < CNX_POOL_MAXSIZE:
-                with CONNECTION_POOL_LOCK:
+                with threading.Lock():
                     new_pool_size = self.pool_size + 1
-                    self._set_pool_size(new_pool_size)
-                    self._cnx_queue.maxsize = new_pool_size
-                    self.add_connection()
+                    try:
+                        self._set_pool_size(new_pool_size)
+                        self._cnx_queue.maxsize = new_pool_size
+                        self.add_connection()
+                    except Exception as e:
+                        logging.exception(e)
                     return self.connect()
             else:
                 with CONNECTION_POOL_LOCK:
@@ -107,14 +110,14 @@ class Pool(MySQLConnectionPool):
                             raise
                         cnx._pool_config_version = self._config_version
                     return PooledMySQLConnection(self, cnx)
-        except:
+        except Exception:
             raise
 
     def query(self, operation, params=None):
         cnx = cursor = None
         try:
             cnx = self.connect()
-            cursor = cnx.cursor(buffered=True, cursor_class=MySQLCursorBufferedDict)
+            cursor = cnx.cursor(buffered=True, dictionary=True)
             cursor.execute(operation, params)
             data_set = cursor.fetchall()
         except Exception:
@@ -130,7 +133,7 @@ class Pool(MySQLConnectionPool):
         cnx = cursor = None
         try:
             cnx = self.connect()
-            cursor = cnx.cursor(buffered=True, cursor_class=MySQLCursorBufferedDict)
+            cursor = cnx.cursor(buffered=True, dictionary=True)
             cursor.execute(operation, params)
             data_set = cursor.fetchone()
         except Exception:
@@ -208,7 +211,7 @@ class Transaction(object):
         self.cnx = None
         if isinstance(connection, PooledMySQLConnection):
             self.cnx = connection
-            self.cursor = connection.cursor(buffered=True, cursor_class=MySQLCursorBufferedDict)
+            self.cursor = connection.cursor(buffered=True, dictionary=True)
         else:
             raise AttributeError("connection should be a PooledMySQLConnection")
 
@@ -268,4 +271,5 @@ class Transaction(object):
     def close(self):
         self.cursor.close()
         self.cnx.close()
+
 </pre>
