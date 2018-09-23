@@ -150,7 +150,7 @@ func (p *ThriftPoolClient) Call(ctx context.Context, method string, args, result
 		maxBadConnRetries = 2
 	}
 
-	// try maxBadConnRetries times by alwaysNewConn connReuseStrategy
+	// try maxBadConnRetries times by cachedOrNewConn connReuseStrategy
 	for i := 0; i < maxBadConnRetries; i++ {
 		err = p.call(ctx, method, args, result, cachedOrNewConn)
 		if errT, ok = err.(thrift.TTransportException); ok {
