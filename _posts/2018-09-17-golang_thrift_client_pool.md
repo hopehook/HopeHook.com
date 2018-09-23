@@ -74,7 +74,6 @@ import (
 	"context"
 	"git.apache.org/thrift.git/lib/go/thrift"
 	"github.com/hopehook/pool"
-	"io"
 	"net"
 	"time"
 )
@@ -142,7 +141,7 @@ func (p *ThriftPoolClient) SetTimeout(timeout time.Duration) error {
 func (p *ThriftPoolClient) Call(ctx context.Context, method string, args, result thrift.TStruct) error {
 	var err error
 	var errT thrift.TTransportException
-	var errTmp error
+	var errTmp int
 	var ok bool
 	// set maxBadConnRetries equals p.pool.Len(), attempt to retry by all connections
 	// if maxBadConnRetries <= 0, set to 2
@@ -155,15 +154,15 @@ func (p *ThriftPoolClient) Call(ctx context.Context, method string, args, result
 	for i := 0; i < maxBadConnRetries; i++ {
 		err = p.call(ctx, method, args, result, cachedOrNewConn)
 		if errT, ok = err.(thrift.TTransportException); ok {
-			errTmp = errT.Err()
-			if errTmp != io.EOF && errTmp != io.ErrUnexpectedEOF && errTmp != io.ErrClosedPipe {
+			errTmp = errT.TypeId()
+			if errTmp != thrift.END_OF_FILE && errTmp != thrift.NOT_OPEN {
 				break
 			}
 		}
 	}
 
 	// if try maxBadConnRetries times failed, create new connection by alwaysNewConn connReuseStrategy
-	if errTmp == io.EOF || errTmp == io.ErrUnexpectedEOF || errTmp == io.ErrClosedPipe {
+	if errTmp == thrift.END_OF_FILE || errTmp == thrift.NOT_OPEN {
 		return p.call(ctx, method, args, result, alwaysNewConn)
 	}
 
