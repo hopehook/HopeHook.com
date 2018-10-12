@@ -6,7 +6,7 @@ comments: yes
 
 ----
 #### 博客/小站
-* [jiajunhuang.com](https://jiajunhuang.com/) - fedel's site
+* [jiajunhuang.com](https://jiajunhuang.com/) - Jiajun的编程随想
 * [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
 * [BookShadow.com](http://bookshadow.com) - 在线疯狂的个人博客
 <br/>
