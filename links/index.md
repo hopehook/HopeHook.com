@@ -6,9 +6,8 @@ comments: yes
 
 ----
 #### 博客/小站
-* [jiajunhuang.com](https://jiajunhuang.com/) - Jiajun的编程随想
-* [Jark's Blog](http://wuchong.me//) - 伍翀的个人博客
-* [BookShadow.com](http://bookshadow.com) - 在线疯狂的个人博客
+* [jiajunhuang.com](https://jiajunhuang.com/) - Jiajun 的编程随想
+* [laily.net](https://laily.net/) - 阿斌哥的博客
 <br/>
 
 ---

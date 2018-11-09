@@ -12,30 +12,44 @@ body {
 	background-color:#F7F7F7;
 }
 
-*{padding:0;border:none;outline:none;}
+time {
+        font-size: 15px;
+        font-family: arial, monospace, Monaco, "Microsoft YaHei";
+}
+
+*{border:none;outline:none;}
 a{color:#dd0000;text-decoration:none;}
 a:hover{color:#333333;text-decoration:underline;}
 hr{margin:.7em 0;border-top:1px dashed #d0d0d0;border-bottom:1px dashed #f9f9f9;}
 /* p{padding:.2em 0;} */
-li{padding:.2em 0;}
-/*  ol,ul{list-style-position:inside;} */
-ol ul, ul ol, ul ul, ol ol {margin-left:1em;}
+/*li{padding:.2em 0;} */
+/* 一级 */
+ol, ul{
+    margin-left: 20px;
+    padding: 0;
+}
+/* 二级 */
+ol ul, ul ol, ul ul, ol ol {
+    margin-left: 20px;
+    padding: 0;
+}
+
 
 blockquote{display:block;text-align:justify;border-left:4px solid #eeeeee;}
 blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:.5em 0;}
 
 pre, code{
-  background-color: #f0efef;
-  color: #2b2b2a;
-  padding: 0 1em;
-  font-family: Consolas,Monaco,Menlo,"Input Mono","PT Mono",monospace;
+  background-color: #421d1d;
+  color: #faf4f4;
+  padding: 0 .5em;
+  font-family: Menlo, Consolas,Monaco,"Input Mono","PT Mono",monospace;
   font-size: 12px;
   line-height: 1.6;
   display: block;
   overflow: auto;
   word-wrap: break-word;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 #container{width:700px;margin:2em auto;display:block;padding:0 2em;}
@@ -70,8 +84,8 @@ embed,object,iframe{display:block;margin:4px auto;}
 .gist{font-size: 12px;line-height:1.6;}
 
 footer{
-display:block;
-border-top: 1px dashed #CCC;
+    display:block;
+    border-top: 1px dashed #CCC;
 }
 
 footer small {
