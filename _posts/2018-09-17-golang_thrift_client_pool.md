@@ -54,7 +54,7 @@ tags: thrift golang 连接池
 
 以往没有采用连接池的时候, 每次都要创建连接, 关闭连接, 现在就没必要了
 
-附件文件 thrift.go 是基于 github.com/fatih/pool 这个第三方库, 重写了 Call 的相关代码.
+附件文件 thrift.go 是基于第三方 pool 库, 重写了 Call 的相关代码.
 最终实现了个人非常满意的 golang thrift client pool, 分享给大家.
 
 
