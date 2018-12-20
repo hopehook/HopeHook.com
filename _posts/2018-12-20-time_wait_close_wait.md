@@ -9,12 +9,12 @@ tags: linux
 
 
 * 出现大量 close wait
- * 我方被动关闭连接导致的, 我方代码有问题, 可能没有关闭连接, 导致服务方因为超时等原因强制关闭了连接
- * 解决的方法如果是单连接, 确保连接关闭; 如果是连接池, 确保连接回收到池子中
+  * 我方被动关闭连接导致的, 我方代码有问题, 可能没有关闭连接, 导致服务方因为超时等原因强制关闭了连接
+  * 解决的方法如果是单连接, 确保连接关闭; 如果是连接池, 确保连接回收到池子中
 
 * 出现大量 time wait
- * 我方主动关闭连接导致的, 我方代码有问题, 可能频繁的创建连接, 所以频繁关闭连接, 而 time wait 需要 2 MSL 时间才会消失, 所以形成堆积.
- * 解决的方法是要么使用连接池，要么在同一个连接做尽可能多的事情，避免频繁开关.
+  * 我方主动关闭连接导致的, 我方代码有问题, 可能频繁的创建连接, 所以频繁关闭连接, 而 time wait 需要 2 MSL 时间才会消失, 所以形成堆积.
+  * 解决的方法是要么使用连接池，要么在同一个连接做尽可能多的事情，避免频繁开关.
 
 
 * 模拟 TIME_WAIT
@@ -60,8 +60,8 @@ catch:
 
 
 * 各个状态存在的生命周期
- * time wait 的生存时间是 2 MSL. RFC 定义的 MSL 是 2 分钟, 因此总共 4 分钟; linux 默认实现是 60s (定义在 Linux 内核源码 /usr/src/linux/include/net/tcp.h 中).
- * close wait 的生存时间是一直到 tcp 生命结束才会结束. 所以受到 tcp keep alive 时间限制, 以 centos 为力, tcp_keepalive_time = 1200 s, 这个配置可以更改. 
+  * time wait 的生存时间是 2 MSL. RFC 定义的 MSL 是 2 分钟, 因此总共 4 分钟; linux 默认实现是 60s (定义在 Linux 内核源码 /usr/src/linux/include/net/tcp.h 中).
+  * close wait 的生存时间是一直到 tcp 生命结束才会结束. 所以受到 tcp keep alive 时间限制, 以 centos 为力, tcp_keepalive_time = 1200 s, 这个配置可以更改. 
  (KeepAlive并不是TCP协议规范的一部分，但在几乎所有的TCP/IP协议栈（不管是Linux还是Windows）中，都实现了KeepAlive功能)
 
 
