@@ -39,17 +39,29 @@ blockquote{display:block;text-align:justify;border-left:4px solid #eeeeee;}
 blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:.5em 0;}
 
-pre, code{
-  background-color: #421d1d;
-  color: #faf4f4;
-  padding: 0 .5em;
-  font-family: Menlo, Consolas,Monaco,"Input Mono","PT Mono",monospace;
-  font-size: 12px;
-  line-height: 1.6;
-  display: block;
-  overflow: auto;
-  word-wrap: break-word;
-  border-radius: 3px;
+code {
+    background-color: #421d1d;
+    color: #faf4f4;
+    padding: 0 .5em;
+    font-family: Menlo, Consolas,Monaco,"Input Mono","PT Mono",monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow: auto;
+    word-wrap: break-word;
+    border-radius: 3px;
+}
+
+pre, pre code {
+    background-color: #421d1d;
+    color: #faf4f4;
+    padding: 0 .5em;
+    font-family: Menlo, Consolas,Monaco,"Input Mono","PT Mono",monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    display: block;
+    overflow: auto;
+    word-wrap: break-word;
+    border-radius: 3px;
 }
 
 #container{width:700px;margin:2em auto;display:block;padding:0 2em;}
