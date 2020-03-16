@@ -146,7 +146,7 @@ class Map(object):
 上述代码在 app.url_map._rules 保存了 url_rule_class (url -> endpoint 的绑定关系)
 
 
-- 路由查找过程
+#### 路由查找过程
 
 这是简化的 Flask 响应处理过程伪代码, 路由的查找过程发生在 dispatch_request():match_request() 函数中.
 
