@@ -1,0 +1,110 @@
+I"�<p>操作环境：Ubuntu</p>
+
+<h4 id="1-生成一对ssh-key">1 生成一对SSH key</h4>
+
+<p>$ <code class="highlighter-rouge">ssh-keygen -t rsa -C "your_email@example.com"</code></p>
+
+<p>Enter file in which to save the key (/Users/you/.ssh/id_rsa): <code class="highlighter-rouge">/Users/you/.ssh/"your_ssh_name"</code></p>
+
+<p>Enter passphrase (empty for no passphrase): <code class="highlighter-rouge">[Press enter]</code></p>
+
+<p>Enter same passphrase again: <code class="highlighter-rouge">[Press enter]</code></p>
+
+<h4 id="2-将生成的ssh-key公钥添加到github账户设置里">2 将生成的SSH key公钥添加到github账户设置里</h4>
+<ul>
+  <li>打开并复制　/Users/you/.ssh/”your_ssh_name.pub”　里面的内容，</li>
+  <li>github账户　——&gt; settings ——&gt; SSH keys  ——&gt;  Add SSH key  ——&gt;  粘贴复制的内容</li>
+</ul>
+
+<h4 id="3-注意">3 注意</h4>
+<ul>
+    <li>不同github账号不能共用一对SSH key</li>
+    <ul><li>需重新生成一对，详见【拓展】</li></ul>
+    <li>相同github账号可以添加多对SSH key</li>
+    <li>不同终端(OS User Account)下可以使用相同的SSH key </li>
+    <ul><li>在生成同名SSH key后用原来的SSH key内容覆盖即可</li></ul>
+    <li>相同终端下可以添加多对SSH key</li>
+</ul>
+
+<h4 id="拓展一个pc终端用户配置多个github账户的ssh-key">【拓展】一个PC终端用户配置多个github账户的SSH key</h4>
+
+<p>(1)按照１和２的步骤生成对应github账户的多对SSH key</p>
+
+<p>(2)新增或配置<code class="highlighter-rouge">~/.ssh/config</code>，内容示例：</p>
+<pre>
+Host github-first
+HostName github.com
+ User git
+ IdentityFile ~/.ssh/id_rsa_first
+
+
+Host github-second
+ HostName github.com
+ User git
+ IdentityFile ~/.ssh/id_rsa_second
+
+
+Host github-third
+ HostName github.com
+ User git
+ IdentityFile ~/.ssh/id_rsa_third
+</pre>
+
+<p>(3)配置克隆仓库目录下的<code class="highlighter-rouge">.git/config</code>,内容示例：</p>
+<pre>
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github-first:hopehook1/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+</pre>
+
+<pre>
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github-second:hopehook2/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+</pre>
+
+<pre>
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github-third:hopehook3/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+</pre>
+
+<p>(4)特别说明：</p>
+<ul>
+	<li>
+	github根据配置文件的user.email来获取github帐号显示author信息，所以对于多帐号用户一定要记得将user.email改为相应的email(如：second@mail.com)
+	</li>
+	<li>
+	测试`~/.ssh/config`配置情况：
+		<ul>
+			<li>`ssh -T git@github-first`</li>
+			<li>`ssh -T git@github-second`</li>
+			<li>`ssh -T git@github-third`</li>
+		</ul>
+	</li>
+	<li>执行git clone [URL]的时候，[URL]原样写入`.git/config`的url (HTTPS和SSH方式)
+		<ul>
+			<li>
+			例如：
+			git clone git@github-second:hopehook2/test.git的时候`.git/config`的url = git@github-second:hopehook2/test.git
+			</li>
+		</ul>
+	</li>
+</ul>
+
+:ET

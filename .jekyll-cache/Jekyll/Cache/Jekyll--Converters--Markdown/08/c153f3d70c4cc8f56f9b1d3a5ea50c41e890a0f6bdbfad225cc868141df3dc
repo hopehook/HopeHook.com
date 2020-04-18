@@ -1,0 +1,253 @@
+I"u<h2 id="目的">目的</h2>
+
+<p>实现一个好用, 可靠的 thrift client 连接池</p>
+
+<h2 id="背景故事">背景故事</h2>
+
+<p>最近, 在公司项目中需要用到 thrift rpc 调用, 以往的 thrift client 都是用 python 写的.
+因此, 需要写一个新的 golang 版 thrift client, 根据 python 中的经验和以往的经验,
+当然是采用连接池比较好, 这样可以减少 TCP 连接的频繁创建销毁带来的开销.</p>
+
+<p>首先, 我翻看了 thrift 的官网和网上的资料, 得出几点小结论:</p>
+
+<ul>
+  <li>没有发现官方有支持 thrift client 的连接池</li>
+  <li>可以利用第三方连接池库包装 thrift client, 实现连接池</li>
+</ul>
+
+<p>既然如此, 我选择了利用第三方库去实现连接池的方式, 很容易就搞定了.
+做法和这篇文章差不多: <a href="https://studygolang.com/articles/1473">链接一</a>, 类似的还有这篇文章: <a href="http://silenceper.com/blog/201611/tcp_connection_pool/">链接二</a>.</p>
+
+<p>在简短运行了一段时间之后, 我敏感的发现了其中的问题. 程序日志中有几个 EOF, write broken pipe 的报错,
+我意识到, 这并不是偶然, 很有可能是连接池的问题, 迅速通过 demo 验证, 确定是 thrift server 重启导致的.</p>
+
+<p>回想一下这个场景, 当你通过 rpc 去调用的时候, server 需要更新代码重启, 这个时候 client 的连接都是失效的,
+应该及时从连接池中清理掉, 然而第三方连接池似乎都没有这个机制, 也没有提供任何口子给用户.
+在 [链接一] [链接二] 中, 两位同仁解决的都是超时失效的问题, 并没有处理重启导致的连接失效.</p>
+
+<p>为了解决这个问题, 我思索了几种方案.</p>
+
+<ul>
+  <li>方案一 如果官方支持 ping, 可以在每次从连接池获取连接的时候判断一下, 无法 ping 通的连接直接丢弃, 重新获取或者创建新连接</li>
+  <li>方案二 在 server 提供一个 ping 的 rpc 接口, 专门用于判断连通性</li>
+  <li>方案三 继承 thrift 的 client 类, 重写 Call 方法, 通过 send 数据包是否报错来判断连通性, 报错的连接直接丢弃</li>
+</ul>
+
+<p>查找了一圈, 发现 thrift 没有类似 ping 的方法检测连接的连通性, 于是否决方案一;</p>
+
+<p>方案二需要专门提供一个 ping 的接口, 比较 low, 代价较大, 也否定了;</p>
+
+<p>最终, 我选择了方案三, 在 rpc Call 的时候, 做连接池的相关动作, 以及连通性的检测.</p>
+
+<p>这样子改造之后, 代码很简单, 甚至比没有连接池更加方便.
+只需要两步:</p>
+
+<ul>
+  <li>初始化一次全局的连接池</li>
+  <li>调用的时候通过全局连接池操作</li>
+</ul>
+
+<p>以往没有采用连接池的时候, 每次都要创建连接, 关闭连接, 现在就没必要了</p>
+
+<p>附件文件 thrift.go 是基于第三方 pool 库, 重写了 Call 的相关代码.
+最终实现了个人非常满意的 golang thrift client pool, 分享给大家.</p>
+
+<h2 id="后记">后记</h2>
+
+<p>回顾以往接触的各种连接池, 都要考虑连接失效的问题. 通过什么方法判断, 如果失效是否重连, 是否重试.
+如果想要更好的使用连接池, 通过举一反三就是最好的方式, 把遇到的连接池对比起来看看, 也许还有新的收获.</p>
+
+<h2 id="附件">附件</h2>
+
+<p>附件: thrift.go</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">util</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"context"</span>
+	<span class="s2">"git.apache.org/thrift.git/lib/go/thrift"</span>
+	<span class="s2">"github.com/hopehook/pool"</span>
+	<span class="s2">"net"</span>
+	<span class="s2">"time"</span>
+<span class="p">)</span>
+
+<span class="n">var</span> <span class="p">(</span>
+	<span class="n">maxBadConnRetries</span> <span class="n">int</span>
+<span class="p">)</span>
+
+<span class="p">//</span> <span class="n">connReuseStrategy</span> <span class="n">determines</span> <span class="n">how</span> <span class="n">returns</span> <span class="n">connections</span><span class="p">.</span>
+<span class="n">type</span> <span class="n">connReuseStrategy</span> <span class="n">uint8</span>
+
+<span class="n">const</span> <span class="p">(</span>
+	<span class="p">//</span> <span class="n">alwaysNewConn</span> <span class="n">forces</span> <span class="n">a</span> <span class="n">new</span> <span class="n">connection</span><span class="p">.</span>
+	<span class="n">alwaysNewConn</span> <span class="n">connReuseStrategy</span> <span class="p">=</span> <span class="n">iota</span>
+	<span class="p">//</span> <span class="n">cachedOrNewConn</span> <span class="n">returns</span> <span class="n">a</span> <span class="n">cached</span> <span class="n">connection</span><span class="p">,</span> <span class="k">if</span> <span class="n">available</span><span class="p">,</span> <span class="k">else</span> <span class="n">waits</span>
+	<span class="p">//</span> <span class="n">for</span> <span class="n">one</span> <span class="k">to</span> <span class="n">become</span> <span class="n">available</span> <span class="k">or</span>
+	<span class="p">//</span> <span class="n">creates</span> <span class="n">a</span> <span class="n">new</span> <span class="n">connection</span><span class="p">.</span>
+	<span class="n">cachedOrNewConn</span>
+<span class="p">)</span>
+
+<span class="n">type</span> <span class="n">ThriftPoolClient</span> <span class="n">struct</span> <span class="p">{</span>
+	<span class="p">*</span><span class="n">thrift</span><span class="p">.</span><span class="n">TStandardClient</span>
+	<span class="n">seqId</span>                      <span class="n">int32</span>
+	<span class="n">timeout</span>                    <span class="n">time</span><span class="p">.</span><span class="n">Duration</span>
+	<span class="n">iprotFactory</span><span class="p">,</span> <span class="n">oprotFactory</span> <span class="n">thrift</span><span class="p">.</span><span class="n">TProtocolFactory</span>
+	<span class="n">pool</span>                       <span class="n">pool</span><span class="p">.</span><span class="n">Pool</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">NewThriftPoolClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="k">string</span><span class="p">,</span> <span class="n">inputProtocol</span><span class="p">,</span> <span class="n">outputProtocol</span> <span class="n">thrift</span><span class="p">.</span><span class="n">TProtocolFactory</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span> <span class="n">int</span><span class="p">)</span> <span class="p">(*</span><span class="n">ThriftPoolClient</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">factoryFunc</span> <span class="p">:=</span> <span class="n">func</span><span class="p">()</span> <span class="p">(</span><span class="n">interface</span><span class="p">{},</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">conn</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">net</span><span class="p">.</span><span class="n">Dial</span><span class="p">(</span><span class="s2">"tcp"</span><span class="p">,</span> <span class="n">net</span><span class="p">.</span><span class="n">JoinHostPort</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="n">return</span> <span class="n">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+		<span class="n">return</span> <span class="n">conn</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+
+	<span class="n">closeFunc</span> <span class="p">:=</span> <span class="n">func</span><span class="p">(</span><span class="n">v</span> <span class="n">interface</span><span class="p">{})</span> <span class="n">error</span> <span class="p">{</span> <span class="n">return</span> <span class="n">v</span><span class="p">.(</span><span class="n">net</span><span class="p">.</span><span class="n">Conn</span><span class="p">).</span><span class="n">Close</span><span class="p">()</span> <span class="p">}</span>
+
+	<span class="p">//</span><span class="err">创建一个连接池：</span> <span class="err">初始化</span><span class="m">5</span><span class="err">，最大连接</span><span class="m">30</span>
+	<span class="n">poolConfig</span> <span class="p">:=</span> <span class="p">&amp;</span><span class="n">pool</span><span class="p">.</span><span class="n">PoolConfig</span><span class="p">{</span>
+		<span class="n">InitialCap</span><span class="p">:</span> <span class="n">initialCap</span><span class="p">,</span>
+		<span class="n">MaxCap</span><span class="p">:</span>     <span class="n">maxCap</span><span class="p">,</span>
+		<span class="n">Factory</span><span class="p">:</span>    <span class="n">factoryFunc</span><span class="p">,</span>
+		<span class="n">Close</span><span class="p">:</span>      <span class="n">closeFunc</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="n">p</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">pool</span><span class="p">.</span><span class="n">NewChannelPool</span><span class="p">(</span><span class="n">poolConfig</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">return</span> <span class="n">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="n">return</span> <span class="p">&amp;</span><span class="n">ThriftPoolClient</span><span class="p">{</span>
+		<span class="n">iprotFactory</span><span class="p">:</span> <span class="n">inputProtocol</span><span class="p">,</span>
+		<span class="n">oprotFactory</span><span class="p">:</span> <span class="n">outputProtocol</span><span class="p">,</span>
+		<span class="n">pool</span><span class="p">:</span>         <span class="n">p</span><span class="p">,</span>
+	<span class="p">},</span> <span class="n">nil</span>
+<span class="p">}</span>
+
+<span class="p">//</span> <span class="n">Sets</span> <span class="n">the</span> <span class="n">socket</span> <span class="n">timeout</span>
+<span class="n">func</span> <span class="p">(</span><span class="n">p</span> <span class="p">*</span><span class="n">ThriftPoolClient</span><span class="p">)</span> <span class="n">SetTimeout</span><span class="p">(</span><span class="n">timeout</span> <span class="n">time</span><span class="p">.</span><span class="n">Duration</span><span class="p">)</span> <span class="n">error</span> <span class="p">{</span>
+	<span class="n">p</span><span class="p">.</span><span class="n">timeout</span> <span class="p">=</span> <span class="n">timeout</span>
+	<span class="n">return</span> <span class="n">nil</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="p">(</span><span class="n">p</span> <span class="p">*</span><span class="n">ThriftPoolClient</span><span class="p">)</span> <span class="n">Call</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="p">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">method</span> <span class="k">string</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">result</span> <span class="n">thrift</span><span class="p">.</span><span class="n">TStruct</span><span class="p">)</span> <span class="n">error</span> <span class="p">{</span>
+	<span class="n">var</span> <span class="n">err</span> <span class="n">error</span>
+	<span class="n">var</span> <span class="n">errT</span> <span class="n">thrift</span><span class="p">.</span><span class="n">TTransportException</span>
+	<span class="n">var</span> <span class="n">errTmp</span> <span class="n">int</span>
+	<span class="n">var</span> <span class="n">ok</span> <span class="n">bool</span>
+	<span class="p">//</span> <span class="k">set</span> <span class="n">maxBadConnRetries</span> <span class="n">equals</span> <span class="n">p</span><span class="p">.</span><span class="n">pool</span><span class="p">.</span><span class="n">Len</span><span class="p">(),</span> <span class="n">attempt</span> <span class="k">to</span> <span class="n">retry</span> <span class="n">by</span> <span class="n">all</span> <span class="n">connections</span>
+	<span class="p">//</span> <span class="k">if</span> <span class="n">maxBadConnRetries</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">,</span> <span class="k">set</span> <span class="k">to</span> <span class="m">2</span>
+	<span class="n">maxBadConnRetries</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">pool</span><span class="p">.</span><span class="n">Len</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">maxBadConnRetries</span> <span class="p">&lt;=</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="n">maxBadConnRetries</span> <span class="p">=</span> <span class="m">2</span>
+	<span class="p">}</span>
+
+	<span class="p">//</span> <span class="n">try</span> <span class="n">maxBadConnRetries</span> <span class="n">times</span> <span class="n">by</span> <span class="n">cachedOrNewConn</span> <span class="n">connReuseStrategy</span>
+	<span class="n">for</span> <span class="n">i</span> <span class="p">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">maxBadConnRetries</span><span class="p">;</span> <span class="n">i</span><span class="p">++</span> <span class="p">{</span>
+		<span class="n">err</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">cachedOrNewConn</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">errT</span><span class="p">,</span> <span class="n">ok</span> <span class="p">=</span> <span class="n">err</span><span class="p">.(</span><span class="n">thrift</span><span class="p">.</span><span class="n">TTransportException</span><span class="p">);</span> <span class="n">ok</span> <span class="p">{</span>
+			<span class="n">errTmp</span> <span class="p">=</span> <span class="n">errT</span><span class="p">.</span><span class="n">TypeId</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">errTmp</span> <span class="c1">!= thrift.END_OF_FILE &amp;&amp; errTmp != thrift.NOT_OPEN {
+</span>				<span class="k">break</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="p">//</span> <span class="k">if</span> <span class="n">try</span> <span class="n">maxBadConnRetries</span> <span class="n">times</span> <span class="n">failed</span><span class="p">,</span> <span class="nb">create</span> <span class="n">new</span> <span class="n">connection</span> <span class="n">by</span> <span class="n">alwaysNewConn</span> <span class="n">connReuseStrategy</span>
+	<span class="k">if</span> <span class="n">errTmp</span> <span class="p">==</span> <span class="n">thrift</span><span class="p">.</span><span class="n">END_OF_FILE</span> <span class="p">||</span> <span class="n">errTmp</span> <span class="p">==</span> <span class="n">thrift</span><span class="p">.</span><span class="n">NOT_OPEN</span> <span class="p">{</span>
+		<span class="n">return</span> <span class="n">p</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">alwaysNewConn</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="n">return</span> <span class="n">err</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="p">(</span><span class="n">p</span> <span class="p">*</span><span class="n">ThriftPoolClient</span><span class="p">)</span> <span class="n">call</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="p">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">method</span> <span class="k">string</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">result</span> <span class="n">thrift</span><span class="p">.</span><span class="n">TStruct</span><span class="p">,</span> <span class="n">strategy</span> <span class="n">connReuseStrategy</span><span class="p">)</span> <span class="n">error</span> <span class="p">{</span>
+	<span class="n">p</span><span class="p">.</span><span class="n">seqId</span><span class="p">++</span>
+	<span class="n">seqId</span> <span class="p">:=</span> <span class="n">p</span><span class="p">.</span><span class="n">seqId</span>
+
+	<span class="p">//</span> <span class="n">get</span> <span class="n">conn</span> <span class="k">from</span> <span class="n">pool</span>
+	<span class="n">var</span> <span class="n">connVar</span> <span class="n">interface</span><span class="p">{}</span>
+	<span class="n">var</span> <span class="n">err</span> <span class="n">error</span>
+	<span class="k">if</span> <span class="n">strategy</span> <span class="p">==</span> <span class="n">cachedOrNewConn</span> <span class="p">{</span>
+		<span class="n">connVar</span><span class="p">,</span> <span class="n">err</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">pool</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">connVar</span><span class="p">,</span> <span class="n">err</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">pool</span><span class="p">.</span><span class="nf">Connect</span><span class="p">()</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">return</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="n">conn</span> <span class="p">:=</span> <span class="n">connVar</span><span class="p">.(</span><span class="n">net</span><span class="p">.</span><span class="n">Conn</span><span class="p">)</span>
+
+	<span class="p">//</span> <span class="n">wrap</span> <span class="n">conn</span> <span class="k">as</span> <span class="n">thrift</span> <span class="n">fd</span>
+	<span class="n">transportFactory</span> <span class="p">:=</span> <span class="n">thrift</span><span class="p">.</span><span class="n">NewTFramedTransportFactory</span><span class="p">(</span><span class="n">thrift</span><span class="p">.</span><span class="n">NewTTransportFactory</span><span class="p">())</span>
+	<span class="n">trans</span> <span class="p">:=</span> <span class="n">thrift</span><span class="p">.</span><span class="n">NewTSocketFromConnTimeout</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">timeout</span><span class="p">)</span>
+	<span class="n">transport</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">transportFactory</span><span class="p">.</span><span class="n">GetTransport</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">return</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="n">inputProtocol</span> <span class="p">:=</span> <span class="n">p</span><span class="p">.</span><span class="n">iprotFactory</span><span class="p">.</span><span class="n">GetProtocol</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+	<span class="n">outputProtocol</span> <span class="p">:=</span> <span class="n">p</span><span class="p">.</span><span class="n">oprotFactory</span><span class="p">.</span><span class="n">GetProtocol</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">p</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="n">outputProtocol</span><span class="p">,</span> <span class="n">seqId</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">return</span> <span class="n">err</span>
+	<span class="p">}</span>
+
+	<span class="p">//</span> <span class="n">method</span> <span class="n">is</span> <span class="n">oneway</span>
+	<span class="k">if</span> <span class="n">result</span> <span class="p">==</span> <span class="n">nil</span> <span class="p">{</span>
+		<span class="n">return</span> <span class="n">nil</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="n">err</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">Recv</span><span class="p">(</span><span class="n">inputProtocol</span><span class="p">,</span> <span class="n">seqId</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">return</span> <span class="n">err</span>
+	<span class="p">}</span>
+
+	<span class="p">//</span> <span class="n">put</span> <span class="n">conn</span> <span class="n">back</span> <span class="k">to</span> <span class="n">the</span> <span class="n">pool</span><span class="p">,</span> <span class="k">do</span> <span class="k">not</span> <span class="n">close</span> <span class="n">the</span> <span class="n">connection</span><span class="p">.</span>
+	<span class="n">return</span> <span class="n">p</span><span class="p">.</span><span class="n">pool</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="n">connVar</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>附件 client.go</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">util</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"git.apache.org/thrift.git/lib/go/thrift"</span>
+	<span class="s2">"services/articles"</span>
+	<span class="s2">"services/comments"</span>
+	<span class="s2">"services/users"</span>
+	<span class="s2">"log"</span>
+	<span class="s2">"time"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">GetArticleClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="k">string</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span> <span class="n">int</span><span class="p">,</span> <span class="n">timeout</span> <span class="n">time</span><span class="p">.</span><span class="n">Duration</span><span class="p">)</span> <span class="p">*</span><span class="n">articles</span><span class="p">.</span><span class="n">ArticleServiceClient</span> <span class="p">{</span>
+	<span class="n">protocolFactory</span> <span class="p">:=</span> <span class="n">thrift</span><span class="p">.</span><span class="n">NewTBinaryProtocolFactoryDefault</span><span class="p">()</span>
+	<span class="n">client</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">NewThriftPoolClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">protocolFactory</span><span class="p">,</span> <span class="n">protocolFactory</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="nb">log</span><span class="p">.</span><span class="n">Panicln</span><span class="p">(</span><span class="s2">"GetArticleClient error: "</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">client</span><span class="p">.</span><span class="n">SetTimeout</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+	<span class="n">return</span> <span class="n">articles</span><span class="p">.</span><span class="n">NewArticleServiceClient</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">GetCommentClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="k">string</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span> <span class="n">int</span><span class="p">,</span> <span class="n">timeout</span> <span class="n">time</span><span class="p">.</span><span class="n">Duration</span><span class="p">)</span> <span class="p">*</span><span class="n">comments</span><span class="p">.</span><span class="n">CommentServiceClient</span> <span class="p">{</span>
+	<span class="n">protocolFactory</span> <span class="p">:=</span> <span class="n">thrift</span><span class="p">.</span><span class="n">NewTCompactProtocolFactory</span><span class="p">()</span>
+	<span class="n">client</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">NewThriftPoolClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">protocolFactory</span><span class="p">,</span> <span class="n">protocolFactory</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="nb">log</span><span class="p">.</span><span class="n">Panicln</span><span class="p">(</span><span class="s2">"GetCommentClient error: "</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">client</span><span class="p">.</span><span class="n">SetTimeout</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+	<span class="n">return</span> <span class="n">comments</span><span class="p">.</span><span class="n">NewCommentServiceClient</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">GetUserClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="k">string</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span> <span class="n">int</span><span class="p">,</span> <span class="n">timeout</span> <span class="n">time</span><span class="p">.</span><span class="n">Duration</span><span class="p">)</span> <span class="p">*</span><span class="n">users</span><span class="p">.</span><span class="n">UserServiceClient</span> <span class="p">{</span>
+	<span class="n">protocolFactory</span> <span class="p">:=</span> <span class="n">thrift</span><span class="p">.</span><span class="n">NewTCompactProtocolFactory</span><span class="p">()</span>
+	<span class="n">client</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">NewThriftPoolClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">protocolFactory</span><span class="p">,</span> <span class="n">protocolFactory</span><span class="p">,</span> <span class="n">initialCap</span><span class="p">,</span> <span class="n">maxCap</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="nb">log</span><span class="p">.</span><span class="n">Panicln</span><span class="p">(</span><span class="s2">"GetUserClient error: "</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">client</span><span class="p">.</span><span class="n">SetTimeout</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+	<span class="n">return</span> <span class="n">users</span><span class="p">.</span><span class="n">NewUserServiceClient</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+:ET

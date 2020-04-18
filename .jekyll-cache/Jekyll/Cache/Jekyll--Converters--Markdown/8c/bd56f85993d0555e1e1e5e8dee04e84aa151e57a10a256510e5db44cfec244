@@ -1,0 +1,13 @@
+I"z<p><img src="/assets/images/protocol_stack_connections.png" alt="" title="protocol stack connections" /> <center style="font-size:14px">协议栈工作流</center></p>
+
+<p><img src="/assets/images/protocol_layer.png" alt="" title="protocol layer" /> <center style="font-size:14px">报文层层封装</center></p>
+
+<p><img src="/assets/images/网络协议依赖关系图.png" alt="" title="网络协议依赖关系图" /> <center style="font-size:14px">协议依赖关系图</center></p>
+
+<p><img src="/assets/images/UDP协议格式.png" alt="" title="UDP" /> <center style="font-size:14px">UDP 报文格式</center></p>
+
+<p><img src="/assets/images/TCP协议格式.png" alt="" title="TCP" /> <center style="font-size:14px">TCP 报文格式</center></p>
+
+<p><img src="/assets/images/ICMP协议格式.png" alt="" title="ICMP" /> <center style="font-size:14px">ICMP 报文格式</center></p>
+
+:ET

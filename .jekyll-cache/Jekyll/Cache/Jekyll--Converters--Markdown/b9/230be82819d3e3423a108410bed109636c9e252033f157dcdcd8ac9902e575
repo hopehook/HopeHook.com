@@ -1,0 +1,136 @@
+I">)<p>一 出现大量 close wait</p>
+
+<ul>
+  <li>我方被动关闭连接导致的, 我方代码有问题, 可能没有关闭连接, 导致服务方因为超时等原因强制关闭了连接</li>
+  <li>解决的方法如果是单连接, 确保连接关闭; 如果是连接池, 确保连接回收到池子中</li>
+</ul>
+
+<p><br />
+二 出现大量 time wait</p>
+
+<ul>
+  <li>我方主动关闭连接导致的, 我方代码有问题, 可能频繁的创建连接, 所以频繁关闭连接, 而 time wait 需要 2 MSL 时间才会消失, 所以形成堆积.</li>
+  <li>解决的方法是要么使用连接池，要么在同一个连接做尽可能多的事情，避免频繁开关.</li>
+</ul>
+
+<p><br />
+三 模拟 TIME_WAIT</p>
+
+<p>运行附件一 time_wait.go 的代码, 可以模拟 TIME_WAIT 形成的情况.
+每次 http 请求都会新创建一个 client, 请求完毕之后主动关闭 http 连接,
+由于这个过程极为频繁, TIME_WAIT 需要 2 MSL 的时间才会结束, 于是短时间形成了堆积.</p>
+
+<p>在这个例子中, 我们可以使用 <code class="highlighter-rouge">http.DefaultClient</code> 代替 <code class="highlighter-rouge">http.Client{}</code>, 每次请求的时候使用全局默认的 client,
+避免频繁的开关连接, 使用 DefaultClient 本质就是使用了连接池, 而不是每次都新建连接.</p>
+
+<p><br />
+四 模拟 CLOSE_WAIT</p>
+
+<p>我们最常见 close wait 的情形是事务.</p>
+
+<p>正确的事务代码例子:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>transaction = db.begin()
+try:
+        sql = 'update table set deleted = 1 where id = 1'
+        transaction.exec(sql)
+        transaction.commit()
+catch:
+        transaction.rollback()
+finally:
+        transaction.close()
+</code></pre></div></div>
+
+<p>错误的事务处理例子:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>transaction = db.begin()
+try:
+        sql = 'update table set deleted = 1 where id = 1'
+        transaction.exec(sql)
+        transaction.commit()
+catch:
+        transaction.rollback()
+</code></pre></div></div>
+
+<p>在错误的例子中, 我们忘记了调用 transaction.close() 关闭事务连接或者回收事务占用的 tcp 连接</p>
+
+<p><br />
+五 各个状态存在的生命周期</p>
+
+<ul>
+  <li>time wait 的生存时间是 2 MSL. RFC 定义的 MSL 是 2 分钟, 因此总共 4 分钟; linux 默认实现是 60s (定义在 Linux 内核源码 /usr/src/linux/include/net/tcp.h 中).</li>
+  <li>close wait 的生存时间是一直到 tcp 生命结束才会结束. 所以受到 tcp keep alive 时间限制, 以 centos 为力, tcp_keepalive_time = 1200 s, 这个配置可以更改. 
+ (KeepAlive并不是TCP协议规范的一部分，但在几乎所有的TCP/IP协议栈（不管是Linux还是Windows）中，都实现了KeepAlive功能)</li>
+</ul>
+
+<p>附件一: time_wait.go</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+        <span class="s2">"net/http"</span>
+        <span class="s2">"io/ioutil"</span>
+        <span class="s2">"sync"</span>
+        <span class="s2">"log"</span>
+<span class="p">)</span>
+
+<span class="n">var</span> <span class="p">(</span>
+        <span class="n">goPool</span>   <span class="p">*</span><span class="n">GoPool</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span>  <span class="p">{</span>
+        <span class="n">goPool</span> <span class="p">=</span> <span class="n">NewGPool</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+        <span class="n">url</span> <span class="p">:=</span> <span class="s2">"http://www.ifeng.com"</span>
+        <span class="n">req</span><span class="p">,</span> <span class="n">_</span> <span class="p">:=</span> <span class="n">http</span><span class="p">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s2">"GET"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">nil</span><span class="p">)</span>
+        <span class="n">for</span> <span class="p">{</span>
+                <span class="n">goPool</span><span class="p">.</span><span class="n">Add</span><span class="p">()</span>
+                <span class="n">go</span> <span class="n">HttpGet</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">HttpGet</span><span class="p">(</span><span class="n">req</span> <span class="p">*</span><span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">([]</span><span class="n">byte</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">defer</span> <span class="n">goPool</span><span class="p">.</span><span class="n">Done</span><span class="p">()</span>
+        <span class="n">client</span> <span class="p">:=</span> <span class="n">http</span><span class="p">.</span><span class="n">Client</span><span class="p">{}</span>
+        <span class="n">var</span> <span class="n">body</span> <span class="p">[]</span><span class="n">byte</span>
+        <span class="n">var</span> <span class="n">resp</span> <span class="p">*</span><span class="n">http</span><span class="p">.</span><span class="n">Response</span>
+        <span class="n">var</span> <span class="n">err</span> <span class="n">error</span>
+        <span class="n">resp</span><span class="p">,</span> <span class="n">err</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="k">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>                <span class="n">return</span> <span class="n">body</span><span class="p">,</span> <span class="n">err</span>
+        <span class="p">}</span>
+        <span class="nb">log</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"http status: "</span><span class="p">,</span> <span class="n">resp</span><span class="p">.</span><span class="n">Status</span><span class="p">)</span>
+        <span class="n">body</span><span class="p">,</span> <span class="n">err</span> <span class="p">=</span> <span class="n">ioutil</span><span class="p">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">Body</span><span class="p">)</span>
+        <span class="nb">log</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"http body:"</span><span class="p">,</span> <span class="k">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span>
+        <span class="n">resp</span><span class="p">.</span><span class="n">Body</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="n">return</span> <span class="n">body</span><span class="p">,</span> <span class="n">err</span>
+<span class="p">}</span>
+
+
+<span class="n">type</span> <span class="n">GoPool</span> <span class="n">struct</span> <span class="p">{</span>
+        <span class="n">queue</span> <span class="n">chan</span> <span class="n">int</span>
+        <span class="n">wg</span>    <span class="n">sync</span><span class="p">.</span><span class="n">WaitGroup</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">NewGPool</span><span class="p">(</span><span class="n">size</span> <span class="n">int</span><span class="p">)</span> <span class="p">*</span><span class="n">GoPool</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="p">&lt;=</span> <span class="m">0</span> <span class="p">{</span>
+                <span class="nb">log</span><span class="p">.</span><span class="n">Panicln</span><span class="p">(</span><span class="s2">"Size must over than zero."</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">return</span> <span class="p">&amp;</span><span class="n">GoPool</span><span class="p">{</span>
+                <span class="n">queue</span><span class="p">:</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="n">int</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span>
+                <span class="n">wg</span><span class="p">:</span>    <span class="n">sync</span><span class="p">.</span><span class="n">WaitGroup</span><span class="p">{},</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="p">(</span><span class="n">p</span> <span class="p">*</span><span class="n">GoPool</span><span class="p">)</span> <span class="n">Add</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">queue</span> <span class="p">&lt;-</span> <span class="m">1</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">wg</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="p">(</span><span class="n">p</span> <span class="p">*</span><span class="n">GoPool</span><span class="p">)</span> <span class="n">Done</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">wg</span><span class="p">.</span><span class="n">Done</span><span class="p">()</span>
+        <span class="p">&lt;-</span><span class="n">p</span><span class="p">.</span><span class="n">queue</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="p">(</span><span class="n">p</span> <span class="p">*</span><span class="n">GoPool</span><span class="p">)</span> <span class="nf">Wait</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+:ET

@@ -1,0 +1,85 @@
+I"�<pre>
+# coding:utf8
+
+import torndb
+
+# 建立连接
+# 东8区，默认字符集UTF8，没必要在加上 charset = "utf8" 。
+db = torndb.Connection('127.0.0.1:3306', 'database', 'user', 'password', time_zone='+8:00')
+
+# 查询
+## query: 得到多行记录，单行为字典
+sql = '''SELECT * FROM sms_task WHERE id &gt; %s'''
+rows = db.query(sql, 10)
+
+## get： 得到单行记录，一个字典
+sql = '''SELECT * FROM sms_task WHERE id = %s'''
+info = db.get(sql, 10)
+
+
+# 更新
+sql = '''UPDATE sms_task SET `status` = %s WHERE id = %s'''
+affected_row_count = db.update(sql, 0, 10)
+
+
+# 插入
+sql = '''INSERT INTO sms_task_phone (phone, uid) VALUES (%s, %s)'''
+args = [0, 0]
+last_id = db.insert(sql, *args)
+
+
+# 删除
+sql = '''DELETE FROM sms_task WHERE id = %s'''
+affected_row_count = db.execute_rowcount(sql, 8)
+
+
+# 事务
+## begin 的方式使用事务
+def transacion_begin():
+    try:
+        db._db.begin()
+
+        sql = ''' SELECT `status`, is_deleted FROM sms_task WHERE id = %s FOR UPDATE '''
+        info = db.get(sql, 10)
+        if not info:
+            return False
+
+        sql = ''' UPDATE sms_task SET is_deleted = %s WHERE id = %s '''
+        db.update(sql, 1, 10)
+
+        db._db.commit()
+    except Exception, e:
+        db._db.rollback()
+        print str(e)
+        return False
+
+    return True
+
+transacion_begin()
+
+## autocommit 的方式使用事务
+def transacion_autocommit():
+    try:
+        db._db.autocommit(False)
+
+        sql = ''' SELECT `status`, is_deleted FROM sms_task WHERE id = %s FOR UPDATE '''
+        info = db.get(sql, 10)
+        if not info:
+            return False
+
+        sql = ''' UPDATE sms_task SET is_deleted = 1 WHERE id = %s '''
+        db.update(sql, 10)
+
+        db._db.commit()
+    except Exception, e:
+        db._db.rollback()
+        print str(e)
+        return False
+    finally:
+        db._db.autocommit(True)
+
+    return True
+
+transacion_autocommit()
+</pre>
+:ET
