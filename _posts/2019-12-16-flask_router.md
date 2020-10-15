@@ -1,10 +1,10 @@
 ---
 date: 2019-12-16
 layout: post
-title: Flask 路由原理简介
+title: Flask 路由原理初探
 thread: 2019-12-16-flask_router.md
-categories: web
-tags: 框架
+categories: 框架
+tags: flask
 ---
 
 
