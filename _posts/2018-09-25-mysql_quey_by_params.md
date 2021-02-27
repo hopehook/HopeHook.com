@@ -4,7 +4,7 @@ layout: post
 title: Mysql 参数化查询 in 和 like
 thread: 2018-09-25-mysql_quey_by_params.md
 categories: 数据库
-tags: mysql 经验
+tags: mysql
 ---
 
 
