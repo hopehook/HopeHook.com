@@ -1,7 +1,7 @@
 ---
 date: 2021-03-01
 layout: post
-title: 再谈谈 mysql 连接池
+title: 再来谈谈 mysql 连接池
 thread: 2021-03-01-python_mysql_pool_2.md
 categories: 数据库
 tags: python
@@ -10,6 +10,7 @@ tags: python
 ## 为什么要连接池？
 
 在开发中, 只要涉及到类似 TCP 长连接资源的, 通常都要考虑到使用连接池封装来提高资源的可复用率, 避免频繁建立连接带来的网络请求开销.
+
 在没有使用连接池的时候, Client 想执行一条 MySQL UPDATE 语句, 先要与 MySQL 进行 3 次网络传输("握手")建立一个 TCP 连接, 然后再发送 1 次命令,
 接收 1 次命令执行结果. 如果使用了连接池, 虽然第一次执行上述过程也需要经历 3 次握手, 但是第二次, 第三次等等就省略了这个握手过程.
 
@@ -43,7 +44,7 @@ tags: python
 
 如果你使用的编程语言是 Golang, 可以使用 channel 作为队列, 协程安全, golang runtime 会自动处理 channel 上阻塞的协程以及唤醒. (底层是 gopark goready 调用, golang 中条件变量的实现同理)
 
-如果你使用的编程语言是 Python, 可以使用 queue (基于 deque 封装), 线程安全, 使用条件变量支持线程的阻塞和唤醒.
+如果你使用的编程语言是 Python, 可以使用 queue (基于 deque 封装), 线程安全, 使用条件变量 condition 可支持线程的阻塞和唤醒.
 
 如果你使用的编程语言标准库没有 `队列` 的数据结构, 可以基于现有的数据结构实现一个类似的队列, 或者通过第三方库满足功能.
 
