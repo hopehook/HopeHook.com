@@ -7,22 +7,22 @@ categories: 数据库
 tags: python
 ---
 
-## 前言
+## 为什么要连接池？
 
 在开发中, 只要涉及到类似 TCP 长连接资源的, 通常都要考虑到使用连接池封装来提高资源的可复用率, 避免频繁建立连接带来的网络请求开销.
-在没有使用连接池的时候, client 想执行一条 Mysql update 语句, 先要与 Mysql 进行 3 次网络传输("握手")建立一个 TCP 连接, 然后再发送 1 次命令,
+在没有使用连接池的时候, Client 想执行一条 MySQL UPDATE 语句, 先要与 MySQL 进行 3 次网络传输("握手")建立一个 TCP 连接, 然后再发送 1 次命令,
 接收 1 次命令执行结果. 如果使用了连接池, 虽然第一次执行上述过程也需要经历 3 次握手, 但是第二次, 第三次等等就省略了这个握手过程.
 
 另外, 使用连接池, 除了可以减少网络交互的时间消耗, 更重要的是 TCP 连接数是有限制的. 当你的服务要面临短时间高并发请求的时候(比如突刺流量), 连接数很容易超出限制抛出错误.
 
-- Mysql 最大连接数限制: `show variables like '%max_connections%';`
+- MySQL 最大连接数限制: `show variables like '%max_connections%';`
 - 服务器文件描述符数量限制: `ulimit -n`
 
-题外话, 模拟测试的朋友还要注意本地临时端口的限制. TCP 客户端连接服务端的时候，需要获取本地的临时端口，传输层协议限制了最多只有 65535 个端口, 不少都预先占用了.
+题外话, 模拟测试的朋友还要注意本地临时端口的限制. TCP 客户端连接服务端的时候, 需要获取本地的临时端口, 传输层协议限制了最多只有 65535 个端口, 不少都预先占用了.
 
 - 可用的临时端口范围
   - 查看: `cat /proc/sys/net/ipv4/ip_local_port_range`
-  - 修改: `echo "start-number  end-number"` ，start-number 和 end-number 是 0-65536 端口号范围内的数，,0-1024 最好不要用，通常是熟知端口，如果是专门的代理服务器的话，很多熟知端口没有使用，当然可以考虑！
+  - 修改: `echo "start-number  end-number"` , start-number 和 end-number 是 0-65536 端口号范围内的数, 0-1024 最好不要用, 通常是熟知端口, 如果是专门的代理服务器的话, 很多熟知端口没有使用, 当然可以考虑！
 
 
 ## 连接池的核心需求
@@ -32,7 +32,7 @@ tags: python
 - 线程阻塞唤醒机制 (基于锁实现的条件变量, 支持线程的阻塞 wait, 和唤醒 notify_all)
 
 
-## 池的常用数据结构
+## 常用的数据结构
 
 - 队列 queue/deque/channel
 - 链表 LinkedList
@@ -48,11 +48,11 @@ tags: python
 如果你使用的编程语言标准库没有 `队列` 的数据结构, 可以基于现有的数据结构实现一个类似的队列, 或者通过第三方库满足功能.
 
 
-## 封装 PyMySQL 连接池的实际案例
+## 一个封装 PyMySQL 连接池的实际案例
 
-PyMySQL 是 python 访问 MySQL 的一个很好用的库，可惜的是不支持连接池。我们线上的一些项目中使用了 PyMySQL，随着用户量的上涨， 系统压力会陡然上升，mysql 连接池化就成为了优化的重点。
+PyMySQL 是 python 访问 MySQL 的一个很好用的库, 可惜的是不支持连接池.我们线上的一些项目中使用了 PyMySQL, 随着用户量的上涨,  系统压力会陡然上升, mysql 连接池化就成为了优化的重点.
 
-因为这些项目使用 PyMySQL 的姿势也是独有的， 所以没法利用一些普适的连接池库来改造，就只能自己撸了。
+因为这些项目使用 PyMySQL 的姿势也是独有的,  所以没法利用一些普适的连接池库来改造, 就只能自己撸了.
 
 
 ```
@@ -345,7 +345,7 @@ class DBConnectionPool(object):
     def _log_connection_cost(c, started_at, pos, is_check):
         cost = time.time() * 1000 - started_at
         if cost >= 100:
-            # 耗时过长时，需排查: 是否连接池过小 or 代码bug
+            # 耗时过长时, 需排查: 是否连接池过小 or 代码bug
             logging.warning('DB:connection: pos:%s, cost:%.2fms, is_check:%s', pos, cost, is_check)
         return c
 
@@ -376,7 +376,7 @@ class DBConnectionPool(object):
         """ 回收连接到连接池 """
         c.idle_at = self.ts
         with self._not_empty:
-            if not self._contain(c):  # TODO：O(n)操作太耗时，确认不会进入else分支后移除此行代码
+            if not self._contain(c):  # TODO：O(n)操作太耗时, 确认不会进入else分支后移除此行代码
                 self._put(c)
                 # 唤醒等待获取连接的线程 _get_connection(block=True)
                 self._not_empty.notify()
@@ -386,12 +386,12 @@ class DBConnectionPool(object):
 ```
 
 
-## 后记
+## 后话
 
-Mysql 连接池只是 TCP 连接池的一种， 类似的我之前也有分享 Thrift RPC 连接池化的案例。
-只要是长连接池化，实现起来都差不多，要根据不同业务场景和编程语言，选择更合适的姿势。
+MySQL 连接池只是 TCP 连接池的一种,  类似的我之前也有分享 Thrift RPC 连接池化的案例.
+只要是长连接池化, 实现起来都差不多, 要根据不同业务场景和编程语言, 选择更合适的姿势.
 
-最后， 要理解各种边界情况， 极端情况，做好充分的压力测试。线上环境是很复杂的，看似简洁的代码里尽是细节。
+最后,  要理解各种边界情况,  极端情况, 做好充分的压力测试.线上环境是很复杂的, 看似简洁的代码里尽是细节.
 
 
 
