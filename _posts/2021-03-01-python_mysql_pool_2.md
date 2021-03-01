@@ -1,7 +1,7 @@
 ---
 date: 2021-03-01
 layout: post
-title: 再谈谈 mysql 连接池（基于 pymysql 的实际案例）
+title: 再谈谈 mysql 连接池
 thread: 2021-03-01-python_mysql_pool_2.md
 categories: 数据库
 tags: python
