@@ -42,14 +42,15 @@ tags: python
 以上是一些常见的作为连接池的数据结构, 不管是比较底层的数据结构, 还是封装了的高级数据结构, 最终都是要实现一个 `队列` 的功能, 满足 `连接池的核心需求`.
 
 如果你使用的编程语言是 Golang, 可以使用 channel 作为队列, 协程安全, golang runtime 会自动处理 channel 上阻塞的协程以及唤醒. (底层是 gopark goready 调用, golang 中条件变量的实现同理)
+
 如果你使用的编程语言是 Python, 可以使用 queue (基于 deque 封装), 线程安全, 使用条件变量支持线程的阻塞和唤醒.
+
 如果你使用的编程语言标准库没有 `队列` 的数据结构, 可以基于现有的数据结构实现一个类似的队列, 或者通过第三方库满足功能.
+
 
 ## 封装 PyMySQL 连接池的实际案例
 
-PyMySQL 是 python 访问 MySQL 的一个很好用的库，可惜的是不支持连接池。
-
-我们线上的一些项目中使用了 PyMySQL，随着用户量的上涨， 系统压力会陡然上升，mysql 连接池化就成为了优化的重点。
+PyMySQL 是 python 访问 MySQL 的一个很好用的库，可惜的是不支持连接池。我们线上的一些项目中使用了 PyMySQL，随着用户量的上涨， 系统压力会陡然上升，mysql 连接池化就成为了优化的重点。
 
 因为这些项目使用 PyMySQL 的姿势也是独有的， 所以没法利用一些普适的连接池库来改造，就只能自己撸了。
 
@@ -67,23 +68,21 @@ Usage:
 
 eg1:
 
-```
 pool = DBConnectionPool(MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
 conn = pool.connection()
 with conn as cursor:
     cursor.execute(sql)
-```
+
 
 eg2:
 
-```
 pool = DBConnectionPool(MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
 conn = pool.connection()
 with conn:
     conn.begin()
     with conn as cursor:
         cursor.execute(sql)
-```
+
 """
 import logging
 import time
@@ -389,8 +388,7 @@ class DBConnectionPool(object):
 
 ## 后记
 
-Mysql 连接池只是 TCP 连接池的一种， 类似的我之前也有分享 thrift rpc 连接池化的案例。
-
+Mysql 连接池只是 TCP 连接池的一种， 类似的我之前也有分享 Thrift RPC 连接池化的案例。
 只要是长连接池化，实现起来都差不多，要根据不同业务场景和编程语言，选择更合适的姿势。
 
 最后， 要理解各种边界情况， 极端情况，做好充分的压力测试。线上环境是很复杂的，看似简洁的代码里尽是细节。
